@@ -1,0 +1,54 @@
+<?xml version="1.0" standalone="no"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="4.0">
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+        <ProjectGuid>78E0E1FC-F22E-4E30-AF2A-5CBEAC60093D</ProjectGuid>
+        <AllowLegacyCreate>False</AllowLegacyCreate>
+        <AllowLegacyOutParams>False</AllowLegacyOutParams>
+        <MinFrameworkVersionRequired>4.0</MinFrameworkVersionRequired>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <Optimize>false</Optimize>
+        <OutputPath>.\bin\Debug</OutputPath>
+        <DefineConstants>DEBUG;TRACE;</DefineConstants>
+        <GenerateDebugInfo>True</GenerateDebugInfo>
+        <EnableAsserts>True</EnableAsserts>
+        <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+        <CaptureConsoleOutput>False</CaptureConsoleOutput>
+        <StartMode>Project</StartMode>
+        <RegisterForComInterop>False</RegisterForComInterop>
+        <CpuType>anycpu</CpuType>
+        <RuntimeVersion>v25</RuntimeVersion>
+        <XmlDoc>False</XmlDoc>
+        <XmlDocWarningLevel>WarningOnPublicMembers</XmlDocWarningLevel>
+        <WarnOnCaseMismatch>True</WarnOnCaseMismatch>
+        <EnableUnmanagedDebugging>False</EnableUnmanagedDebugging>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <Optimize>true</Optimize>
+        <OutputPath>.\bin\Release</OutputPath>
+        <GenerateDebugInfo>False</GenerateDebugInfo>
+        <EnableAsserts>False</EnableAsserts>
+        <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+        <CaptureConsoleOutput>False</CaptureConsoleOutput>
+        <StartMode>Project</StartMode>
+        <RegisterForComInterop>False</RegisterForComInterop>
+        <CpuType>anycpu</CpuType>
+        <RuntimeVersion>v25</RuntimeVersion>
+        <XmlDoc>False</XmlDoc>
+        <XmlDocWarningLevel>WarningOnPublicMembers</XmlDocWarningLevel>
+        <WarnOnCaseMismatch>True</WarnOnCaseMismatch>
+        <EnableUnmanagedDebugging>False</EnableUnmanagedDebugging>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="rt"/>
+        <Reference Include="swift">
+            <Private>True</Private>
+        </Reference>
+        <Reference Include="cooper">
+            <Private>True</Private>
+        </Reference>
+    </ItemGroup>
+    <Import Project="$(MSBuildExtensionsPath)\RemObjects Software\Elements\RemObjects.Elements.Cooper.targets"/>
+</Project>

@@ -1,0 +1,6 @@
+version: "Apple Swift version 3.0-dev (LLVM 3a878c6fdb, Clang 4ca9e01a7c, Swift 2ef0a8fdcb)"
+options: "1125cbe6031c519e42c291d5f456f334"
+build_time: [524133929, 37216000]
+inputs:
+  "/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectThread-0.13.0/Sources/Threading.swift": [524133665, 0]
+  "/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectThread-0.13.0/Sources/ThreadQueue.swift": [524133665, 0]

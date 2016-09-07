@@ -1,0 +1,72 @@
+client:
+  name: swift-build
+tools: {}
+targets:
+  "test": ["<PerfectThread.module>","<PerfectNet.module>","<PerfectLib.module>","<LakestoneCore.module>"]
+  "main": ["<PerfectThread.module>","<PerfectNet.module>","<PerfectLib.module>","<LakestoneCore.module>"]
+default: "main"
+commands: 
+  "<PerfectThread.module>":
+    tool: swift-compiler
+    executable: "/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-08-04-a.xctoolchain/usr/bin/swiftc"
+    module-name: "PerfectThread"
+    module-output-path: "/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectThread.swiftmodule"
+    inputs: []
+    outputs: ["<PerfectThread.module>","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectThread.build/Threading.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectThread.build/ThreadQueue.swift.o"]
+    import-paths: ["/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug"]
+    temps-path: "/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectThread.build"
+    objects: ["/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectThread.build/Threading.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectThread.build/ThreadQueue.swift.o"]
+    other-args: ["-j8","-D","SWIFT_PACKAGE","-Onone","-g","-enable-testing","-F","/Applications/Xcode-beta-5.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-target","x86_64-apple-macosx10.10","-sdk","/Applications/Xcode-beta-5.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk","-module-cache-path","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/ModuleCache"]
+    sources: ["/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectThread-0.13.0/Sources/Threading.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectThread-0.13.0/Sources/ThreadQueue.swift"]
+    is-library: true
+    enable-whole-module-optimization: false
+    num-threads: "8"
+
+  "<PerfectNet.module>":
+    tool: swift-compiler
+    executable: "/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-08-04-a.xctoolchain/usr/bin/swiftc"
+    module-name: "PerfectNet"
+    module-output-path: "/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectNet.swiftmodule"
+    inputs: ["<OpenSSL.module>","<PerfectThread.module>"]
+    outputs: ["<PerfectNet.module>","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectNet.build/Net.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectNet.build/NetEvent.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectNet.build/NetNamedPipe.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectNet.build/NetTCP.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectNet.build/NetTCPSSL.swift.o"]
+    import-paths: ["/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug"]
+    temps-path: "/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectNet.build"
+    objects: ["/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectNet.build/Net.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectNet.build/NetEvent.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectNet.build/NetNamedPipe.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectNet.build/NetTCP.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectNet.build/NetTCPSSL.swift.o"]
+    other-args: ["-j8","-D","SWIFT_PACKAGE","-Onone","-g","-enable-testing","-F","/Applications/Xcode-beta-5.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-target","x86_64-apple-macosx10.10","-sdk","/Applications/Xcode-beta-5.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk","-Xcc","-fmodule-map-file=/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/OpenSSL-0.3.0/module.modulemap","-Xcc","-I/usr/include","-L/usr/lib","-lssl","-lcrypto","-lz","-module-cache-path","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/ModuleCache"]
+    sources: ["/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectNet-0.20.0/Sources/Net.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectNet-0.20.0/Sources/NetEvent.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectNet-0.20.0/Sources/NetNamedPipe.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectNet-0.20.0/Sources/NetTCP.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectNet-0.20.0/Sources/NetTCPSSL.swift"]
+    is-library: true
+    enable-whole-module-optimization: false
+    num-threads: "8"
+
+  "<PerfectLib.module>":
+    tool: swift-compiler
+    executable: "/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-08-04-a.xctoolchain/usr/bin/swiftc"
+    module-name: "PerfectLib"
+    module-output-path: "/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.swiftmodule"
+    inputs: ["<OpenSSL.module>","<PerfectThread.module>","<PerfectNet.module>"]
+    outputs: ["<PerfectLib.module>","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/Bytes.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/Dir.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/DynamicLoader.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/File.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/JSONConvertible.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/Log.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/PerfectError.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/PerfectServer.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/SwiftCompatibility.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/SysProcess.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/Utilities.swift.o"]
+    import-paths: ["/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug"]
+    temps-path: "/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build"
+    objects: ["/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/Bytes.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/Dir.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/DynamicLoader.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/File.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/JSONConvertible.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/Log.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/PerfectError.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/PerfectServer.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/SwiftCompatibility.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/SysProcess.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/PerfectLib.build/Utilities.swift.o"]
+    other-args: ["-j8","-D","SWIFT_PACKAGE","-Onone","-g","-enable-testing","-F","/Applications/Xcode-beta-5.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-target","x86_64-apple-macosx10.10","-sdk","/Applications/Xcode-beta-5.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk","-Xcc","-fmodule-map-file=/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/OpenSSL-0.3.0/module.modulemap","-Xcc","-I/usr/include","-L/usr/lib","-lssl","-lcrypto","-lz","-module-cache-path","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/ModuleCache"]
+    sources: ["/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectLib-0.60.0/Sources/PerfectLib/Bytes.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectLib-0.60.0/Sources/PerfectLib/Dir.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectLib-0.60.0/Sources/PerfectLib/DynamicLoader.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectLib-0.60.0/Sources/PerfectLib/File.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectLib-0.60.0/Sources/PerfectLib/JSONConvertible.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectLib-0.60.0/Sources/PerfectLib/Log.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectLib-0.60.0/Sources/PerfectLib/PerfectError.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectLib-0.60.0/Sources/PerfectLib/PerfectServer.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectLib-0.60.0/Sources/PerfectLib/SwiftCompatibility.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectLib-0.60.0/Sources/PerfectLib/SysProcess.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectLib-0.60.0/Sources/PerfectLib/Utilities.swift"]
+    is-library: true
+    enable-whole-module-optimization: false
+    num-threads: "8"
+
+  "<LakestoneCore.module>":
+    tool: swift-compiler
+    executable: "/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2016-08-04-a.xctoolchain/usr/bin/swiftc"
+    module-name: "LakestoneCore"
+    module-output-path: "/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/LakestoneCore.swiftmodule"
+    inputs: ["<OpenSSL.module>","<PerfectThread.module>","<PerfectNet.module>","<PerfectLib.module>"]
+    outputs: ["<LakestoneCore.module>","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/LakestoneCore.build/alliases.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/LakestoneCore.build/FileManager.swift.o"]
+    import-paths: ["/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug"]
+    temps-path: "/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/LakestoneCore.build"
+    objects: ["/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/LakestoneCore.build/alliases.swift.o","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/LakestoneCore.build/FileManager.swift.o"]
+    other-args: ["-j8","-D","SWIFT_PACKAGE","-Onone","-g","-enable-testing","-F","/Applications/Xcode-beta-5.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-target","x86_64-apple-macosx10.10","-sdk","/Applications/Xcode-beta-5.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk","-Xcc","-fmodule-map-file=/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/OpenSSL-0.3.0/module.modulemap","-Xcc","-I/usr/include","-L/usr/lib","-lssl","-lcrypto","-lz","-module-cache-path","/Users/hurden/Developer/Lakestone/LakestoneCore/.build/debug/ModuleCache"]
+    sources: ["/Users/hurden/Developer/Lakestone/LakestoneCore/Source/alliases.swift","/Users/hurden/Developer/Lakestone/LakestoneCore/Source/FileManager.swift"]
+    is-library: true
+    enable-whole-module-optimization: false
+    num-threads: "8"
+
