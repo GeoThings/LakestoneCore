@@ -20,8 +20,6 @@ class LakestoneCoreTests: XCTestCase {
             return
         }
         
-        Error
-        
         guard let data = response.dataº,
               let dataString = String(data: data, encoding: String.Encoding.utf8)
         else {
