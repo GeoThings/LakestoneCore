@@ -9,46 +9,16 @@
         <Import_RootNamespace>LakestoneCore.Shared</Import_RootNamespace>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="$(MSBuildThisFileDirectory)..\silveronly_source\silveronly_Utilities.swift"/>
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\HTTP.swift">
+            <VirtualFolder>Source</VirtualFolder>
+        </Compile>
         <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\alliases.swift">
             <VirtualFolder>Source</VirtualFolder>
         </Compile>
-        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\FileManager.swift">
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\LakestoneError.swift">
             <VirtualFolder>Source</VirtualFolder>
         </Compile>
-        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\Log.swift">
-            <VirtualFolder>Source</VirtualFolder>
-        </Compile>
-        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\Threading.swift">
-            <VirtualFolder>Source</VirtualFolder>
-        </Compile>
-        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\UUID.swift">
-            <VirtualFolder>Source</VirtualFolder>
-        </Compile>
-        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\AssetsManager.swift">
-            <VirtualFolder>Source</VirtualFolder>
-        </Compile>
-        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\HTTPClient.swift">
-            <VirtualFolder>Source</VirtualFolder>
-        </Compile>
-        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\PersistentPropertyList.swift">
-            <VirtualFolder>Source</VirtualFolder>
-        </Compile>
-        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\Serialization.swift">
-            <VirtualFolder>Source</VirtualFolder>
-        </Compile>
-        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\Utilities.swift">
-            <VirtualFolder>Source</VirtualFolder>
-        </Compile>
-        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\XMLSerialization.swift">
-            <VirtualFolder>Source</VirtualFolder>
-        </Compile>
-        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\extentions.swift">
-            <VirtualFolder>Source</VirtualFolder>
-        </Compile>
-        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\ErrorBuilder.swift">
-            <VirtualFolder>Source</VirtualFolder>
-        </Compile>
-        <Compile Include="$(MSBuildThisFileDirectory)..\silveronly_source\silveronly_Utilities.swift"/>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Source">

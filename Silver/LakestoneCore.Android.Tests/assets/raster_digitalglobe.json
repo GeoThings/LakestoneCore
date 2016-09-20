@@ -1,0 +1,21 @@
+{
+  "version": 8,
+  "name": "Raster Tiles",
+  "sources": {
+    "yourTileLayer": {
+      "type": "raster",
+      "tiles": [
+        "https://a.tiles.mapbox.com/v4/digitalglobe.nal0g75k/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpbnI5MnNmOTEwaHR1Mm0zeXpwY2l3MmcifQ._Migr1Dk1hmSj-kOb_-ahA"
+      ],
+      "tileSize": 256
+    }
+  },
+  "layers": [{
+    "id": "yourTileLayer",
+    "type": "raster",
+    "source": "yourTileLayer",
+    "paint": {
+      "raster-fade-duration": 100
+    }
+  }]
+}

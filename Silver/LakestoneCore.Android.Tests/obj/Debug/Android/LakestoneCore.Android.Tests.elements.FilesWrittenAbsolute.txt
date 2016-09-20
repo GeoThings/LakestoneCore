@@ -1,0 +1,2 @@
+/Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/obj/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.pas
+/Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/obj/Debug/Android/LakestoneCore.Android.Tests.jar

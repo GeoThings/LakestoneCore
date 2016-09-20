@@ -2,11 +2,11 @@
 
 #if COOPER
 
-//import com.mapbox.mapboxsdk.offline
 import java.text
 
 //apple swift doesn't allow Type[] syntax
 typealias SByteStaticArray = SByte[]
+typealias ByteStaticArray = Byte[]
 //typealias OfflineRegionImplicitStaticArray = OfflineRegion![]
 
 class TimezoneAdjustedDateFormat: SimpleDateFormat {
