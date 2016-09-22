@@ -9,25 +9,30 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>LakestoneCoreIOS.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1A6049771D9141400015BA86</key>
+		<key>1A40AE201D93AF9900AECC1A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1A60497F1D9141410015BA86</key>
+		<key>1A40AE281D93AF9A00AECC1A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1A7D58951D9144F7006B97A1</key>
+		<key>1A40AE441D93C0B500AECC1A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1A7D589D1D9144F7006B97A1</key>
+		<key>1A40AE4C1D93C0B500AECC1A</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A40AE4E1D93C0B500AECC1A /* LakestoneCoreIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A40AE451D93C0B500AECC1A /* LakestoneCoreIOS.framework */; };
+		1A40AE531D93C0B500AECC1A /* LakestoneCoreIOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A40AE521D93C0B500AECC1A /* LakestoneCoreIOSTests.swift */; };
+		1A40AE551D93C0B500AECC1A /* LakestoneCoreIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A40AE471D93C0B500AECC1A /* LakestoneCoreIOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		_LinkFileRef_LakestoneCore_via_LakestoneCoreTests /* LakestoneCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_LakestoneCore" /* LakestoneCore.framework */; };
 		_LinkFileRef_PerfectCURL_via_LakestoneCore /* PerfectCURL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_PerfectCURL" /* PerfectCURL.framework */; };
 		_LinkFileRef_PerfectCURL_via_LakestoneCoreTests /* PerfectCURL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_PerfectCURL" /* PerfectCURL.framework */; };
@@ -30,46 +33,58 @@
 		"__src_cc_ref_Packages/PerfectThread-2.0.0/Sources/Threading.swift" /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/PerfectThread-2.0.0/Sources/Threading.swift" /* Threading.swift */; };
 		__src_cc_ref_Source/HTTP.swift /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/HTTP.swift /* HTTP.swift */; };
 		__src_cc_ref_Source/LakestoneError.swift /* LakestoneError.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/LakestoneError.swift /* LakestoneError.swift */; };
+		__src_cc_ref_Source/Threading.swift /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/Threading.swift /* Threading.swift */; };
 		__src_cc_ref_Source/alliases.swift /* alliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/alliases.swift /* alliases.swift */; };
+		__src_cc_ref_Source/extension_Data.swift /* extension_Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/extension_Data.swift /* extension_Data.swift */; };
+		__src_cc_ref_Source/extension_URL.swift /* extension_URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/extension_URL.swift /* extension_URL.swift */; };
 		__src_cc_ref_Tests/LakestoneCoreTests/LakestoneCoreTests.swift /* LakestoneCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/LakestoneCoreTests.swift /* LakestoneCoreTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		1A60496F1D9141150015BA86 /* PBXContainerItemProxy */ = {
+		1A40AE181D93AF5200AECC1A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = __RootObject_ /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "______Target_PerfectThread";
 			remoteInfo = PerfectThread;
 		};
-		1A6049701D9141150015BA86 /* PBXContainerItemProxy */ = {
+		1A40AE191D93AF5200AECC1A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = __RootObject_ /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "______Target_PerfectLib";
 			remoteInfo = PerfectLib;
 		};
-		1A6049711D9141150015BA86 /* PBXContainerItemProxy */ = {
+		1A40AE1A1D93AF5200AECC1A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = __RootObject_ /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "______Target_PerfectCURL";
 			remoteInfo = PerfectCURL;
 		};
-		1A6049721D9141150015BA86 /* PBXContainerItemProxy */ = {
+		1A40AE1B1D93AF5200AECC1A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = __RootObject_ /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "______Target_LakestoneCore";
 			remoteInfo = LakestoneCore;
 		};
+		1A40AE4F1D93C0B500AECC1A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = __RootObject_ /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A40AE441D93C0B500AECC1A;
+			remoteInfo = LakestoneCoreIOS;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1A7D58981D9144F7006B97A1 /* TestShit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestShit.h; sourceTree = "<group>"; };
-		1A7D58991D9144F7006B97A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1A7D58A31D9144F7006B97A1 /* TestShitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestShitTests.swift; sourceTree = "<group>"; };
-		1A7D58A51D9144F7006B97A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1A40AE451D93C0B500AECC1A /* LakestoneCoreIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LakestoneCoreIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A40AE471D93C0B500AECC1A /* LakestoneCoreIOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LakestoneCoreIOS.h; sourceTree = "<group>"; };
+		1A40AE481D93C0B500AECC1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1A40AE4D1D93C0B500AECC1A /* LakestoneCoreIOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LakestoneCoreIOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A40AE521D93C0B500AECC1A /* LakestoneCoreIOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LakestoneCoreIOSTests.swift; sourceTree = "<group>"; };
+		1A40AE541D93C0B500AECC1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		__PBXFileRef_LakestoneCore.xcodeproj/Configs/Project.xcconfig /* LakestoneCore.xcodeproj/Configs/Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LakestoneCore.xcodeproj/Configs/Project.xcconfig; sourceTree = "<group>"; };
 		__PBXFileRef_Package.swift /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		"__PBXFileRef_Packages/PerfectCURL-2.0.0/Sources/cURL.swift" /* cURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cURL.swift; sourceTree = "<group>"; };
@@ -87,16 +102,34 @@
 		"__PBXFileRef_Packages/PerfectThread-2.0.0/Sources/Threading.swift" /* Threading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Threading.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Source/HTTP.swift /* HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Source/LakestoneError.swift /* LakestoneError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LakestoneError.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Source/Threading.swift /* Threading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Threading.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Source/alliases.swift /* alliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = alliases.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Source/extension_Data.swift /* extension_Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension_Data.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Source/extension_URL.swift /* extension_URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension_URL.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Tests/LakestoneCoreTests/LakestoneCoreTests.swift /* LakestoneCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LakestoneCoreTests.swift; sourceTree = "<group>"; };
 		"_____Product_LakestoneCore" /* LakestoneCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LakestoneCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		"_____Product_LakestoneCoreTests" /* LakestoneCoreTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = LakestoneCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_LakestoneCoreTests" /* LakestoneCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = LakestoneCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_PerfectCURL" /* PerfectCURL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PerfectCURL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_PerfectLib" /* PerfectLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PerfectLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_PerfectThread" /* PerfectThread.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PerfectThread.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1A40AE411D93C0B500AECC1A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A40AE4A1D93C0B500AECC1A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A40AE4E1D93C0B500AECC1A /* LakestoneCoreIOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		"___LinkPhase_LakestoneCore" /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
@@ -143,22 +176,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1A7D58971D9144F7006B97A1 /* TestShit */ = {
+		1A40AE391D93AFD900AECC1A /* extentions */ = {
 			isa = PBXGroup;
 			children = (
-				1A7D58981D9144F7006B97A1 /* TestShit.h */,
-				1A7D58991D9144F7006B97A1 /* Info.plist */,
+				__PBXFileRef_Source/extension_Data.swift /* extension_Data.swift */,
+				__PBXFileRef_Source/extension_URL.swift /* extension_URL.swift */,
 			);
-			path = TestShit;
+			name = extentions;
 			sourceTree = "<group>";
 		};
-		1A7D58A21D9144F7006B97A1 /* TestShitTests */ = {
+		1A40AE461D93C0B500AECC1A /* LakestoneCoreIOS */ = {
 			isa = PBXGroup;
 			children = (
-				1A7D58A31D9144F7006B97A1 /* TestShitTests.swift */,
-				1A7D58A51D9144F7006B97A1 /* Info.plist */,
+				1A40AE471D93C0B500AECC1A /* LakestoneCoreIOS.h */,
+				1A40AE481D93C0B500AECC1A /* Info.plist */,
 			);
-			path = TestShitTests;
+			path = LakestoneCoreIOS;
+			sourceTree = "<group>";
+		};
+		1A40AE511D93C0B500AECC1A /* LakestoneCoreIOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				1A40AE521D93C0B500AECC1A /* LakestoneCoreIOSTests.swift */,
+				1A40AE541D93C0B500AECC1A /* Info.plist */,
+			);
+			path = LakestoneCoreIOSTests;
 			sourceTree = "<group>";
 		};
 		Dependencies_ /* Dependencies */ = {
@@ -187,8 +229,8 @@
 				"_____Sources_" /* Sources */,
 				Dependencies_ /* Dependencies */,
 				"_______Tests_" /* Tests */,
-				1A7D58971D9144F7006B97A1 /* TestShit */,
-				1A7D58A21D9144F7006B97A1 /* TestShitTests */,
+				1A40AE461D93C0B500AECC1A /* LakestoneCoreIOS */,
+				1A40AE511D93C0B500AECC1A /* LakestoneCoreIOSTests */,
 				"____Products_" /* Products */,
 			);
 			sourceTree = "<group>";
@@ -201,6 +243,8 @@
 				"_____Product_PerfectThread" /* PerfectThread.framework */,
 				"_____Product_PerfectCURL" /* PerfectCURL.framework */,
 				"_____Product_LakestoneCore" /* LakestoneCore.framework */,
+				1A40AE451D93C0B500AECC1A /* LakestoneCoreIOS.framework */,
+				1A40AE4D1D93C0B500AECC1A /* LakestoneCoreIOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -227,6 +271,8 @@
 				__PBXFileRef_Source/alliases.swift /* alliases.swift */,
 				__PBXFileRef_Source/HTTP.swift /* HTTP.swift */,
 				__PBXFileRef_Source/LakestoneError.swift /* LakestoneError.swift */,
+				__PBXFileRef_Source/Threading.swift /* Threading.swift */,
+				1A40AE391D93AFD900AECC1A /* extentions */,
 			);
 			name = LakestoneCore;
 			path = Source;
@@ -288,7 +334,54 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		1A40AE421D93C0B500AECC1A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A40AE551D93C0B500AECC1A /* LakestoneCoreIOS.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		1A40AE441D93C0B500AECC1A /* LakestoneCoreIOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A40AE561D93C0B500AECC1A /* Build configuration list for PBXNativeTarget "LakestoneCoreIOS" */;
+			buildPhases = (
+				1A40AE401D93C0B500AECC1A /* Sources */,
+				1A40AE411D93C0B500AECC1A /* Frameworks */,
+				1A40AE421D93C0B500AECC1A /* Headers */,
+				1A40AE431D93C0B500AECC1A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LakestoneCoreIOS;
+			productName = LakestoneCoreIOS;
+			productReference = 1A40AE451D93C0B500AECC1A /* LakestoneCoreIOS.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		1A40AE4C1D93C0B500AECC1A /* LakestoneCoreIOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A40AE591D93C0B500AECC1A /* Build configuration list for PBXNativeTarget "LakestoneCoreIOSTests" */;
+			buildPhases = (
+				1A40AE491D93C0B500AECC1A /* Sources */,
+				1A40AE4A1D93C0B500AECC1A /* Frameworks */,
+				1A40AE4B1D93C0B500AECC1A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1A40AE501D93C0B500AECC1A /* PBXTargetDependency */,
+			);
+			name = LakestoneCoreIOSTests;
+			productName = LakestoneCoreIOSTests;
+			productReference = 1A40AE4D1D93C0B500AECC1A /* LakestoneCoreIOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		"______Target_LakestoneCore" /* LakestoneCore */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = "_______Confs_LakestoneCore" /* Build configuration list for PBXNativeTarget "LakestoneCore" */;
@@ -385,6 +478,18 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
 				LastUpgradeCheck = 9999;
+				TargetAttributes = {
+					1A40AE441D93C0B500AECC1A = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = R9S8X575B6;
+						ProvisioningStyle = Automatic;
+					};
+					1A40AE4C1D93C0B500AECC1A = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = R9S8X575B6;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = "___RootConfs_" /* Build configuration list for PBXProject "LakestoneCore" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -403,18 +508,55 @@
 				"______Target_PerfectCURL" /* PerfectCURL */,
 				"______Target_LakestoneCore" /* LakestoneCore */,
 				"______Target_LakestoneCoreTests" /* LakestoneCoreTests */,
+				1A40AE441D93C0B500AECC1A /* LakestoneCoreIOS */,
+				1A40AE4C1D93C0B500AECC1A /* LakestoneCoreIOSTests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		1A40AE431D93C0B500AECC1A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A40AE4B1D93C0B500AECC1A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		1A40AE401D93C0B500AECC1A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A40AE491D93C0B500AECC1A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A40AE531D93C0B500AECC1A /* LakestoneCoreIOSTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CompilePhase_LakestoneCore /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
 				__src_cc_ref_Source/alliases.swift /* alliases.swift in Sources */,
+				__src_cc_ref_Source/extension_Data.swift /* extension_Data.swift in Sources */,
+				__src_cc_ref_Source/extension_URL.swift /* extension_URL.swift in Sources */,
 				__src_cc_ref_Source/HTTP.swift /* HTTP.swift in Sources */,
 				__src_cc_ref_Source/LakestoneError.swift /* LakestoneError.swift in Sources */,
+				__src_cc_ref_Source/Threading.swift /* Threading.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,29 +605,266 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1A40AE501D93C0B500AECC1A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A40AE441D93C0B500AECC1A /* LakestoneCoreIOS */;
+			targetProxy = 1A40AE4F1D93C0B500AECC1A /* PBXContainerItemProxy */;
+		};
 		__Dependency_LakestoneCore /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "______Target_LakestoneCore" /* LakestoneCore */;
-			targetProxy = 1A6049721D9141150015BA86 /* PBXContainerItemProxy */;
+			targetProxy = 1A40AE1B1D93AF5200AECC1A /* PBXContainerItemProxy */;
 		};
 		__Dependency_PerfectCURL /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "______Target_PerfectCURL" /* PerfectCURL */;
-			targetProxy = 1A6049711D9141150015BA86 /* PBXContainerItemProxy */;
+			targetProxy = 1A40AE1A1D93AF5200AECC1A /* PBXContainerItemProxy */;
 		};
 		__Dependency_PerfectLib /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "______Target_PerfectLib" /* PerfectLib */;
-			targetProxy = 1A6049701D9141150015BA86 /* PBXContainerItemProxy */;
+			targetProxy = 1A40AE191D93AF5200AECC1A /* PBXContainerItemProxy */;
 		};
 		__Dependency_PerfectThread /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "______Target_PerfectThread" /* PerfectThread */;
-			targetProxy = 1A60496F1D9141150015BA86 /* PBXContainerItemProxy */;
+			targetProxy = 1A40AE181D93AF5200AECC1A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		1A40AE571D93C0B500AECC1A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R9S8X575B6;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = LakestoneCoreIOS/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = tw.geothings.LakestoneCoreIOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		1A40AE581D93C0B500AECC1A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R9S8X575B6;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = LakestoneCoreIOS/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = tw.geothings.LakestoneCoreIOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		1A40AE5A1D93C0B500AECC1A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = R9S8X575B6;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = LakestoneCoreIOSTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = tw.geothings.LakestoneCoreIOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		1A40AE5B1D93C0B500AECC1A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = R9S8X575B6;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = LakestoneCoreIOSTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = tw.geothings.LakestoneCoreIOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		_ReleaseConf_LakestoneCore /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -493,6 +872,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
 				HEADER_SEARCH_PATHS = "/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/cURL-2.0.0";
 				INFOPLIST_FILE = LakestoneCore.xcodeproj/LakestoneCore_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -573,6 +953,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
 				HEADER_SEARCH_PATHS = "/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/cURL-2.0.0";
 				INFOPLIST_FILE = LakestoneCore.xcodeproj/LakestoneCore_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -668,6 +1049,22 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1A40AE561D93C0B500AECC1A /* Build configuration list for PBXNativeTarget "LakestoneCoreIOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A40AE571D93C0B500AECC1A /* Debug */,
+				1A40AE581D93C0B500AECC1A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		1A40AE591D93C0B500AECC1A /* Build configuration list for PBXNativeTarget "LakestoneCoreIOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A40AE5A1D93C0B500AECC1A /* Debug */,
+				1A40AE5B1D93C0B500AECC1A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		"___RootConfs_" /* Build configuration list for PBXProject "LakestoneCore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

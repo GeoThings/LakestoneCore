@@ -16,8 +16,16 @@
 	<string>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android/LakestoneCore.Android.elements</string>
 	<key>ActiveProjectFor_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/LakestoneError.swift</key>
 	<string>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android/LakestoneCore.Android.elements</string>
+	<key>ActiveProjectFor_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/Threading.swift</key>
+	<string>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android/LakestoneCore.Android.elements</string>
 	<key>ActiveProjectFor_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/alliases.swift</key>
 	<string>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android/LakestoneCore.Android.elements</string>
+	<key>ActiveProjectFor_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/extension_Data.swift</key>
+	<string>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android/LakestoneCore.Android.elements</string>
+	<key>ActiveProjectFor_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/extension_URL.swift</key>
+	<string>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android/LakestoneCore.Android.elements</string>
+	<key>ActiveProjectFor_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Swift.Shared.elements_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/String_Extensions.swift</key>
+	<string>file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Swift.Cooper.elements</string>
 	<key>DebugInspectorExpanded_Locals</key>
 	<true/>
 	<key>DebugInspectorExpanded_|response: lakestonecore.android.tests.HTTP$Response</key>
@@ -50,6 +58,8 @@
 	<true/>
 	<key>FolderExpanded_LakestoneCore.Android.Tests_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/LakestoneCore.Android.Tests.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/</key>
 	<true/>
+	<key>FolderExpanded_LakestoneCore.Android.Tests_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/LakestoneCore.Android.Tests.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/assets/</key>
+	<true/>
 	<key>FolderExpanded_LakestoneCore.Android.Tests_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/LakestoneCore.Android.Tests.elements_file:///Users/hurden/Developer/Lakestone/prelakestone_assets/</key>
 	<true/>
 	<key>FolderExpanded_LakestoneCore.Android.Tests_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/LakestoneCore.Android.Tests.elements_file:///Users/hurden/Developer/Lakestone/prelakestone_assets/geoMapTool/</key>
@@ -72,7 +82,17 @@
 	<true/>
 	<key>FolderExpanded_LakestoneCore.Shared_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/Source</key>
 	<true/>
+	<key>FolderExpanded_LakestoneCore.Shared_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/extensions</key>
+	<true/>
+	<key>FolderExpanded_LakestoneCore.Shared_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/silveronly_source/</key>
+	<true/>
 	<key>FolderExpanded_LakestoneCore.Shared_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/</key>
+	<true/>
+	<key>FolderExpanded_Swift.Shared_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Swift.Shared.elements_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/</key>
+	<true/>
+	<key>FolderExpanded_Swift.Shared_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Swift.Shared.elements_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Collection%20Types</key>
+	<true/>
+	<key>FolderExpanded_Swift.Shared_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Swift.Shared.elements_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Numbers%20and%20such</key>
 	<true/>
 	<key>FolderExpanded_lakestonecore.android_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android/LakestoneCore.Android.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android/</key>
 	<true/>
@@ -84,47 +104,45 @@
 	<real>0.0</real>
 	<key>ProjectCollapsed_Swift.Cooper</key>
 	<true/>
-	<key>ProjectCollapsed_Swift.Shared</key>
-	<true/>
 	<key>ProjectCollapsed_lakestonecore.android</key>
 	<true/>
 	<key>Properties</key>
 	<dict/>
 	<key>SelectedNode</key>
-	<string>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/HTTP.swift</string>
+	<string>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/Threading.swift</string>
 	<key>ViewMetaData</key>
 	<dict>
 		<key>/Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.sln---BuildLog</key>
 		<dict>
 			<key>CursorX</key>
-			<integer>0</integer>
+			<integer>7</integer>
 			<key>CursorY</key>
-			<integer>0</integer>
+			<integer>157</integer>
 			<key>ScrollX</key>
-			<real>483</real>
+			<real>0.0</real>
 			<key>ScrollY</key>
-			<real>2637.5</real>
+			<real>1969</real>
 			<key>ScrolledToBottom</key>
 			<true/>
 			<key>SelectionCursorUndecided</key>
-			<false/>
+			<true/>
 			<key>SelectionEndColumn</key>
-			<integer>0</integer>
+			<integer>7</integer>
 			<key>SelectionEndLine</key>
-			<integer>0</integer>
+			<integer>157</integer>
 			<key>SelectionIsLinear</key>
-			<false/>
+			<true/>
 			<key>SelectionStartColumn</key>
-			<integer>0</integer>
+			<integer>7</integer>
 			<key>SelectionStartLine</key>
-			<integer>-1</integer>
+			<integer>157</integer>
 		</dict>
 		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/LakestoneCore.Android.Tests.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/MainActivity.swift</key>
 		<dict>
 			<key>CursorX</key>
-			<integer>8</integer>
+			<integer>1</integer>
 			<key>CursorY</key>
-			<integer>20</integer>
+			<integer>22</integer>
 			<key>ScrollX</key>
 			<real>0.0</real>
 			<key>ScrollY</key>
@@ -168,13 +186,13 @@
 		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/LakestoneCore.Android.Tests.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/Tests.swift</key>
 		<dict>
 			<key>CursorX</key>
-			<integer>7</integer>
+			<integer>16</integer>
 			<key>CursorY</key>
-			<integer>37</integer>
+			<integer>9</integer>
 			<key>ScrollX</key>
 			<real>0.0</real>
 			<key>ScrollY</key>
-			<real>247</real>
+			<real>0.0</real>
 			<key>SelectionCursorUndecided</key>
 			<false/>
 			<key>SelectionEndColumn</key>
@@ -257,6 +275,29 @@
 			<key>SelectionStartLine</key>
 			<integer>-1</integer>
 		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/LakestoneCore.Android.Tests.elements_generated://Cooper/android%2Eapp%2EActivity.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>0</integer>
+			<key>CursorY</key>
+			<integer>178</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>2654</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
 		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/LakestoneCore.Android.Tests.elements_generated://Cooper/android%2Eapp%2EApplication.swift</key>
 		<dict>
 			<key>CursorX</key>
@@ -308,11 +349,34 @@
 			<key>CursorX</key>
 			<integer>0</integer>
 			<key>CursorY</key>
-			<integer>54</integer>
+			<integer>3</integer>
 			<key>ScrollX</key>
 			<real>0.0</real>
 			<key>ScrollY</key>
+			<real>571</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/LakestoneCore.Android.Tests.elements_generated://Cooper/java%2Elang%2EString.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>0</integer>
+			<key>CursorY</key>
+			<integer>53</integer>
+			<key>ScrollX</key>
 			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>782</real>
 			<key>SelectionCursorUndecided</key>
 			<false/>
 			<key>SelectionEndColumn</key>
@@ -354,11 +418,11 @@
 			<key>CursorX</key>
 			<integer>0</integer>
 			<key>CursorY</key>
-			<integer>53</integer>
+			<integer>25</integer>
 			<key>ScrollX</key>
 			<real>0.0</real>
 			<key>ScrollY</key>
-			<real>407</real>
+			<real>0.0</real>
 			<key>SelectionCursorUndecided</key>
 			<false/>
 			<key>SelectionEndColumn</key>
@@ -452,6 +516,29 @@
 			<key>ScrollY</key>
 			<real>0.0</real>
 			<key>SelectionCursorUndecided</key>
+			<true/>
+			<key>SelectionEndColumn</key>
+			<integer>28</integer>
+			<key>SelectionEndLine</key>
+			<integer>4</integer>
+			<key>SelectionIsLinear</key>
+			<true/>
+			<key>SelectionStartColumn</key>
+			<integer>20</integer>
+			<key>SelectionStartLine</key>
+			<integer>4</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/LakestoneCore.Android.Tests.elements_generated://Cooper/remobjects%2Eelements%2Eeunit%2ETokenProvider.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>0</integer>
+			<key>CursorY</key>
+			<integer>0</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>0.0</real>
+			<key>SelectionCursorUndecided</key>
 			<false/>
 			<key>SelectionEndColumn</key>
 			<integer>0</integer>
@@ -464,12 +551,35 @@
 			<key>SelectionStartLine</key>
 			<integer>-1</integer>
 		</dict>
-		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/LakestoneCore.Android.Tests.elements_generated://Cooper/remobjects%2Eelements%2Eeunit%2ETokenProvider.swift</key>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/LakestoneCore.Android.Tests.elements_generated://Cooper/swift%2E%5F%5FExtension%5FString%2EUTF16CharacterView.swift</key>
 		<dict>
 			<key>CursorX</key>
 			<integer>0</integer>
 			<key>CursorY</key>
+			<integer>4</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>0.0</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
 			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Android.Tests/obj/Debug/Android/R.java</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>8</integer>
+			<key>CursorY</key>
+			<integer>18</integer>
 			<key>ScrollX</key>
 			<real>0.0</real>
 			<key>ScrollY</key>
@@ -510,12 +620,12 @@
 			<key>SelectionStartLine</key>
 			<integer>-1</integer>
 		</dict>
-		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/silveronly_source/silveronly_Utilities.swift</key>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/extension_Data.swift</key>
 		<dict>
 			<key>CursorX</key>
 			<integer>0</integer>
 			<key>CursorY</key>
-			<integer>4</integer>
+			<integer>0</integer>
 			<key>ScrollX</key>
 			<real>0.0</real>
 			<key>ScrollY</key>
@@ -523,15 +633,38 @@
 			<key>SelectionCursorUndecided</key>
 			<false/>
 			<key>SelectionEndColumn</key>
-			<integer>-1</integer>
+			<integer>0</integer>
 			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
 			<integer>-1</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/silveronly_source/silveronly_Utilities.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>36</integer>
+			<key>CursorY</key>
+			<integer>7</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>0.0</real>
+			<key>SelectionCursorUndecided</key>
+			<true/>
+			<key>SelectionEndColumn</key>
+			<integer>36</integer>
+			<key>SelectionEndLine</key>
+			<integer>7</integer>
 			<key>SelectionIsLinear</key>
 			<true/>
 			<key>SelectionStartColumn</key>
-			<integer>-1</integer>
+			<integer>0</integer>
 			<key>SelectionStartLine</key>
-			<integer>-1</integer>
+			<integer>7</integer>
 		</dict>
 		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/AssetsManager.swift</key>
 		<dict>
@@ -628,13 +761,13 @@
 		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/HTTP.swift</key>
 		<dict>
 			<key>CursorX</key>
-			<integer>7</integer>
+			<integer>25</integer>
 			<key>CursorY</key>
-			<integer>37</integer>
+			<integer>46</integer>
 			<key>ScrollX</key>
-			<real>1</real>
+			<real>0.0</real>
 			<key>ScrollY</key>
-			<real>2612.5</real>
+			<real>1899</real>
 			<key>SelectionCursorUndecided</key>
 			<false/>
 			<key>SelectionEndColumn</key>
@@ -674,25 +807,25 @@
 		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/LakestoneError.swift</key>
 		<dict>
 			<key>CursorX</key>
-			<integer>19</integer>
+			<integer>0</integer>
 			<key>CursorY</key>
-			<integer>22</integer>
+			<integer>168</integer>
 			<key>ScrollX</key>
 			<real>0.0</real>
 			<key>ScrollY</key>
-			<real>0.0</real>
+			<real>1969</real>
 			<key>SelectionCursorUndecided</key>
-			<true/>
+			<false/>
 			<key>SelectionEndColumn</key>
-			<integer>25</integer>
+			<integer>-1</integer>
 			<key>SelectionEndLine</key>
-			<integer>22</integer>
+			<integer>-1</integer>
 			<key>SelectionIsLinear</key>
 			<true/>
 			<key>SelectionStartColumn</key>
-			<integer>11</integer>
+			<integer>-1</integer>
 			<key>SelectionStartLine</key>
-			<integer>22</integer>
+			<integer>-1</integer>
 		</dict>
 		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/Log.swift</key>
 		<dict>
@@ -766,23 +899,23 @@
 		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/Threading.swift</key>
 		<dict>
 			<key>CursorX</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>CursorY</key>
-			<integer>47</integer>
+			<integer>73</integer>
 			<key>ScrollX</key>
 			<real>0.0</real>
 			<key>ScrollY</key>
-			<real>485</real>
+			<real>726</real>
 			<key>SelectionCursorUndecided</key>
 			<false/>
 			<key>SelectionEndColumn</key>
-			<integer>0</integer>
+			<integer>-1</integer>
 			<key>SelectionEndLine</key>
-			<integer>0</integer>
+			<integer>-1</integer>
 			<key>SelectionIsLinear</key>
-			<false/>
+			<true/>
 			<key>SelectionStartColumn</key>
-			<integer>0</integer>
+			<integer>-1</integer>
 			<key>SelectionStartLine</key>
 			<integer>-1</integer>
 		</dict>
@@ -858,9 +991,55 @@
 		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/alliases.swift</key>
 		<dict>
 			<key>CursorX</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>CursorY</key>
-			<integer>25</integer>
+			<integer>22</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>26</real>
+			<key>SelectionCursorUndecided</key>
+			<true/>
+			<key>SelectionEndColumn</key>
+			<integer>2</integer>
+			<key>SelectionEndLine</key>
+			<integer>22</integer>
+			<key>SelectionIsLinear</key>
+			<true/>
+			<key>SelectionStartColumn</key>
+			<integer>2</integer>
+			<key>SelectionStartLine</key>
+			<integer>22</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/extension_Data.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>38</integer>
+			<key>CursorY</key>
+			<integer>67</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>540</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>-1</integer>
+			<key>SelectionEndLine</key>
+			<integer>-1</integer>
+			<key>SelectionIsLinear</key>
+			<true/>
+			<key>SelectionStartColumn</key>
+			<integer>-1</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_file:///Users/hurden/Developer/Lakestone/LakestoneCore/Source/extension_URL.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>13</integer>
+			<key>CursorY</key>
+			<integer>17</integer>
 			<key>ScrollX</key>
 			<real>0.0</real>
 			<key>ScrollY</key>
@@ -924,12 +1103,58 @@
 			<key>SelectionStartLine</key>
 			<integer>-1</integer>
 		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_generated://Shared/RemObjects%2EElements%2ESystem%2ESByte.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>0</integer>
+			<key>CursorY</key>
+			<integer>0</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>0.0</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
 		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_generated://Shared/java%2Eio%2EBufferedInputStream.swift</key>
 		<dict>
 			<key>CursorX</key>
 			<integer>0</integer>
 			<key>CursorY</key>
 			<integer>0</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>0.0</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_generated://Shared/java%2Eio%2EInputStream.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>0</integer>
+			<key>CursorY</key>
+			<integer>6</integer>
 			<key>ScrollX</key>
 			<real>0.0</real>
 			<key>ScrollY</key>
@@ -965,6 +1190,29 @@
 			<integer>0</integer>
 			<key>SelectionIsLinear</key>
 			<true/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_generated://Shared/java%2Elang%2EString.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>0</integer>
+			<key>CursorY</key>
+			<integer>0</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>0.0</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
 			<key>SelectionStartColumn</key>
 			<integer>0</integer>
 			<key>SelectionStartLine</key>
@@ -1062,12 +1310,127 @@
 			<key>SelectionStartLine</key>
 			<integer>-1</integer>
 		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_generated://Shared/java%2Enio%2Echarset%2EStandardCharsets.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>0</integer>
+			<key>CursorY</key>
+			<integer>8</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>0.0</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_generated://Shared/java%2Eutil%2EArrayList.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>0</integer>
+			<key>CursorY</key>
+			<integer>6</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>0.0</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_generated://Shared/java%2Eutil%2ECollections.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>8</integer>
+			<key>CursorY</key>
+			<integer>55</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>167</real>
+			<key>SelectionCursorUndecided</key>
+			<true/>
+			<key>SelectionEndColumn</key>
+			<integer>79</integer>
+			<key>SelectionEndLine</key>
+			<integer>55</integer>
+			<key>SelectionIsLinear</key>
+			<true/>
+			<key>SelectionStartColumn</key>
+			<integer>8</integer>
+			<key>SelectionStartLine</key>
+			<integer>55</integer>
+		</dict>
 		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_generated://Shared/java%2Eutil%2EMap%2EEntry.swift</key>
 		<dict>
 			<key>CursorX</key>
 			<integer>0</integer>
 			<key>CursorY</key>
 			<integer>2</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>0.0</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_generated://Shared/swift%2ECChar.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>0</integer>
+			<key>CursorY</key>
+			<integer>0</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>0.0</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/LakestoneCore/Silver/LakestoneCore.Shared/LakestoneCore.Shared.elements_generated://Shared/swift%2EInt8.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>0</integer>
+			<key>CursorY</key>
+			<integer>0</integer>
 			<key>ScrollX</key>
 			<real>0.0</real>
 			<key>ScrollY</key>
@@ -1177,6 +1540,98 @@
 			<key>SelectionStartLine</key>
 			<integer>-1</integer>
 		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Swift.Shared.elements_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Aliases.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>17</integer>
+			<key>CursorY</key>
+			<integer>19</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>0.0</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Swift.Shared.elements_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Array.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>0</integer>
+			<key>CursorY</key>
+			<integer>0</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>1242</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Swift.Shared.elements_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Commandline.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>0</integer>
+			<key>CursorY</key>
+			<integer>0</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>0.0</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Swift.Shared.elements_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Compose.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>0</integer>
+			<key>CursorY</key>
+			<integer>0</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>1309</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<false/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
 		<key>file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Swift.Shared.elements_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Functions.swift</key>
 		<dict>
 			<key>CursorX</key>
@@ -1200,16 +1655,16 @@
 			<key>SelectionStartLine</key>
 			<integer>-1</integer>
 		</dict>
-		<key>file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Swift.Shared.elements_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/String_Extensions.swift</key>
+		<key>file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Swift.Shared.elements_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Range.swift</key>
 		<dict>
 			<key>CursorX</key>
-			<integer>4</integer>
+			<integer>46</integer>
 			<key>CursorY</key>
-			<integer>89</integer>
+			<integer>1</integer>
 			<key>ScrollX</key>
 			<real>0.0</real>
 			<key>ScrollY</key>
-			<real>1058</real>
+			<real>0.0</real>
 			<key>SelectionCursorUndecided</key>
 			<false/>
 			<key>SelectionEndColumn</key>
@@ -1223,16 +1678,39 @@
 			<key>SelectionStartLine</key>
 			<integer>-1</integer>
 		</dict>
+		<key>file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/Swift.Shared.elements_file:///Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/String_Extensions.swift</key>
+		<dict>
+			<key>CursorX</key>
+			<integer>11</integer>
+			<key>CursorY</key>
+			<integer>247</integer>
+			<key>ScrollX</key>
+			<real>0.0</real>
+			<key>ScrollY</key>
+			<real>3870</real>
+			<key>SelectionCursorUndecided</key>
+			<false/>
+			<key>SelectionEndColumn</key>
+			<integer>0</integer>
+			<key>SelectionEndLine</key>
+			<integer>0</integer>
+			<key>SelectionIsLinear</key>
+			<true/>
+			<key>SelectionStartColumn</key>
+			<integer>0</integer>
+			<key>SelectionStartLine</key>
+			<integer>-1</integer>
+		</dict>
 	</dict>
 	<key>Window_Fullscreen</key>
 	<true/>
 	<key>Window_Height</key>
-	<real>900</real>
+	<real>1080</real>
 	<key>Window_Width</key>
-	<real>1440</real>
+	<real>1920</real>
 	<key>Window_X</key>
-	<real>0.0</real>
+	<real>-267</real>
 	<key>Window_Y</key>
-	<real>0.0</real>
+	<real>900</real>
 </dict>
 </plist>

@@ -19,9 +19,21 @@
         <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\LakestoneError.swift">
             <VirtualFolder>Source</VirtualFolder>
         </Compile>
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\extension_Data.swift">
+            <VirtualFolder>extensions</VirtualFolder>
+        </Compile>
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\Threading.swift">
+            <VirtualFolder>Source</VirtualFolder>
+        </Compile>
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\extension_URL.swift">
+            <VirtualFolder>extensions</VirtualFolder>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Source">
+            <Virtual>True</Virtual>
+        </Folder>
+        <Folder Include="extensions">
             <Virtual>True</Virtual>
         </Folder>
     </ItemGroup>

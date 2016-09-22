@@ -6,6 +6,7 @@ let package = Package(
     targets: [],
     dependencies: [
         .Package(url: "https://github.com/PerfectlySoft/Perfect.git", majorVersion: 2),
-        .Package(url: "https://github.com/PerfectlySoft/Perfect-CURL.git", majorVersion: 2)
+        .Package(url: "https://github.com/PerfectlySoft/Perfect-CURL.git", majorVersion: 2),
+        .Package(url: "https://github.com/PerfectlySoft/Perfect-Thread.git", majorVersion: 2)
     ]
 )
