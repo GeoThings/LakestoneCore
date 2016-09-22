@@ -10,6 +10,17 @@
 		1A40AE4E1D93C0B500AECC1A /* LakestoneCoreIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A40AE451D93C0B500AECC1A /* LakestoneCoreIOS.framework */; };
 		1A40AE531D93C0B500AECC1A /* LakestoneCoreIOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A40AE521D93C0B500AECC1A /* LakestoneCoreIOSTests.swift */; };
 		1A40AE551D93C0B500AECC1A /* LakestoneCoreIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A40AE471D93C0B500AECC1A /* LakestoneCoreIOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A40AE5F1D93CE1A00AECC1A /* TestHTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/LakestoneCoreTests.swift /* TestHTTP.swift */; };
+		1A40AE601D93CE6A00AECC1A /* TestHTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/LakestoneCoreTests.swift /* TestHTTP.swift */; };
+		1A40AE611D93CE7800AECC1A /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/HTTP.swift /* HTTP.swift */; };
+		1A40AE621D93CE7A00AECC1A /* LakestoneError.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/LakestoneError.swift /* LakestoneError.swift */; };
+		1A40AE631D93CE7D00AECC1A /* alliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/alliases.swift /* alliases.swift */; };
+		1A40AE641D93CE7F00AECC1A /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/Threading.swift /* Threading.swift */; };
+		1A40AE651D93CE8100AECC1A /* extension_Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/extension_Data.swift /* extension_Data.swift */; };
+		1A40AE661D93CE8300AECC1A /* extension_URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/extension_URL.swift /* extension_URL.swift */; };
+		1A40AE681D93D6F100AECC1A /* raster_digitalglobe.json in Resources */ = {isa = PBXBuildFile; fileRef = 1A40AE671D93D6F100AECC1A /* raster_digitalglobe.json */; };
+		1A40AE6A1D93DA1800AECC1A /* testUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A40AE691D93DA1800AECC1A /* testUtilities.swift */; };
+		1A40AE6B1D93EE6100AECC1A /* testUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A40AE691D93DA1800AECC1A /* testUtilities.swift */; };
 		_LinkFileRef_LakestoneCore_via_LakestoneCoreTests /* LakestoneCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_LakestoneCore" /* LakestoneCore.framework */; };
 		_LinkFileRef_PerfectCURL_via_LakestoneCore /* PerfectCURL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_PerfectCURL" /* PerfectCURL.framework */; };
 		_LinkFileRef_PerfectCURL_via_LakestoneCoreTests /* PerfectCURL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_PerfectCURL" /* PerfectCURL.framework */; };
@@ -37,7 +48,6 @@
 		__src_cc_ref_Source/alliases.swift /* alliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/alliases.swift /* alliases.swift */; };
 		__src_cc_ref_Source/extension_Data.swift /* extension_Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/extension_Data.swift /* extension_Data.swift */; };
 		__src_cc_ref_Source/extension_URL.swift /* extension_URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/extension_URL.swift /* extension_URL.swift */; };
-		__src_cc_ref_Tests/LakestoneCoreTests/LakestoneCoreTests.swift /* LakestoneCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/LakestoneCoreTests.swift /* LakestoneCoreTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +95,8 @@
 		1A40AE4D1D93C0B500AECC1A /* LakestoneCoreIOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LakestoneCoreIOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A40AE521D93C0B500AECC1A /* LakestoneCoreIOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LakestoneCoreIOSTests.swift; sourceTree = "<group>"; };
 		1A40AE541D93C0B500AECC1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1A40AE671D93D6F100AECC1A /* raster_digitalglobe.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = raster_digitalglobe.json; sourceTree = "<group>"; };
+		1A40AE691D93DA1800AECC1A /* testUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = testUtilities.swift; sourceTree = "<group>"; };
 		__PBXFileRef_LakestoneCore.xcodeproj/Configs/Project.xcconfig /* LakestoneCore.xcodeproj/Configs/Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LakestoneCore.xcodeproj/Configs/Project.xcconfig; sourceTree = "<group>"; };
 		__PBXFileRef_Package.swift /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		"__PBXFileRef_Packages/PerfectCURL-2.0.0/Sources/cURL.swift" /* cURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cURL.swift; sourceTree = "<group>"; };
@@ -106,7 +118,7 @@
 		__PBXFileRef_Source/alliases.swift /* alliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = alliases.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Source/extension_Data.swift /* extension_Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension_Data.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Source/extension_URL.swift /* extension_URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension_URL.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Tests/LakestoneCoreTests/LakestoneCoreTests.swift /* LakestoneCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LakestoneCoreTests.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Tests/LakestoneCoreTests/LakestoneCoreTests.swift /* TestHTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHTTP.swift; sourceTree = "<group>"; };
 		"_____Product_LakestoneCore" /* LakestoneCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LakestoneCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_LakestoneCoreTests" /* LakestoneCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = LakestoneCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		"_____Product_PerfectCURL" /* PerfectCURL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PerfectCURL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -199,6 +211,7 @@
 			children = (
 				1A40AE521D93C0B500AECC1A /* LakestoneCoreIOSTests.swift */,
 				1A40AE541D93C0B500AECC1A /* Info.plist */,
+				1A40AE671D93D6F100AECC1A /* raster_digitalglobe.json */,
 			);
 			path = LakestoneCoreIOSTests;
 			sourceTree = "<group>";
@@ -281,7 +294,8 @@
 		"_______Group_LakestoneCoreTests" /* LakestoneCoreTests */ = {
 			isa = PBXGroup;
 			children = (
-				__PBXFileRef_Tests/LakestoneCoreTests/LakestoneCoreTests.swift /* LakestoneCoreTests.swift */,
+				__PBXFileRef_Tests/LakestoneCoreTests/LakestoneCoreTests.swift /* TestHTTP.swift */,
+				1A40AE691D93DA1800AECC1A /* testUtilities.swift */,
 			);
 			name = LakestoneCoreTests;
 			path = Tests/LakestoneCoreTests;
@@ -526,6 +540,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A40AE681D93D6F100AECC1A /* raster_digitalglobe.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -536,6 +551,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A40AE641D93CE7F00AECC1A /* Threading.swift in Sources */,
+				1A40AE651D93CE8100AECC1A /* extension_Data.swift in Sources */,
+				1A40AE611D93CE7800AECC1A /* HTTP.swift in Sources */,
+				1A40AE631D93CE7D00AECC1A /* alliases.swift in Sources */,
+				1A40AE621D93CE7A00AECC1A /* LakestoneError.swift in Sources */,
+				1A40AE661D93CE8300AECC1A /* extension_URL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -544,6 +565,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A40AE531D93C0B500AECC1A /* LakestoneCoreIOSTests.swift in Sources */,
+				1A40AE5F1D93CE1A00AECC1A /* TestHTTP.swift in Sources */,
+				1A40AE6A1D93DA1800AECC1A /* testUtilities.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,7 +587,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				__src_cc_ref_Tests/LakestoneCoreTests/LakestoneCoreTests.swift /* LakestoneCoreTests.swift in Sources */,
+				1A40AE6B1D93EE6100AECC1A /* testUtilities.swift in Sources */,
+				1A40AE601D93CE6A00AECC1A /* TestHTTP.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -763,6 +787,7 @@
 		1A40AE5A1D93C0B500AECC1A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -819,6 +844,7 @@
 		1A40AE5B1D93C0B500AECC1A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";

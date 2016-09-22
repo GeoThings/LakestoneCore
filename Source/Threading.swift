@@ -43,7 +43,7 @@
 #elseif os(iOS) || os(watchOS) || os(tvOS)
 	public typealias ThreadQueue = DispatchQueue
 #else
-	// for OSX and Linux PerfectThread.ThreadQueue corresponding type is used
+    // for OSX and Linux PerfectThread.ThreadQueue corresponding type is used
 #endif
 
 /// Executes the closure synchronized on given reentrant mutual exlusion lock
