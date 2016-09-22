@@ -1,5 +1,5 @@
 import XCTest
-@testable import LakestoneCoreTestSuite
+@testable import LakestoneCoreTests
 
 XCTMain([
     testCase(TestHTTP.allTests)
