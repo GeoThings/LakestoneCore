@@ -83,10 +83,6 @@
         <Reference Include="cooper">
             <Private>True</Private>
         </Reference>
-        <Reference Include="swift">
-            <HintPath>/Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/bin/Debug/swift.jar</HintPath>
-            <Private>True</Private>
-        </Reference>
         <Reference Include="remobjects.elements.eunit">
             <Private>True</Private>
         </Reference>
@@ -107,6 +103,10 @@
         </Reference>
         <Reference Include="okhttp-3.3.1">
             <HintPath>../LakestoneCore.Android/bin/Debug/okhttp-3.3.1.jar</HintPath>
+            <Private>True</Private>
+        </Reference>
+        <Reference Include="swift">
+            <HintPath>../../SwiftBaseLibrary/Source/bin/Debug/swift.jar</HintPath>
             <Private>True</Private>
         </Reference>
     </ItemGroup>

@@ -1,0 +1,3 @@
+[submodule "SwiftBaseLibrary"]
+	path = SwiftBaseLibrary
+	url = https://github.com/GeoThings/SwiftBaseLibrary.git

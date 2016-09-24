@@ -62,10 +62,6 @@
             <HintPath>libs/objenesis-2.1.jar</HintPath>
             <Private>True</Private>
         </Reference>
-        <Reference Include="swift">
-            <HintPath>/Users/hurden/Developer/Lakestone/SwiftBaseLibrary/Source/bin/Debug/swift.jar</HintPath>
-            <Private>True</Private>
-        </Reference>
         <Reference Include="kryo-3.0.3">
             <HintPath>libs/kryo-3.0.3.jar</HintPath>
             <Private>True</Private>
@@ -80,6 +76,10 @@
         </Reference>
         <Reference Include="genson-1.4">
             <HintPath>libs/genson-1.4.jar</HintPath>
+            <Private>True</Private>
+        </Reference>
+        <Reference Include="swift">
+            <HintPath>../../SwiftBaseLibrary/Source/bin/Debug/swift.jar</HintPath>
             <Private>True</Private>
         </Reference>
     </ItemGroup>

@@ -24,7 +24,7 @@
 		@testable import LakestoneCore
 		import PerfectThread
 	#endif
-    
+	
 #endif
 
 
@@ -50,15 +50,15 @@ class TestHTTP: Test {
 			
 			let jsonResourceStream = MainActivity.currentInstance.getResources().openRawResource(R.raw.raster_digitalglobe)
 			guard let jsonData = try? Data.from(inputStream: jsonResourceStream),
-                  var jsonResourceString = jsonData.utf8EncodedStringRepresentation
-            else {
-                Assert.Fail("Cannot interpret the raw resource as string")
-                return
+				  var jsonResourceString = jsonData.utf8EncodedStringRepresentation
+			else {
+				Assert.Fail("Cannot interpret the raw resource as string")
+				return
 			}
 			
 			Assert.IsNotEmpty(jsonResourceString)
 			//raw resource stream will contain extra ByteOrderMark in the beginning, remove it
-			if Character.toString(jsonResourceString.characters.getItem(0)) == "\u{feff}" {
+			if jsonResourceString.characters.getItem(0).toString() == "\u{feff}" {
 				jsonResourceString = jsonResourceString.substring(1)
 			}
 			
@@ -99,7 +99,7 @@ class TestHTTP: Test {
 		let newQueue = Threading.serialQueue(withLabel: "testQueue")
 		newQueue.dispatch {
 			
-			let response: HTTP.Response
+			var response: HTTP.Response
 			do {
 				response = try request.performSync()
 			} catch {
@@ -129,7 +129,7 @@ class TestHTTP: Test {
 				#elseif os(iOS) || os(watchOS) || os(tvOS)
 					Assert.AreEqual(self.expectedResourceString, sanitizedResponseString)
 				#else
-                    //TODO: Full string comparison from locally loaded resource as above
+					//TODO: Full string comparison from locally loaded resource as above
 					let expectedSize = 18771
 					Assert.AreEqual(responseData.count, expectedSize)
 					Assert.IsTrue(sanitizedResponseString.contains("mapbox://mapbox.satellite"))

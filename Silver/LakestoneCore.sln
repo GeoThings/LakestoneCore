@@ -5,9 +5,9 @@ Project("{656346D9-4656-40DA-A068-22D5425D4639}") = "LakestoneCore.Android.Tests
 EndProject
 Project("{656346D9-4656-40DA-A068-22D5425D4639}") = "LakestoneCore.Shared", "LakestoneCore.Shared\LakestoneCore.Shared.elements", "{AE24B110-0797-4255-BF50-C3957569AEFA}"
 EndProject
-Project("{656346D9-4656-40DA-A068-22D5425D4639}") = "Swift.Cooper", "..\..\SwiftBaseLibrary\Source\Swift.Cooper.elements", "{399BE68A-44C3-4357-8D11-4B64C6EC0674}"
+Project("{656346D9-4656-40DA-A068-22D5425D4639}") = "Swift.Cooper", "..\SwiftBaseLibrary\Source\Swift.Cooper.elements", "{399BE68A-44C3-4357-8D11-4B64C6EC0674}"
 EndProject
-Project("{656346D9-4656-40DA-A068-22D5425D4639}") = "Swift.Shared", "..\..\SwiftBaseLibrary\Source\Swift.Shared.elements", "{7952073B-795C-4074-954D-212FE780D7D3}"
+Project("{656346D9-4656-40DA-A068-22D5425D4639}") = "Swift.Shared", "..\SwiftBaseLibrary\Source\Swift.Shared.elements", "{7952073B-795C-4074-954D-212FE780D7D3}"
 EndProject
 Project("{656346D9-4656-40DA-A068-22D5425D4639}") = "lakestonecore.android", "LakestoneCore.Android\LakestoneCore.Android.elements", "{E5237F68-28FD-4FB1-AC39-1BC4394E8B6C}"
 EndProject

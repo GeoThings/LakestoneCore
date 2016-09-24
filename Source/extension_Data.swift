@@ -3,7 +3,21 @@
 //  LakestoneCore
 //
 //  Created by Taras Vozniuk on 9/21/16.
+//  Copyright © 2016 GeoThings. All rights reserved.
 //
+// --------------------------------------------------------
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 
 #if COOPER
@@ -31,7 +45,7 @@ extension Data {
 		let readBatchSize = 16384
 		let outputStream = ByteArrayOutputStream()
 		
-		let bytes = java.lang.reflect.Array.newInstance(Byte.Type, readBatchSize) as! ByteStaticArray 
+		let bytes = java.lang.reflect.Array.newInstance(Byte.self, readBatchSize) as! ByteStaticArray
 		var nRead: Int
 		while ( (nRead = inputStream.read(bytes, 0, readBatchSize)) != -1){
 			outputStream.write(bytes, 0, nRead)
@@ -51,7 +65,7 @@ extension Data {
 		if self.hasArray() {
 			bytes = self.array()
 		} else {
-			bytes = java.lang.reflect.Array.newInstance(SByte.Type, self.remaining()) as! SByteStaticArray
+			bytes = java.lang.reflect.Array.newInstance(SByte.self, self.remaining()) as! SByteStaticArray
 			self.`get`(bytes as! SByteStaticArray)
 		}
 	
@@ -71,7 +85,7 @@ extension Data {
 		
 			//Collections.addAll(targetArrayList, self.plainBytes)
 			
-			return [Int8](targetArrayList)
+			return targetArrayList
 			
 		#else
 			
