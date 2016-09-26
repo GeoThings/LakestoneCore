@@ -25,10 +25,9 @@
 	import java.util
 	import java.io
 	import java.nio
-#elseif os(Linux)
-	import Glibc
 #else
-	import Foundation
+
+    import Foundation
 #endif
 
 extension Data {
