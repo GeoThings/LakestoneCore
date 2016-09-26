@@ -27,12 +27,12 @@
 	import java.nio
 #else
 
-    import Foundation
+	import Foundation
 #endif
 
 extension Data {
 	
-	public static func from(utf8EncodedString: String) -> Data? {
+	public static func with(utf8EncodedString: String) -> Data? {
 		#if COOPER
 			return Data.wrap(utf8EncodedString.getBytes(Charset.forName("UTF-8")))
 		#else
@@ -40,32 +40,32 @@ extension Data {
 		#endif
 	}
 	
-	public static func from(long: Int64, usingLittleEndianEncoding: Bool) -> Data {
+	public static func with(long: Int64, usingLittleEndianEncoding: Bool) -> Data {
 		
 		#if COOPER
 		
-            let targetData = ByteBuffer.allocate(8)
-            
-            if (usingLittleEndianEncoding) {
-                targetData.order(java.nio.ByteOrder.LITTLE_ENDIAN)
-            } else {
-                targetData.order(java.nio.ByteOrder.BIG_ENDIAN)
-            }
-            
-            targetData.putLong(long)
-            return targetData
-                        
-        #else
+			let targetData = ByteBuffer.allocate(8)
+			
+			if (usingLittleEndianEncoding) {
+				targetData.order(java.nio.ByteOrder.LITTLE_ENDIAN)
+			} else {
+				targetData.order(java.nio.ByteOrder.BIG_ENDIAN)
+			}
+			
+			targetData.putLong(long)
+			return targetData
+						
+		#else
 		
-            var bytes = [Int8]()
-            for i in 0 ..< 8 {
-                bytes.append(
-                    Int8(bitPattern: UInt8( (UInt64(long) & (0x00000000000000ff << UInt64(i*8))) >> UInt64(i*8)))
-                )
-            }
-            
-            let targetBytes = (usingLittleEndianEncoding) ? bytes : bytes.reversed()
-            return Data(bytes: targetBytes.map { UInt8(bitPattern: $0) })
+			var bytes = [Int8]()
+			for i in 0 ..< 8 {
+				bytes.append(
+					Int8(bitPattern: UInt8( (UInt64(long) & (0x00000000000000ff << UInt64(i*8))) >> UInt64(i*8)))
+				)
+			}
+			
+			let targetBytes = (usingLittleEndianEncoding) ? bytes : bytes.reversed()
+			return Data(bytes: targetBytes.map { UInt8(bitPattern: $0) })
 		
 		#endif
 	}

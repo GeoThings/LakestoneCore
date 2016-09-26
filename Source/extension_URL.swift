@@ -1,4 +1,4 @@
-//
+﻿//
 //  extension_URL.swift
 //  LakestoneCore
 //
@@ -26,12 +26,19 @@
 
 extension URL {
     
-    public static func from(string: String) -> URL? {
-        #if COOPER
-            return try? URL(string)
-        #else
-            return URL(string: string)
-        #endif
+    #if COOPER
+    public init?(string: String) {
+        
+        var initedSelf: URL
+        do {
+            initedSelf = try self.init(string)
+        } catch {
+            return nil
+        }
+        
+        return initedSelf
     }
+    
+    #endif
     
 }

@@ -28,6 +28,9 @@
         <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\extension_URL.swift">
             <VirtualFolder>extensions</VirtualFolder>
         </Compile>
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\extension_Date.swift">
+            <VirtualFolder>extensions</VirtualFolder>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Source">

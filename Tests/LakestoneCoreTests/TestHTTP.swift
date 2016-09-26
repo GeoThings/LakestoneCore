@@ -92,7 +92,7 @@ class TestHTTP: Test {
 	
 	public func testSynchronousHTTPRequest(){
 		
-		guard let rasterStyleFileURL = URL.from(string: "http://52.76.15.94/raster-digitalglobe.json") else {
+		guard let rasterStyleFileURL = URL(string: "http://52.76.15.94/raster-digitalglobe.json") else {
 			Assert.Fail("Remote resource URL has invalid format")
 			return
 		}
