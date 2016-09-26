@@ -2,7 +2,7 @@ Packages/
 .build/
 Silver/LakestoneCore.Android/bin/
 Silver/LakestoneCore.Android/obj/
-Silver/LakestoneCore.Android.Tests/bin/
-Silver/LakestoneCore.Android.Tests/obj/
+Silver/LakestoneCore.Tests/bin/
+Silver/LakestoneCore.Tests/obj/
 Silver/LakestoneCore.sln.fire.cache
 Silver/LakestoneCore.sln.fire.user

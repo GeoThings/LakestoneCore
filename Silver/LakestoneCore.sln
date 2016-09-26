@@ -1,9 +1,9 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # RemObjects Fire
-Project("{656346D9-4656-40DA-A068-22D5425D4639}") = "LakestoneCore.Android.Tests", "LakestoneCore.Android.Tests\LakestoneCore.Android.Tests.elements", "{A67CC50D-17AD-478D-A698-7EA54516BE81}"
-EndProject
 Project("{656346D9-4656-40DA-A068-22D5425D4639}") = "LakestoneCore.Shared", "LakestoneCore.Shared\LakestoneCore.Shared.elements", "{AE24B110-0797-4255-BF50-C3957569AEFA}"
+EndProject
+Project("{656346D9-4656-40DA-A068-22D5425D4639}") = "LakestoneCore.Tests", "LakestoneCore.Tests\LakestoneCore.Tests.elements", "{2C558F6B-6E90-48F7-86D3-B0FC4E0699C9}"
 EndProject
 Project("{656346D9-4656-40DA-A068-22D5425D4639}") = "Swift.Cooper", "..\SwiftBaseLibrary\Source\Swift.Cooper.elements", "{399BE68A-44C3-4357-8D11-4B64C6EC0674}"
 EndProject
@@ -17,12 +17,12 @@ Global
 		Debug|AnyCPU = Debug|AnyCPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A67CC50D-17AD-478D-A698-7EA54516BE81}.Release|AnyCPU.ActiveCfg = Release|AnyCPU
-		{A67CC50D-17AD-478D-A698-7EA54516BE81}.Release|AnyCPU.Build.0 = Release|AnyCPU
-		{A67CC50D-17AD-478D-A698-7EA54516BE81}.Debug|AnyCPU.ActiveCfg = Debug|AnyCPU
-		{A67CC50D-17AD-478D-A698-7EA54516BE81}.Debug|AnyCPU.Build.0 = Debug|AnyCPU
 		{AE24B110-0797-4255-BF50-C3957569AEFA}.Release|AnyCPU.ActiveCfg = Release|AnyCPU
 		{AE24B110-0797-4255-BF50-C3957569AEFA}.Debug|AnyCPU.ActiveCfg = Debug|AnyCPU
+		{2C558F6B-6E90-48F7-86D3-B0FC4E0699C9}.Release|AnyCPU.ActiveCfg = Release|AnyCPU
+		{2C558F6B-6E90-48F7-86D3-B0FC4E0699C9}.Release|AnyCPU.Build.0 = Release|AnyCPU
+		{2C558F6B-6E90-48F7-86D3-B0FC4E0699C9}.Debug|AnyCPU.ActiveCfg = Debug|AnyCPU
+		{2C558F6B-6E90-48F7-86D3-B0FC4E0699C9}.Debug|AnyCPU.Build.0 = Debug|AnyCPU
 		{399BE68A-44C3-4357-8D11-4B64C6EC0674}.Release|AnyCPU.ActiveCfg = Release|AnyCPU
 		{399BE68A-44C3-4357-8D11-4B64C6EC0674}.Release|AnyCPU.Build.0 = Release|AnyCPU
 		{399BE68A-44C3-4357-8D11-4B64C6EC0674}.Debug|AnyCPU.ActiveCfg = Debug|AnyCPU

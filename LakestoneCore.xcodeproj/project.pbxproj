@@ -21,6 +21,8 @@
 		1A40AE681D93D6F100AECC1A /* raster_digitalglobe.json in Resources */ = {isa = PBXBuildFile; fileRef = 1A40AE671D93D6F100AECC1A /* raster_digitalglobe.json */; };
 		1A40AE6A1D93DA1800AECC1A /* testUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A40AE691D93DA1800AECC1A /* testUtilities.swift */; };
 		1A40AE6B1D93EE6100AECC1A /* testUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A40AE691D93DA1800AECC1A /* testUtilities.swift */; };
+		1A64A6641D98E56A00DA829B /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A64A6631D98E56A00DA829B /* TestData.swift */; };
+		1A64A6651D98E56A00DA829B /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A64A6631D98E56A00DA829B /* TestData.swift */; };
 		_LinkFileRef_LakestoneCore_via_LakestoneCoreTests /* LakestoneCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_LakestoneCore" /* LakestoneCore.framework */; };
 		_LinkFileRef_PerfectCURL_via_LakestoneCore /* PerfectCURL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_PerfectCURL" /* PerfectCURL.framework */; };
 		_LinkFileRef_PerfectCURL_via_LakestoneCoreTests /* PerfectCURL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_PerfectCURL" /* PerfectCURL.framework */; };
@@ -97,6 +99,7 @@
 		1A40AE541D93C0B500AECC1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A40AE671D93D6F100AECC1A /* raster_digitalglobe.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = raster_digitalglobe.json; sourceTree = "<group>"; };
 		1A40AE691D93DA1800AECC1A /* testUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = testUtilities.swift; sourceTree = "<group>"; };
+		1A64A6631D98E56A00DA829B /* TestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		__PBXFileRef_LakestoneCore.xcodeproj/Configs/Project.xcconfig /* LakestoneCore.xcodeproj/Configs/Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LakestoneCore.xcodeproj/Configs/Project.xcconfig; sourceTree = "<group>"; };
 		__PBXFileRef_Package.swift /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		"__PBXFileRef_Packages/PerfectCURL-2.0.0/Sources/cURL.swift" /* cURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cURL.swift; sourceTree = "<group>"; };
@@ -295,6 +298,7 @@
 			isa = PBXGroup;
 			children = (
 				__PBXFileRef_Tests/LakestoneCoreTests/LakestoneCoreTests.swift /* TestHTTP.swift */,
+				1A64A6631D98E56A00DA829B /* TestData.swift */,
 				1A40AE691D93DA1800AECC1A /* testUtilities.swift */,
 			);
 			name = LakestoneCoreTests;
@@ -567,6 +571,7 @@
 				1A40AE531D93C0B500AECC1A /* LakestoneCoreIOSTests.swift in Sources */,
 				1A40AE5F1D93CE1A00AECC1A /* TestHTTP.swift in Sources */,
 				1A40AE6A1D93DA1800AECC1A /* testUtilities.swift in Sources */,
+				1A64A6651D98E56A00DA829B /* TestData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,6 +592,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				1A64A6641D98E56A00DA829B /* TestData.swift in Sources */,
 				1A40AE6B1D93EE6100AECC1A /* testUtilities.swift in Sources */,
 				1A40AE601D93CE6A00AECC1A /* TestHTTP.swift in Sources */,
 			);
@@ -1082,6 +1088,7 @@
 				1A40AE581D93C0B500AECC1A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 		1A40AE591D93C0B500AECC1A /* Build configuration list for PBXNativeTarget "LakestoneCoreIOSTests" */ = {
 			isa = XCConfigurationList;
@@ -1090,6 +1097,7 @@
 				1A40AE5B1D93C0B500AECC1A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 		"___RootConfs_" /* Build configuration list for PBXProject "LakestoneCore" */ = {
 			isa = XCConfigurationList;

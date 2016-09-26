@@ -24,6 +24,9 @@
 	import java.nio.charset
 	import java.util
 	import java.io
+	import java.nio
+#elseif os(Linux)
+	import Glibc
 #else
 	import Foundation
 #endif
@@ -38,6 +41,36 @@ extension Data {
 		#endif
 	}
 	
+	public static func from(long: Int64, usingLittleEndianEncoding: Bool) -> Data {
+		
+		#if COOPER
+		
+            let targetData = ByteBuffer.allocate(8)
+            
+            if (usingLittleEndianEncoding) {
+                targetData.order(java.nio.ByteOrder.LITTLE_ENDIAN)
+            } else {
+                targetData.order(java.nio.ByteOrder.BIG_ENDIAN)
+            }
+            
+            targetData.putLong(long)
+            return targetData
+                        
+        #else
+		
+            var bytes = [Int8]()
+            for i in 0 ..< 8 {
+                bytes.append(
+                    Int8(bitPattern: UInt8( (UInt64(long) & (0x00000000000000ff << UInt64(i*8))) >> UInt64(i*8)))
+                )
+            }
+            
+            let targetBytes = (usingLittleEndianEncoding) ? bytes : bytes.reversed()
+            return Data(bytes: targetBytes.map { UInt8(bitPattern: $0) })
+		
+		#endif
+	}
+
 	#if COOPER
 	
 	public static func from(inputStream: InputStream) throws -> Data {
@@ -111,16 +144,19 @@ extension Data {
 		
 	}
 	
-	public var littleEndianLongRepresentation: Int64? {
+	public func longRepresentation(withLittleEndianByteOrder: Bool) -> Int64? {
 		
 		#if COOPER
-			
 			if (self.capacity() == 8){
 				
 				let preservedOrder = self.order()
+				if (withLittleEndianByteOrder) {
+					self.order(java.nio.ByteOrder.LITTLE_ENDIAN)
+				} else {
+					self.order(java.nio.ByteOrder.BIG_ENDIAN)
+				}
 				
-				self.order(java.nio.ByteOrder.LITTLE_ENDIAN)
-				let targetLongValue = self.getLong()
+				let targetLongValue = self.getLong(0)
 				//restore original order
 				self.order(preservedOrder)
 				
@@ -133,9 +169,13 @@ extension Data {
 		#else
 			
 			if self.count == 8 {
-				var longValue: Int64 = 0
-				_ = self.copyBytes(to: UnsafeMutableBufferPointer(start: &longValue, count: 1))
-				return longValue
+			
+				guard let representation = (self.bytes.withUnsafeBufferPointer { ($0.baseAddress?.withMemoryRebound(to: Int64.self, capacity: 1) { $0 }) }?.pointee) else {
+					return nil
+				}
+			
+				return (withLittleEndianByteOrder) ? representation : Int64(bigEndian: representation)
+				
 			} else {
 				return nil
 			}

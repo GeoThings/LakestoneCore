@@ -58,9 +58,12 @@ class TestHTTP: Test {
 			
 			Assert.IsNotEmpty(jsonResourceString)
 			//raw resource stream will contain extra ByteOrderMark in the beginning, remove it
+			//commenting out the comparison until SwiftBaseLibrary NativeString will be fixed
+			/*
 			if jsonResourceString.characters.getItem(0).toString() == "\u{feff}" {
 				jsonResourceString = jsonResourceString.substring(1)
 			}
+			*/
 			
 			self.expectedResourceString = jsonResourceString.replaceAll(" ", "").replaceAll("\t", "")
 			
