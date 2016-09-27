@@ -83,14 +83,14 @@
         <Reference Include="cooper">
             <Private>True</Private>
         </Reference>
-        <Reference Include="swift">
-            <HintPath>../../SwiftBaseLibrary/Source/bin/Debug/swift.jar</HintPath>
-            <Private>True</Private>
-        </Reference>
         <Reference Include="remobjects.elements.eunit">
             <Private>True</Private>
         </Reference>
         <Reference Include="sugar">
+            <Private>True</Private>
+        </Reference>
+        <Reference Include="swift">
+            <HintPath>../../SwiftBaseLibrary/Source/bin/Debug/swift.jar</HintPath>
             <Private>True</Private>
         </Reference>
     </ItemGroup>

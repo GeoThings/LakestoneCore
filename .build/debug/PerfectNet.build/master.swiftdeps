@@ -1,9 +1,0 @@
-version: "Apple Swift version 3.0-dev (LLVM 3a878c6fdb, Clang 4ca9e01a7c, Swift 2ef0a8fdcb)"
-options: "9a6f547f05cb0c43e073947466cf19af"
-build_time: [524133929, 804158000]
-inputs:
-  "/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectNet-0.20.0/Sources/Net.swift": !dirty [524128271, 0]
-  "/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectNet-0.20.0/Sources/NetEvent.swift": !dirty [524128271, 0]
-  "/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectNet-0.20.0/Sources/NetNamedPipe.swift": !dirty [524128271, 0]
-  "/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectNet-0.20.0/Sources/NetTCP.swift": !dirty [524128271, 0]
-  "/Users/hurden/Developer/Lakestone/LakestoneCore/Packages/PerfectNet-0.20.0/Sources/NetTCPSSL.swift": !dirty [524128271, 0]

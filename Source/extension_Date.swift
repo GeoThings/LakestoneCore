@@ -17,7 +17,9 @@
 	
 	private var _xsdGMTDateFormatter: SimpleDateFormat {
 		//ISO 8601 is not handled in Java until java 7. Once available, use X instead of Z, remove replacements in xsdGMTDateTimeString below
-		return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+		let formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+		formatter.setTimeZone(TimeZone.getTimeZone("GMT"))
+		return formatter
 	}
 	
 #else
@@ -38,12 +40,12 @@ extension Date {
 	#if COOPER
 	//timeInterval is milliseconds stored in 64-bit signed int
 	public init(timeIntervalSince1970 timeInterval: Double){
-		self.init(Int64(timeInterval))
+		self.init(Int64(timeInterval * 1000))
 	}
 	
 	//timeInterval is seconds stored in double
 	public var timeIntervalSince1970: Double {
-		return Double(self.getTime())
+		return Double(self.getTime()) / 1000
 	}
 	
 	public func addingTimeInterval(_ timeInterval: Double) -> Date {
@@ -56,7 +58,7 @@ extension Date {
 		
 		#if COOPER
 			//ISO 8601 is not handled in Java until java 7. Once available, use X instead of Z in SimpleDateFormat, and remove replacement here
-			let timeString = _xsdGMTDateFormatter.format(self.addingTimeInterval(-self.currentTimezoneOffsetFromGMT))
+			let timeString = _xsdGMTDateFormatter.format(self/*.addingTimeInterval(-self.currentTimezoneOffsetFromGMT)*/)
 			return timeString.substring(0, timeString.length() - 5) + "Z";
 		#else
 			return _xsdGMTDateFormatter.string(from: self)
@@ -95,7 +97,7 @@ extension Date {
 	
 	public var currentTimezoneOffsetFromGMT: Double {
 		#if COOPER
-			return TimeZone.getDefault().getOffset(Int64(self.timeIntervalSince1970))
+			return Double(TimeZone.getDefault().getOffset(Int64(self.timeIntervalSince1970))) / 1000
 		#else
 			return Double(TimeZone.current.secondsFromGMT(for: self))
 		#endif
