@@ -39,6 +39,21 @@ extension URL {
         return initedSelf
     }
     
+    public var absoluteString: String {
+        return self.toString()
+    }
+    
+    /// remark: logic defers from Foundation's conterpart
+    ///         available at https://github.com/apple/swift-corelibs-foundation/blob/master/Foundation/NSURL.swift#L762
+    public func appendingPathComponent(_ str: String) -> URL? {
+    
+        if self.absoluteString.hasSuffix("/"){
+            return self.init?(string: self + str)
+        } else {
+            return self.init?(string: self + "/" + str)
+        }
+    }
+    
     #endif
     
 }

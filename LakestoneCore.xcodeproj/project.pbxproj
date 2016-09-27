@@ -27,6 +27,10 @@
 		1A64A6681D99160800DA829B /* extension_Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A64A6661D99160800DA829B /* extension_Date.swift */; };
 		1A64A66A1D99251C00DA829B /* TestDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A64A6691D99251C00DA829B /* TestDate.swift */; };
 		1A64A66B1D99251C00DA829B /* TestDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A64A6691D99251C00DA829B /* TestDate.swift */; };
+		1A64A66D1D9A283400DA829B /* extension_String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A64A66C1D9A283400DA829B /* extension_String.swift */; };
+		1A64A66E1D9A283400DA829B /* extension_String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A64A66C1D9A283400DA829B /* extension_String.swift */; };
+		1A64A6701D9A2BC500DA829B /* TestString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A64A66F1D9A2BC500DA829B /* TestString.swift */; };
+		1A64A6711D9A2BC500DA829B /* TestString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A64A66F1D9A2BC500DA829B /* TestString.swift */; };
 		_LinkFileRef_LakestoneCore_via_LakestoneCoreTests /* LakestoneCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_LakestoneCore" /* LakestoneCore.framework */; };
 		_LinkFileRef_PerfectCURL_via_LakestoneCore /* PerfectCURL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_PerfectCURL" /* PerfectCURL.framework */; };
 		_LinkFileRef_PerfectCURL_via_LakestoneCoreTests /* PerfectCURL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_PerfectCURL" /* PerfectCURL.framework */; };
@@ -106,6 +110,8 @@
 		1A64A6631D98E56A00DA829B /* TestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		1A64A6661D99160800DA829B /* extension_Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = extension_Date.swift; sourceTree = "<group>"; };
 		1A64A6691D99251C00DA829B /* TestDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDate.swift; sourceTree = "<group>"; };
+		1A64A66C1D9A283400DA829B /* extension_String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = extension_String.swift; sourceTree = "<group>"; };
+		1A64A66F1D9A2BC500DA829B /* TestString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestString.swift; sourceTree = "<group>"; };
 		__PBXFileRef_LakestoneCore.xcodeproj/Configs/Project.xcconfig /* LakestoneCore.xcodeproj/Configs/Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LakestoneCore.xcodeproj/Configs/Project.xcconfig; sourceTree = "<group>"; };
 		__PBXFileRef_Package.swift /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		"__PBXFileRef_Packages/PerfectCURL-2.0.0/Sources/cURL.swift" /* cURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cURL.swift; sourceTree = "<group>"; };
@@ -200,6 +206,7 @@
 		1A40AE391D93AFD900AECC1A /* extentions */ = {
 			isa = PBXGroup;
 			children = (
+				1A64A66C1D9A283400DA829B /* extension_String.swift */,
 				__PBXFileRef_Source/extension_Data.swift /* extension_Data.swift */,
 				1A64A6661D99160800DA829B /* extension_Date.swift */,
 				__PBXFileRef_Source/extension_URL.swift /* extension_URL.swift */,
@@ -305,6 +312,7 @@
 			isa = PBXGroup;
 			children = (
 				__PBXFileRef_Tests/LakestoneCoreTests/LakestoneCoreTests.swift /* TestHTTP.swift */,
+				1A64A66F1D9A2BC500DA829B /* TestString.swift */,
 				1A64A6631D98E56A00DA829B /* TestData.swift */,
 				1A64A6691D99251C00DA829B /* TestDate.swift */,
 				1A40AE691D93DA1800AECC1A /* testUtilities.swift */,
@@ -567,6 +575,7 @@
 				1A40AE651D93CE8100AECC1A /* extension_Data.swift in Sources */,
 				1A40AE611D93CE7800AECC1A /* HTTP.swift in Sources */,
 				1A40AE631D93CE7D00AECC1A /* alliases.swift in Sources */,
+				1A64A66E1D9A283400DA829B /* extension_String.swift in Sources */,
 				1A40AE621D93CE7A00AECC1A /* LakestoneError.swift in Sources */,
 				1A64A6681D99160800DA829B /* extension_Date.swift in Sources */,
 				1A40AE661D93CE8300AECC1A /* extension_URL.swift in Sources */,
@@ -581,6 +590,7 @@
 				1A40AE5F1D93CE1A00AECC1A /* TestHTTP.swift in Sources */,
 				1A40AE6A1D93DA1800AECC1A /* testUtilities.swift in Sources */,
 				1A64A66B1D99251C00DA829B /* TestDate.swift in Sources */,
+				1A64A6711D9A2BC500DA829B /* TestString.swift in Sources */,
 				1A64A6651D98E56A00DA829B /* TestData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -593,6 +603,7 @@
 				__src_cc_ref_Source/extension_Data.swift /* extension_Data.swift in Sources */,
 				__src_cc_ref_Source/extension_URL.swift /* extension_URL.swift in Sources */,
 				__src_cc_ref_Source/HTTP.swift /* HTTP.swift in Sources */,
+				1A64A66D1D9A283400DA829B /* extension_String.swift in Sources */,
 				__src_cc_ref_Source/LakestoneError.swift /* LakestoneError.swift in Sources */,
 				1A64A6671D99160800DA829B /* extension_Date.swift in Sources */,
 				__src_cc_ref_Source/Threading.swift /* Threading.swift in Sources */,
@@ -604,6 +615,7 @@
 			buildActionMask = 0;
 			files = (
 				1A64A6641D98E56A00DA829B /* TestData.swift in Sources */,
+				1A64A6701D9A2BC500DA829B /* TestString.swift in Sources */,
 				1A40AE6B1D93EE6100AECC1A /* testUtilities.swift in Sources */,
 				1A40AE601D93CE6A00AECC1A /* TestHTTP.swift in Sources */,
 				1A64A66A1D99251C00DA829B /* TestDate.swift in Sources */,

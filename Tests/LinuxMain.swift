@@ -3,5 +3,7 @@ import XCTest
 
 XCTMain([
     testCase(TestHTTP.allTests),
-    testCase(TestData.allTests)
+    testCase(TestData.allTests),
+    testCase(TestString.allTests),
+    testCase(TestDate.allTests)
 ])

@@ -3,8 +3,23 @@
 //  LakestoneCore
 //
 //  Created by Taras Vozniuk on 9/26/16.
+//  Copyright © 2016 GeoThings. All rights reserved.
 //
+// --------------------------------------------------------
 //
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
 
 #if COOPER
 	import java.util
@@ -59,7 +74,8 @@ extension Date {
 		#if COOPER
 			//ISO 8601 is not handled in Java until java 7. Once available, use X instead of Z in SimpleDateFormat, and remove replacement here
 			let timeString = _xsdGMTDateFormatter.format(self/*.addingTimeInterval(-self.currentTimezoneOffsetFromGMT)*/)
-			return timeString.substring(0, timeString.length() - 5) + "Z";
+			return timeString.replacingCharacters(in: timeString.index(timeString.endIndex, offsetBy: -5) ..< timeString.endIndex, with: "Z")
+			
 		#else
 			return _xsdGMTDateFormatter.string(from: self)
 		#endif
@@ -69,7 +85,7 @@ extension Date {
 		
 		#if COOPER
 			//ISO 8601 is not handled in Java until java 7. Once available, use X instead of Z in SimpleDateFormat, and remove replaceAll from here
-			return try? _xsdGMTDateFormatter.parse(string.replaceAll("Z$", "+0000"))
+			return try? _xsdGMTDateFormatter.parse(string.replacingOccurrences(of: "Z$", with: "+0000"))
 		#else
 			return _xsdGMTDateFormatter.date(from: string)
 		#endif
