@@ -130,7 +130,8 @@
 	public typealias URL = java.net.URL
 	public typealias Data = java.nio.ByteBuffer
 	public typealias Date = java.util.Date
-	
+	public typealias UUID = java.util.UUID
+    
 #else
 
 	

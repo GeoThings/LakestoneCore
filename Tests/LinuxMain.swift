@@ -5,5 +5,7 @@ XCTMain([
     testCase(TestHTTP.allTests),
     testCase(TestData.allTests),
     testCase(TestString.allTests),
-    testCase(TestDate.allTests)
+    testCase(TestDate.allTests),
+    testCase(TestUUID.allTests),
+    testCase(TestURL.allTests)
 ])

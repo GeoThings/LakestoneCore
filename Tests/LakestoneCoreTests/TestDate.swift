@@ -30,11 +30,11 @@
 	import XCTest
 	import Foundation
 	
-#if os(iOS) || os(watchOS) || os(tvOS)
-	@testable import LakestoneCoreIOS
-	#else
-	@testable import LakestoneCore
-#endif
+    #if os(iOS) || os(watchOS) || os(tvOS)
+        @testable import LakestoneCoreIOS
+    #else
+        @testable import LakestoneCore
+    #endif
 	
 #endif
 
@@ -45,7 +45,7 @@ class TestDate: Test {
 		let sept2016Epoch:Double = 1472688000.0
 		
 		let testDate = Date(timeIntervalSince1970: sept2016Epoch)
-		guard let comparisonDate = Date.from(year: 2016, month: 9, day: 1) else {
+		guard let comparisonDate = Date.with(year: 2016, month: 9, day: 1) else {
 			Assert.Fail("Cannot create date with given calendar components")
 			return
 		}
@@ -53,20 +53,20 @@ class TestDate: Test {
 		let currentTimezoneOffset = comparisonDate.currentTimezoneOffsetFromGMT
 		let comparisonDateUTC = comparisonDate.addingTimeInterval(currentTimezoneOffset)
 		
-		Assert.IsTrue(testDate == comparisonDateUTC)
+		Assert.AreEqual(testDate, comparisonDateUTC)
 		
-		guard let comparisonDate2UTC = Date.from(xsdGMTDateTimeString: "2016-09-01T00:00:00Z") else {
+		guard let comparisonDate2UTC = Date.with(xsdGMTDateTimeString: "2016-09-01T00:00:00Z") else {
 			Assert.Fail("Cannot derive a date from string, format invalid")
 			return
 		}
 		
-		Assert.IsTrue(testDate == comparisonDate2UTC)
+		Assert.AreEqual(testDate, comparisonDate2UTC)
 	}
 	
 	public func testDateConversion(){
 		
 		let dateString = "2016-09-01T00:00:00Z"
-		guard let parsedDate = Date.from(xsdGMTDateTimeString: dateString) else {
+		guard let parsedDate = Date.with(xsdGMTDateTimeString: dateString) else {
 			Assert.Fail("Cannot derive a date from string, format invalid")
 			return
 		}

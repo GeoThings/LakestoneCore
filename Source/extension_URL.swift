@@ -27,6 +27,9 @@
 extension URL {
     
     #if COOPER
+    /// in Java nil will be returned if the URL doesn't have a valid URL format
+    /// with a valid known protocol, in Foundation.URL however only strings with
+    //  URL-invalid characters will result in nil returned
     public init?(string: String) {
         
         var initedSelf: URL
@@ -39,20 +42,48 @@ extension URL {
         return initedSelf
     }
     
+    public init(fileURLWithPath path: String){
+        self.init("file://" + path) 
+    }
+    
     public var absoluteString: String {
         return self.toString()
     }
     
+    public var path: String {
+        return self.getPath()
+    }
+    
+    /*  not done yet, the commented out declarations are invalid
+    public var pathComponents: [String] {
+        return self.path.components(separatedBy: "/")
+    }
+    
+    public var lastPathComponent: String {
+        return self.pathComponents.last ?? String()
+    }
+
+    public var pathExtension: String {
+        guard let extensionSeperatorRange = self.lastPathComponent.range(of: ".", searchBackwards: true) else {
+            return String()
+        }
+    
+        return self.lastPathComponent.substring(from: self.lastPathComponent.index(after: extensionSeperatorRange.lowerBound))
+    }
+    */
+    
     /// remark: logic defers from Foundation's conterpart
     ///         available at https://github.com/apple/swift-corelibs-foundation/blob/master/Foundation/NSURL.swift#L762
-    public func appendingPathComponent(_ str: String) -> URL? {
+    public func appendingPathComponent(_ str: String, isDirectory: Bool = false) -> URL? {
     
+        let componentPart = (isDirectory) ? str + "/" : str
         if self.absoluteString.hasSuffix("/"){
-            return self.init?(string: self + str)
+            return self.init?(string: self + componentPart)
         } else {
-            return self.init?(string: self + "/" + str)
+            return self.init?(string: self + "/" + componentPart)
         }
     }
+    
     
     #endif
     

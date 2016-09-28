@@ -34,6 +34,9 @@
         <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\extension_String.swift">
             <VirtualFolder>extensions</VirtualFolder>
         </Compile>
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\extension_UUID.swift">
+            <VirtualFolder>extensions</VirtualFolder>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Source">

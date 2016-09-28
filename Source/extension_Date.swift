@@ -81,7 +81,7 @@ extension Date {
 		#endif
 	}
 	
-	public static func from(xsdGMTDateTimeString string: String) -> Date? {
+	public static func with(xsdGMTDateTimeString string: String) -> Date? {
 		
 		#if COOPER
 			//ISO 8601 is not handled in Java until java 7. Once available, use X instead of Z in SimpleDateFormat, and remove replaceAll from here
@@ -91,7 +91,7 @@ extension Date {
 		#endif
 	}
 	
-	public static func from(year: Int, month: Int, day: Int) -> Date? {
+	public static func with(year: Int, month: Int, day: Int) -> Date? {
 		
 		#if COOPER
 			let calendar = Calendar.getInstance()

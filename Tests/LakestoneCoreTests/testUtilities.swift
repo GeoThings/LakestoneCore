@@ -52,7 +52,19 @@ class Assert {
 	static func AreEqual<T: Equatable>(_ lhs: T, _ rhs: T){
 		XCTAssertEqual(lhs, rhs)
 	}
-	
+    
+    static func AreEqual<T: Equatable>(_ lhs: [T], _ rhs: [T]){
+        
+        if lhs.count != rhs.count {
+            Assert.Fail("Sequences differ in length")
+            return
+        }
+        
+        for (index, element) in lhs.enumerated() {
+            Assert.AreEqual(element, rhs[index])
+        }
+    }
+    
 	static func IsTrue(_ expression: Bool){
 		XCTAssertTrue(expression)
 	}

@@ -58,13 +58,8 @@ class TestData: Test {
 			Int8(bitPattern: $0)
 		})
 		
-		for (index, byte) in littleEndianData.bytes.enumerated() {
-			Assert.AreEqual(byte, [Int8](testNumberBytesBE.reversed())[index])
-		}
-		
-		for (index, byte) in bigEndianData.bytes.enumerated() {
-			Assert.AreEqual(byte, testNumberBytesBE[index])
-		}
+        Assert.AreEqual(littleEndianData.bytes, testNumberBytesBE.reversed())
+        Assert.AreEqual(bigEndianData.bytes, testNumberBytesBE)
 		
 		Assert.AreEqual(targetLENumber, testNumber)
 		Assert.AreEqual(targetBENumber, testNumber)

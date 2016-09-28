@@ -47,7 +47,7 @@ class TestString: Test {
 		Assert.AreEqual(someRandomString.lowercased(), "random")
 		Assert.IsFalse(someRandomString.isEmpty)
 		Assert.IsTrue("".isEmpty)
-        Assert.AreEqual(someRandomString.characterCount, 6)
+		Assert.AreEqual(someRandomString.characterCount, 6)
 	}
 	
 	public func testIndexing(){
@@ -98,6 +98,24 @@ class TestString: Test {
 		let centerRange = someRandomString.index(someRandomString.startIndex, offsetBy: 2) ..< someRandomString.index(someRandomString.endIndex, offsetBy: -2)
 		Assert.AreEqual(someRandomString.substring(with: centerRange), "Nd")
 		Assert.AreEqual((someRandomString.range(of: "Nd") ?? range), centerRange)
+		
+        let expectedComponents = ["", "path", "to", "something", "interesting.json", ""]
+		let components = "/path/to/something/interesting.json/".components(separatedBy: "/")
+		Assert.AreEqual(components, expectedComponents)
+        
+        let pathWithDotsInName = "/some/path/file.with.dots.test"
+        #if COOPER
+            let extensionSeperatorRangeº = pathWithDotsInName.range(of: ".", searchBackwards: true)
+        #else
+            let extensionSeperatorRangeº = pathWithDotsInName.range(of: ".", options: .backwards)
+        #endif
+        
+        guard let extensionSeperatorRange = extensionSeperatorRangeº else {
+            Assert.Fail("\(pathWithDotsInName) doesn't contain '.'")
+            return
+        }
+        
+        Assert.AreEqual(pathWithDotsInName.substring(from: pathWithDotsInName.index(after: extensionSeperatorRange.lowerBound)), "test")
 	}
 }
 

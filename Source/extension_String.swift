@@ -125,8 +125,8 @@ extension String {
     
     /* Silver doesn't recognize subscript overloading
     public subscript(bounds: Range) -> String {
-        let endIndex = (bounds.closed) ? bounds.upperBound + 1 : bounds.upperBound
-        return self.substring(bounds.lowerBound, endIndex)
+        let endIndex = (bounds.closed) ? bounds.endIndex + 1 : bounds.endIndex
+        return self.substring(bounds.startIndex, endIndex)
     }
     */
     
@@ -271,9 +271,38 @@ extension String {
         return self.substring(range.lowerBound, endIndex)
     }
     
-    public func range(of substring: String) -> Range? {
-        let startIndex = self.indexOf(substring)
+    //TODO: Implement String.CompareOptions
+    
+    public func range(of substring: String, searchBackwards: Bool = false) -> Range? {
+        let startIndex = (searchBackwards) ? self.lastIndexOf(substring) : self.indexOf(substring)
         return (startIndex >= 0) ? startIndex ..< startIndex + substring.length() : nil
+    }
+    
+    public func components(separatedBy seperator: String) -> [String] {
+        
+        var seperatorRangeº = self.range(of: seperator)
+        if seperatorRangeº != nil {
+            
+            var array = [String]()
+            var parseIndex = self.startIndex
+            var activeSubstring = self
+            while seperatorRangeº != nil  {
+                
+                let copyString = activeSubstring.substring(to: seperatorRangeº!.lowerBound)
+                array.append(copyString)
+    
+                parseIndex = seperatorRangeº!.upperBound
+                activeSubstring = activeSubstring.substring(from: parseIndex)
+                
+                seperatorRangeº = activeSubstring.range(of: seperator)
+            }
+            
+            array.append(activeSubstring)
+            return array
+            
+        } else {
+            return [self]
+        }
     }
     
     //TODO: Implement write(toFile:), write(to:)
