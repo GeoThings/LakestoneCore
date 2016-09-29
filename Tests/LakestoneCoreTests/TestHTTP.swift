@@ -79,7 +79,7 @@ class TestHTTP: Test {
 			}
 			*/
 			
-			self.expectedResourceString = jsonResourceString.replaceAll(" ", "").replaceAll("\t", "")
+            self.expectedResourceString = jsonResourceString.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "\t", with: "")
 			
 		#elseif os(iOS) || os(watchOS) || os(tvOS)
 			
@@ -135,11 +135,8 @@ class TestHTTP: Test {
 					return
 				}
 				
-				#if COOPER
-				let sanitizedResponseString = responseDataString.replaceAll(" ", "").replaceAll("\t", "")
-				#else
-				let sanitizedResponseString = responseDataString.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "\t", with: "")
-				#endif
+				
+                let sanitizedResponseString = responseDataString.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "\t", with: "")
 						
 				#if COOPER
 					Assert.AreEqual(self.expectedResourceString, sanitizedResponseString)

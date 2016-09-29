@@ -42,33 +42,33 @@ class TestURL: Test {
 
 	public func testURLUtilities(){
 		
-        let testPath = "/usr/path/to/some/resource.test"
-        
-        //Assert.IsNil(URL(string: "ººº"))
-        Assert.IsNotNil(URL(string: "file://" + testPath))
-        
-        /*
+		let testPath = "/usr/path/to/some/resource.test"
+		
+		//Assert.IsNil(URL(string: "ººº"))
+		Assert.IsNotNil(URL(string: "file://" + testPath))
+		
 		let url = URL(fileURLWithPath: testPath)
 		Assert.AreEqual(url.path, testPath)
-        Assert.AreEqual(url.lastPathComponent, "resource.test")
-        Assert.AreEqual(url.pathExtension, "test")
-        
-        
-        let rootURL = URL(fileURLWithPath: "/")
-        Assert.AreEqual(rootURL.path, "/")
-        Assert.AreEqual(rootURL.lastPathComponent, "/")
-        Assert.AreEqual(rootURL.pathExtension, "")
-        
-        
-        let folderPath = "/usr/path/to/some/resource/"
-        let folderURL = URL(fileURLWithPath: folderPath)
-        print(folderURL.pathComponents)
-        Assert.AreEqual(folderURL.pathComponents, ["", "usr", "path", "to", "some", "resource", ""])
-        Assert.AreEqual(folderURL.path, folderPath)
-        Assert.AreEqual(folderURL.lastPathComponent, "")
-        Assert.AreEqual(folderURL.pathExtension, "")
- 
-        */
+		Assert.AreEqual(url.pathComponents, ["/","usr", "path", "to", "some", "resource.test"])
+		Assert.AreEqual(url.lastPathComponent, "resource.test")
+		Assert.AreEqual(url.pathExtension, "test")
+		
+		let rootURL = URL(fileURLWithPath: "/")
+		Assert.AreEqual(rootURL.path, "/")
+		Assert.AreEqual(rootURL.pathComponents, ["/"])
+		Assert.AreEqual(rootURL.lastPathComponent, "/")
+		Assert.AreEqual(rootURL.pathExtension, "")
+		
+		let folderPath = "/usr/path/to/some/resource/"
+		let folderURL = URL(fileURLWithPath: folderPath)
+		Assert.AreEqual(folderURL.path, folderPath.substring(to: folderPath.index(before: folderPath.endIndex)))
+		Assert.AreEqual(folderURL.pathComponents, ["/", "usr", "path", "to", "some", "resource"])
+		Assert.AreEqual(folderURL.lastPathComponent, "resource")
+		Assert.AreEqual(folderURL.pathExtension, "")
+		
+		let folderPathWithExtraComponent = folderURL.appendingPathComponent("anotherDir", isDirectory: true)
+		let expectedPath = folderPath + "anotherDir"
+		Assert.AreEqual(folderPathWithExtraComponent.path, expectedPath)
 	}
 }
 

@@ -50,13 +50,18 @@ extension URL {
         return self.toString()
     }
     
+    
     public var path: String {
-        return self.getPath()
+        // Foundation.URL removes trailing '/'
+        return (self.getPath() != "/" && self.getPath().hasSuffix("/")) ? self.getPath().substring(to: self.getPath().index(before: self.getPath().endIndex)) : self.getPath()
     }
     
-    /*  not done yet, the commented out declarations are invalid
     public var pathComponents: [String] {
-        return self.path.components(separatedBy: "/")
+        if self.path == "/" || self.path.isEmpty {
+            return [self.path]
+        } else {
+            return [String](self.path.components(separatedBy: "/").map { ($0.isEmpty) ? "/" : $0 })
+        }
     }
     
     public var lastPathComponent: String {
@@ -70,11 +75,10 @@ extension URL {
     
         return self.lastPathComponent.substring(from: self.lastPathComponent.index(after: extensionSeperatorRange.lowerBound))
     }
-    */
     
     /// remark: logic defers from Foundation's conterpart
     ///         available at https://github.com/apple/swift-corelibs-foundation/blob/master/Foundation/NSURL.swift#L762
-    public func appendingPathComponent(_ str: String, isDirectory: Bool = false) -> URL? {
+    public func appendingPathComponent(_ str: String, isDirectory: Bool = false) -> URL {
     
         let componentPart = (isDirectory) ? str + "/" : str
         if self.absoluteString.hasSuffix("/"){
