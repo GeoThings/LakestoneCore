@@ -47,7 +47,11 @@ extension AnyFileOrDirectory {
     public var isDirectory: Bool {
         var isDirectoryPath: ObjCBool = ObjCBool(false)
         let doesFileExists = FileManager.default.fileExists(atPath: self.path, isDirectory: &isDirectoryPath)
-        return doesFileExists && isDirectoryPath.boolValue
+        #if os(Linux)
+            return doesFileExists && Bool(isDirectoryPath)
+        #else
+            return doesFileExists && isDirectoryPath.boolValue
+        #endif
     }
 
     public var lastModificationDateº: Date? {
