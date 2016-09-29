@@ -123,7 +123,6 @@ public class HTTP {
 				let responseMessage = currentConnection.getResponseMessage()
 				currentConnection.disconnect()
 				
-				
 				// header values are represented in List<String> for each individual key
 				// concatenate for unification-sake
 				//TODO: review whether this concatenation is neccesary

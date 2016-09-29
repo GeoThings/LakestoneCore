@@ -50,6 +50,9 @@ extension URL {
         return self.toString()
     }
     
+    public var isFileURL: Bool {
+        return self.getProtocol() == "file"
+    }
     
     public var path: String {
         // Foundation.URL removes trailing '/'

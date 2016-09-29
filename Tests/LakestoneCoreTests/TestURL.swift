@@ -69,6 +69,9 @@ class TestURL: Test {
 		let folderPathWithExtraComponent = folderURL.appendingPathComponent("anotherDir", isDirectory: true)
 		let expectedPath = folderPath + "anotherDir"
 		Assert.AreEqual(folderPathWithExtraComponent.path, expectedPath)
+		
+		Assert.IsTrue(url.isFileURL)
+		Assert.IsFalse(URL(string: "http://someresource.com")!.isFileURL)
 	}
 }
 

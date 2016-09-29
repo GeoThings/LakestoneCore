@@ -58,12 +58,11 @@ class TestData: Test {
 			Int8(bitPattern: $0)
 		})
 		
-        Assert.AreEqual(littleEndianData.bytes, testNumberBytesBE.reversed())
-        Assert.AreEqual(bigEndianData.bytes, testNumberBytesBE)
+		Assert.AreEqual(littleEndianData.bytes, testNumberBytesBE.reversed())
+		Assert.AreEqual(bigEndianData.bytes, testNumberBytesBE)
 		
 		Assert.AreEqual(targetLENumber, testNumber)
-		Assert.AreEqual(targetBENumber, testNumber)
-		
+		Assert.AreEqual(targetBENumber, testNumber)   
 	}
 	
 	public func testUTF8StringWrapping(){
@@ -82,11 +81,11 @@ class TestData: Test {
 
 #if !COOPER
 extension TestData {
-    static var allTests : [(String, (TestData) -> () throws -> Void)] {
-        return [
-            ("testNumericConversion", testNumericConversion),
-            ("testUTF8StringWrapping", testUTF8StringWrapping)
-        ]
-    }
+	static var allTests : [(String, (TestData) -> () throws -> Void)] {
+		return [
+			("testNumericConversion", testNumericConversion),
+			("testUTF8StringWrapping", testUTF8StringWrapping)
+		]
+	}
 }
 #endif

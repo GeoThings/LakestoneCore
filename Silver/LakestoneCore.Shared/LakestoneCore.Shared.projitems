@@ -37,6 +37,15 @@
         <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\extension_UUID.swift">
             <VirtualFolder>extensions</VirtualFolder>
         </Compile>
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\AnyFileOrDirectory.swift">
+            <VirtualFolder>Source</VirtualFolder>
+        </Compile>
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\File.swift">
+            <VirtualFolder>Source</VirtualFolder>
+        </Compile>
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\Directory.swift">
+            <VirtualFolder>Source</VirtualFolder>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Source">
