@@ -72,6 +72,8 @@ class TestURL: Test {
 		
 		Assert.IsTrue(url.isFileURL)
 		Assert.IsFalse(URL(string: "http://someresource.com")!.isFileURL)
+		
+		Assert.AreEqual(url.deletingLastPathComponent().path, "/usr/path/to/some")
 	}
 }
 

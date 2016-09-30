@@ -167,6 +167,10 @@ public class Directory: AnyFileOrDirectory {
 			}
 		}
 	}
+    
+    public var parentDirectoryº: Directory? {
+        return (self.path == "/") ? nil : Directory(fileURL: URL(fileURLWithPath: self.path).deletingLastPathComponent())
+    }
 }
 
 extension Directory: CustomStringConvertible {
@@ -179,5 +183,22 @@ extension Directory {
 	public class Errors {
 		static let DeletionFailed = LakestoneError.with(stringRepresentation: "Directory deletion failed")
 	}
-	
+}
+
+extension Directory: Equatable {
+
+    #if COOPER
+    public override func equals(_ o: Object!) -> Bool {
+        
+        guard let other = o as? Self else {
+            return false
+        }
+        
+        return (self == other)
+    }
+    #endif
+}
+
+public func ==(lhs: Directory, rhs: Directory) -> Bool {
+    return lhs.path == rhs.path
 }

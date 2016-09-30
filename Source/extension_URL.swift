@@ -1,4 +1,4 @@
-﻿//
+//
 //  extension_URL.swift
 //  LakestoneCore
 //
@@ -89,6 +89,15 @@ extension URL {
         } else {
             return self.init?(string: self + "/" + componentPart)
         }
+    }
+    
+    public func deletingLastPathComponent() -> URL {
+    
+        guard let prelastComponentStart = self.path.range(of: "/", searchBackwards: true) else {
+            return self
+        }
+    
+        return URL(fileURLWithPath: self.path.substring(to: prelastComponentStart.lowerBound))
     }
     
     

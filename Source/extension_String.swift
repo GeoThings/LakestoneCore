@@ -305,7 +305,7 @@ extension String {
         }
     }
     
-    //TODO: Implement write(toFile:), write(to:)
+    //TODO: Implement write(toFile:,atomically:,encoding:), write(to:,atomically:,encoding:)
     
     #endif
     

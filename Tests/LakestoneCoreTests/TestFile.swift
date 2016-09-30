@@ -112,10 +112,19 @@ class TestFile: Test {
 			try sameFileInitedWithPath.remove()
 			Assert.IsFalse(sameFileInitedWithPath.exists)
 			
+            guard let parentDirectory = testFile.parentDirectoryº else {
+                Assert.Fail("Cannot retrieve parent directory (already root)")
+                return
+            }
+            
+            Assert.AreEqual(parentDirectory.path, self.workingDirectoryPath)
+
+            let sameTestFile = File(fileURL: testFileURL)
+            Assert.AreEqual(sameTestFile, testFile)
+            
 		} catch {
 			Assert.Fail("File operation failed: \(error)")
 		}
-		
 		
 	}
 	

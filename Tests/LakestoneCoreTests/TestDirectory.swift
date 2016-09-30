@@ -117,6 +117,14 @@ class TestDirectory: Test {
 			Assert.AreEqual(testDirectory.filesAndSubdirectories.count, 0)
 			Assert.IsFalse(testDirectory.exists)
 			
+            guard let parentDirectory = testDirectory.parentDirectoryº else {
+                Assert.Fail("Cannot retrieve parent directory (already root)")
+                return
+            }
+            
+            Assert.AreEqual(parentDirectory.path, self.workingDirectoryPath)
+            Assert.AreEqual(parentDirectory, Directory(path: self.workingDirectoryPath))
+            
 		} catch {
 			Assert.Fail("Directory operation failed: \(error)")
 		}

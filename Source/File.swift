@@ -198,6 +198,10 @@ extension File {
 			return try FileManager.default.removeItem(atPath: self.path)
 		#endif
 	}
+    
+    public var parentDirectoryº: Directory? {
+        return (self.path == "/") ? nil : Directory(fileURL: URL(fileURLWithPath: self.path).deletingLastPathComponent())
+    }
 }
 
 extension File: CustomStringConvertible {
@@ -214,3 +218,11 @@ extension File {
 		static let DeletionFailed = LakestoneError.with(stringRepresentation: "File deletion failed")
 	}
 }
+
+extension File: Equatable {}
+public func ==(lhs: File, rhs: File) -> Bool {
+    return lhs.path == rhs.path
+}
+
+
+

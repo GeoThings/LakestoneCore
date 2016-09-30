@@ -35,6 +35,8 @@ public protocol AnyFileOrDirectory {
     var lastModificationDateº: Date? { get }
     
     func remove() throws
+    
+    var parentDirectoryº: Directory? { get }
 }
 
 #if !COOPER
