@@ -99,23 +99,75 @@ class TestString: Test {
 		Assert.AreEqual(someRandomString.substring(with: centerRange), "Nd")
 		Assert.AreEqual((someRandomString.range(of: "Nd") ?? range), centerRange)
 		
-        let expectedComponents = ["", "path", "to", "something", "interesting.json", ""]
+		let expectedComponents = ["", "path", "to", "something", "interesting.json", ""]
 		let components = "/path/to/something/interesting.json/".components(separatedBy: "/")
 		Assert.AreEqual(components, expectedComponents)
+		
+		let pathWithDotsInName = "/some/path/file.with.dots.test"
+		#if COOPER
+			let extensionSeperatorRangeº = pathWithDotsInName.range(of: ".", searchBackwards: true)
+		#else
+			let extensionSeperatorRangeº = pathWithDotsInName.range(of: ".", options: .backwards)
+		#endif
+		
+		guard let extensionSeperatorRange = extensionSeperatorRangeº else {
+			Assert.Fail("\(pathWithDotsInName) doesn't contain '.'")
+			return
+		}
+		
+		Assert.AreEqual(pathWithDotsInName.substring(from: pathWithDotsInName.index(after: extensionSeperatorRange.lowerBound)), "test")
+	}
+	
+	public func testNumericConversions(){
+		
+		Assert.IsTrue("3219123080918".isNumeric)
+        Assert.IsFalse("-3219123080918".isNumeric)
+        Assert.IsFalse("12122211221.".isNumeric)
+		Assert.IsFalse("".isNumeric)
+		Assert.IsFalse("322222d000".isNumeric)
+		Assert.IsTrue("-3219123080918".representsLongDecimal)
+		Assert.IsFalse("3219123080918".representsDecimal)
+		Assert.IsFalse("32232323 ".representsDecimal)
+		Assert.IsFalse("32323223.0".representsDecimal)
+		
+		Assert.IsTrue("0".representsBool)
+		Assert.IsTrue("true".representsBool)
+		Assert.IsTrue("TrUe".representsBool)
+		Assert.IsFalse("2".representsBool)
+		
+		Assert.IsTrue("-12213".representsFloat)
+		Assert.IsTrue("323532.0".representsFloat)
+		Assert.IsTrue("12213".representsDouble)
+		Assert.IsTrue("-323532.0".representsDouble)
+		Assert.IsFalse("322323.0.".representsFloat)
+		Assert.IsFalse("322323.0.".representsDouble)
+		Assert.IsFalse("322323.0 ".representsFloat)
+		Assert.IsFalse("322323.0 ".representsDouble)
+		Assert.IsFalse("322323.0\n".representsFloat)
+		Assert.IsFalse("322323.0\n".representsDouble)
+		Assert.IsFalse(" 322323.0".representsFloat)
+		Assert.IsFalse(" 322323.0".representsDouble)
+        Assert.IsFalse("\n322323.0".representsFloat)
+        Assert.IsFalse("\n322323.0".representsDouble)
+        Assert.IsFalse("\t322323.0".representsFloat)
+        Assert.IsFalse("\t322323.0".representsDouble)
         
-        let pathWithDotsInName = "/some/path/file.with.dots.test"
-        #if COOPER
-            let extensionSeperatorRangeº = pathWithDotsInName.range(of: ".", searchBackwards: true)
-        #else
-            let extensionSeperatorRangeº = pathWithDotsInName.range(of: ".", options: .backwards)
-        #endif
         
-        guard let extensionSeperatorRange = extensionSeperatorRangeº else {
-            Assert.Fail("\(pathWithDotsInName) doesn't contain '.'")
-            return
-        }
-        
-        Assert.AreEqual(pathWithDotsInName.substring(from: pathWithDotsInName.index(after: extensionSeperatorRange.lowerBound)), "test")
+		Assert.IsNotNil("1121212".decimalRepresentation)
+		Assert.IsNil("111112 ".decimalRepresentation)
+		Assert.IsNotNil("-11212121121212".longDecimalRepresentation)
+		Assert.IsNil("11212121121212 ".longDecimalRepresentation)
+		Assert.IsNotNil("121212.12121212".floatRepresentation)
+		Assert.IsNotNil("-121212.12121212".doubleRepresentation)
+		Assert.IsNil(" 121212.12121212".floatRepresentation)
+		Assert.IsNil(" 121212.12121212".doubleRepresentation)
+		
+		Assert.IsNotNil("tRue".boolRepresentation)
+		Assert.IsNotNil("FaLsE".boolRepresentation)
+		Assert.IsNotNil("1".boolRepresentation)
+		Assert.IsNotNil("0".boolRepresentation)
+		Assert.IsNil("".boolRepresentation)
+		Assert.IsNil(" true".boolRepresentation)
 	}
 }
 
@@ -125,7 +177,8 @@ extension TestString {
 		return [
 			("testUpperLowerEmptiness", testUpperLowerEmptiness),
 			("testIndexing", testIndexing),
-			("testOperations", testOperations)
+			("testOperations", testOperations),
+			("testNumericConversions", testNumericConversions)
 		]
 	}
 }

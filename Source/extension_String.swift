@@ -31,10 +31,11 @@
 // Immutable Swift String APis where added to correspondent mutable APIs.
 //
 
-#if !COOPER
-    
+#if COOPER
+    import java.util
+    import java.util.regex
+#else
     import Foundation
-    
 #endif
 
 
@@ -317,6 +318,164 @@ extension String {
             return self.length()
         #else
             return self.characters.count
+        #endif
+    }
+    
+    public var isNumeric: Bool {
+        
+        if self.isEmpty {
+            return false
+        }
+        
+        #if COOPER
+            
+            for indexOffset in 0 ..< self.characterCount {
+                let character = self[indexOffset]
+                if !Character.isDigit(character){
+                    return false
+                }
+            }
+            
+            return true
+        
+        #else
+            return self.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
+            
+        #endif
+    }
+    
+    public var representsDecimal: Bool {
+        
+        #if COOPER
+            
+            if Character.isSpaceChar(self[0]) || Character.isWhitespace(self[0]) {
+                return false
+            }
+            
+            let scanner = Scanner(self)
+            if scanner.hasNextInt(){
+                _ = scanner.nextInt()
+                return !scanner.hasNextLine()
+            } else {
+                return false
+            }
+            
+        #else
+            return Int32(self) != nil
+            
+        #endif
+    }
+    
+    public var representsLongDecimal: Bool {
+        
+        #if COOPER
+            
+            if Character.isSpaceChar(self[0]) || Character.isWhitespace(self[0]) {
+                return false
+            }
+            
+            let scanner = Scanner(self)
+            if scanner.hasNextLong(){
+                _ = scanner.nextLong()
+                return !scanner.hasNextLine()
+            } else {
+                return false
+            }
+            
+        #else
+            return Int64(self) != nil
+            
+        #endif
+    }
+    
+    public var representsFloat: Bool {
+        
+        #if COOPER
+        
+            if Character.isSpaceChar(self[0]) || Character.isWhitespace(self[0]) {
+                return false
+            }
+            
+            let scanner = Scanner(self)
+            if scanner.hasNextFloat() {
+                _ = scanner.nextFloat()
+                return !scanner.hasNextLine()
+            } else {
+                return false
+            }
+            
+        #else
+            return Float(self) != nil
+            
+        #endif
+    }
+    
+    public var representsDouble: Bool {
+        
+        #if COOPER
+            
+            if Character.isSpaceChar(self[0]) || Character.isWhitespace(self[0]) {
+                return false
+            }
+            
+            let scanner = Scanner(self)
+            if scanner.hasNextDouble() {
+                _ = scanner.nextDouble()
+                return !scanner.hasNextLine()
+            } else {
+                return false
+            }
+            
+        #else
+            return Double(self) != nil
+            
+        #endif
+    }
+    
+    public var representsBool: Bool {
+        
+        return ["true", "false", "0", "1"].contains(self.lowercased())
+    }
+    
+    public var boolRepresentation: Bool? {
+        if ["true", "1"].contains(self.lowercased()) {
+            return true
+        } else if ["false", "0"].contains(self.lowercased()){
+            return false
+        } else {
+            return nil
+        }
+    }
+    
+    public var decimalRepresentation: Int32? {
+        #if COOPER
+            return (self.representsDecimal) ? Integer.parseInt(self) : nil
+        #else
+            return Int32(self)
+        #endif
+    }
+    
+    public var longDecimalRepresentation: Int64? {
+        #if COOPER
+            return (self.representsLongDecimal) ? Long.parseLong(self) : nil
+        #else
+            return Int64(self)
+        #endif
+    }
+    
+    public var floatRepresentation: Float? {
+        #if COOPER
+            return (self.representsFloat) ? Float.parseFloat(self) : nil
+        #else
+            return Float(self)
+        #endif
+    }
+    
+    public var doubleRepresentation: Double? {
+        #if COOPER
+            return (self.representsDouble) ? Double.parseDouble(self) : nil
+        #else
+            return Double(self)
         #endif
     }
 }

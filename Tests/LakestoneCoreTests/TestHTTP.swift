@@ -64,7 +64,7 @@ class TestHTTP: Test {
 			
 			let jsonResourceStream = MainActivity.currentInstance.getResources().openRawResource(R.raw.raster_digitalglobe)
 			guard let jsonData = try? Data.from(inputStream: jsonResourceStream),
-				  var jsonResourceString = jsonData.utf8EncodedStringRepresentation
+				  var jsonResourceString = jsonData.utf8EncodedStringRepresentationº
 			else {
 				Assert.Fail("Cannot interpret the raw resource as string")
 				return
@@ -79,7 +79,7 @@ class TestHTTP: Test {
 			}
 			*/
 			
-            self.expectedResourceString = jsonResourceString.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "\t", with: "")
+			self.expectedResourceString = jsonResourceString.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "\t", with: "")
 			
 		#elseif os(iOS) || os(watchOS) || os(tvOS)
 			
@@ -130,13 +130,13 @@ class TestHTTP: Test {
 					Assert.Fail("Response data is nil while expected")
 					return
 				}
-				guard let responseDataString = responseData.utf8EncodedStringRepresentation else {
+				guard let responseDataString = responseData.utf8EncodedStringRepresentationº else {
 					Assert.Fail("Data cannot be represented as UTF8 encoded string")
 					return
 				}
 				
 				
-                let sanitizedResponseString = responseDataString.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "\t", with: "")
+				let sanitizedResponseString = responseDataString.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "\t", with: "")
 						
 				#if COOPER
 					Assert.AreEqual(self.expectedResourceString, sanitizedResponseString)

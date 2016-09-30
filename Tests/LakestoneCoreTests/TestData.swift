@@ -69,7 +69,7 @@ class TestData: Test {
 		
 		let testString = "ºººUTF-8 TestStringººº"
 		let testData = Data.with(utf8EncodedString: testString)
-		guard let targetString = testData?.utf8EncodedStringRepresentation else {
+		guard let targetString = testData?.utf8EncodedStringRepresentationº else {
 			Assert.Fail("Data cannot be represented as utf8-encoded string")
 			return
 		}

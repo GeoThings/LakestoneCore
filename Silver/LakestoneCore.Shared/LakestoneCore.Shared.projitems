@@ -46,6 +46,9 @@
         <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\Directory.swift">
             <VirtualFolder>Source</VirtualFolder>
         </Compile>
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\JSONSerialization.swift">
+            <VirtualFolder>Source</VirtualFolder>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Source">

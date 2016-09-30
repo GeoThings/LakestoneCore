@@ -130,7 +130,7 @@ extension Data {
 	}
 	
 	
-	public var utf8EncodedStringRepresentation: String? {
+	public var utf8EncodedStringRepresentationº: String? {
 		
 		#if COOPER
 

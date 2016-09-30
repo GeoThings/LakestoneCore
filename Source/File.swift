@@ -123,7 +123,7 @@ extension File {
 	public func readUTF8EncodedString() throws -> String {
 		
 		let data = try self.readData()
-		guard let targetString = data.utf8EncodedStringRepresentation else {
+		guard let targetString = data.utf8EncodedStringRepresentationº else {
 			throw Error.NonUTF8Encoding
 		}
 		
@@ -198,10 +198,10 @@ extension File {
 			return try FileManager.default.removeItem(atPath: self.path)
 		#endif
 	}
-    
-    public var parentDirectoryº: Directory? {
-        return (self.path == "/") ? nil : Directory(fileURL: URL(fileURLWithPath: self.path).deletingLastPathComponent())
-    }
+	
+	public var parentDirectoryº: Directory? {
+		return (self.path == "/") ? nil : Directory(fileURL: URL(fileURLWithPath: self.path).deletingLastPathComponent())
+	}
 }
 
 extension File: CustomStringConvertible {
@@ -221,7 +221,7 @@ extension File {
 
 extension File: Equatable {}
 public func ==(lhs: File, rhs: File) -> Bool {
-    return lhs.path == rhs.path
+	return lhs.path == rhs.path
 }
 
 

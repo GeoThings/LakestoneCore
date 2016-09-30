@@ -37,6 +37,8 @@ public protocol AnyFileOrDirectory {
     func remove() throws
     
     var parentDirectoryº: Directory? { get }
+    
+    //TODO: implement copy(to:, overwrites:), move(to:, overwrites:)
 }
 
 #if !COOPER

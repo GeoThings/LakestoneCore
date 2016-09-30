@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A07279E1D9E1C3E006237BB /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A07279D1D9E1C3E006237BB /* JSONSerialization.swift */; };
+		1A07279F1D9E1C3E006237BB /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A07279D1D9E1C3E006237BB /* JSONSerialization.swift */; };
 		1A40AE4E1D93C0B500AECC1A /* LakestoneCoreIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A40AE451D93C0B500AECC1A /* LakestoneCoreIOS.framework */; };
 		1A40AE531D93C0B500AECC1A /* LakestoneCoreIOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A40AE521D93C0B500AECC1A /* LakestoneCoreIOSTests.swift */; };
 		1A40AE551D93C0B500AECC1A /* LakestoneCoreIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A40AE471D93C0B500AECC1A /* LakestoneCoreIOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -115,6 +117,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A07279D1D9E1C3E006237BB /* JSONSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerialization.swift; sourceTree = "<group>"; };
 		1A40AE451D93C0B500AECC1A /* LakestoneCoreIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LakestoneCoreIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A40AE471D93C0B500AECC1A /* LakestoneCoreIOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LakestoneCoreIOS.h; sourceTree = "<group>"; };
 		1A40AE481D93C0B500AECC1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -330,6 +333,7 @@
 				1A64A6781D9B946200DA829B /* File.swift */,
 				1A64A6841D9D041D00DA829B /* Directory.swift */,
 				1A64A6811D9D010B00DA829B /* AnyFileOrDirectory.swift */,
+				1A07279D1D9E1C3E006237BB /* JSONSerialization.swift */,
 				1A40AE391D93AFD900AECC1A /* extentions */,
 			);
 			name = LakestoneCore;
@@ -613,6 +617,7 @@
 				1A64A6741D9AE7C400DA829B /* extension_UUID.swift in Sources */,
 				1A40AE621D93CE7A00AECC1A /* LakestoneError.swift in Sources */,
 				1A64A6681D99160800DA829B /* extension_Date.swift in Sources */,
+				1A07279F1D9E1C3E006237BB /* JSONSerialization.swift in Sources */,
 				1A40AE661D93CE8300AECC1A /* extension_URL.swift in Sources */,
 				1A64A6861D9D041D00DA829B /* Directory.swift in Sources */,
 			);
@@ -649,6 +654,7 @@
 				1A64A6731D9AE7C400DA829B /* extension_UUID.swift in Sources */,
 				__src_cc_ref_Source/LakestoneError.swift /* LakestoneError.swift in Sources */,
 				1A64A6671D99160800DA829B /* extension_Date.swift in Sources */,
+				1A07279E1D9E1C3E006237BB /* JSONSerialization.swift in Sources */,
 				__src_cc_ref_Source/Threading.swift /* Threading.swift in Sources */,
 				1A64A6851D9D041D00DA829B /* Directory.swift in Sources */,
 			);
