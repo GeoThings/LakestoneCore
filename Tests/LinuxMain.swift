@@ -9,5 +9,7 @@ XCTMain([
     testCase(TestUUID.allTests),
     testCase(TestURL.allTests),
     testCase(TestFile.allTests),
-    testCase(TestDirectory.allTests)
+    testCase(TestDirectory.allTests),
+    testCase(TestJSONSerialization.allTests),
+    testCase(TestCustomSerialization.allTests)
 ])

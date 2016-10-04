@@ -117,3 +117,13 @@ class TestCustomSerialization: Test {
 	}
 	
 }
+
+#if !COOPER
+extension TestCustomSerialization {
+    static var allTests : [(String, (TestCustomSerialization) -> () throws -> Void)] {
+        return [
+            ("testCustomSerialization", testCustomSerialization)
+        ]
+    }
+}
+#endif

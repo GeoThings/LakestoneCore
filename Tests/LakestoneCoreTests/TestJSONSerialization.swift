@@ -157,3 +157,13 @@ class TestJSONSerialization: Test {
 	}
 
 }
+
+#if !COOPER
+extension TestJSONSerialization {
+    static var allTests : [(String, (TestJSONSerialization) -> () throws -> Void)] {
+        return [
+            ("testJSONSerialization", testJSONSerialization)
+        ]
+    }
+}
+#endif
