@@ -33,7 +33,7 @@ extension UUID {
 	}
 	
 	public init?(uuidString: String){
-		return try? UUID.fromString(uuidString)
+		return UUID.fromString(uuidString)
 	}
 	
 	public var uuidString: String {
@@ -46,18 +46,18 @@ extension UUID {
 #if COOPER
 
 extension UUID: Equatable {
-    public override func equals(_ o: Object!) -> Bool {
-        
-        guard let other = o as? Self else {
-            return false
-        }
-        
-        return (self == other)
-    }
+	public override func equals(_ o: Object!) -> Bool {
+		
+		guard let other = o as? Self else {
+			return false
+		}
+		
+		return (self == other)
+	}
 }
-    
+	
 public func ==(lhs: UUID, rhs: UUID) -> Bool {
-    return (lhs.compareTo(rhs) == 0)
+	return (lhs.compareTo(rhs) == 0)
 }
-    
+	
 #endif

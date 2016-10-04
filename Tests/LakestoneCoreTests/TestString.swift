@@ -168,7 +168,7 @@ class TestString: Test {
 		Assert.IsNotNil("0".boolRepresentation)
 		Assert.IsNil("".boolRepresentation)
 		Assert.IsNil(" true".boolRepresentation)
-	}
+    }
 }
 
 #if !COOPER

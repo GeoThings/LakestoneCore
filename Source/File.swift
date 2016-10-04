@@ -141,7 +141,7 @@ extension File {
 	public func overwrite(with data: Data) throws {
 		
 		#if COOPER
-			let outputChannel = try FileOutputStream(self, false).getChannel()
+			let outputChannel = FileOutputStream(self, false).getChannel()
 			outputChannel.write(data)
 			outputChannel.close()
 			
@@ -163,7 +163,7 @@ extension File {
 		
 		#if COOPER
 			
-			let outputChannel = try FileOutputStream(self, true).getChannel()
+			let outputChannel = FileOutputStream(self, true).getChannel()
 			outputChannel.write(data)
 			outputChannel.close()
 		

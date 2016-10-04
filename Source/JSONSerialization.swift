@@ -21,8 +21,13 @@
 //
 
 #if COOPER
+    import org.json
+#else
+    import Foundation
+#endif
 
-import org.json
+
+#if COOPER
 
 public class JSONSerialization {
        
@@ -39,7 +44,7 @@ public class JSONSerialization {
             throw Error.UnsupportedEncoding
         }
         
-        let jsonEntity = try JSONTokener(utf8DataString).nextValue()
+        let jsonEntity = JSONTokener(utf8DataString).nextValue()
         if let jsonObject = jsonEntity as? JSONObject {
             return _serialize(object: jsonObject)
         } else if let jsonArray = jsonEntity as? JSONArray {
@@ -116,6 +121,7 @@ public class JSONSerialization {
     private class func _serialize(entity: Any) -> AnyObject {
         
         if let stringEntity = entity as? String {
+            /*
             if let boolRepresentation = stringEntity.boolRepresentation {
                 return boolRepresentation
             } else if let longRepresentation = stringEntity.longDecimalRepresentation {
@@ -124,17 +130,13 @@ public class JSONSerialization {
                 return doubleRepresentation
             } else {
                 return stringEntity
-            }
-        } else if let boolEntity = entity as? Bool {
-            return boolEntity
+            }*/
+            return stringEntity
+            
         } else if let decimalEntity = entity as? Int32 {
             return Int64(decimalEntity)
-        } else if let longEntity = entity as? Int64 {
-            return longEntity
         } else if let floatEntity = entity as? Float {
             return Double(floatEntity)
-        } else if let doubleEntity = entity as? Double {
-            return doubleEntity
         } else if let jsonObject = entity as? JSONObject {
             return _serialize(object: jsonObject)
         } else if let jsonArray = entity as? JSONArray {

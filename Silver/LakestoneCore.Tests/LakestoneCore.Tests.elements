@@ -126,6 +126,9 @@
         <Compile Include="..\..\Tests\LakestoneCoreTests\TestJSONSerialization.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
+        <Compile Include="..\..\Tests\LakestoneCoreTests\TestCustomSerialization.swift">
+            <VirtualFolder>Tests</VirtualFolder>
+        </Compile>
     </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\RemObjects Software\Elements\RemObjects.Elements.Cooper.Android.targets"/>
     <Import Project="..\LakestoneCore.Shared\LakestoneCore.Shared.projitems" Label="Shared"/>

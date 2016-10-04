@@ -85,7 +85,7 @@ extension Date {
 		
 		#if COOPER
 			//ISO 8601 is not handled in Java until java 7. Once available, use X instead of Z in SimpleDateFormat, and remove replaceAll from here
-			return try? _xsdGMTDateFormatter.parse(string.replacingOccurrences(of: "Z$", with: "+0000"))
+			return _xsdGMTDateFormatter.parse(string.replacingOccurrences(of: "Z$", with: "+0000"))
 		#else
 			return _xsdGMTDateFormatter.date(from: string)
 		#endif
