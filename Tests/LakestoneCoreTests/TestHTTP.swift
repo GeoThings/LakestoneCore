@@ -1,4 +1,4 @@
-﻿//
+//
 //  TestHTTP.swift
 //  LakestoneCoreTests
 //
@@ -32,10 +32,9 @@
 	import XCTest
 	import Foundation
 
-	#if os(iOS) || os(watchOS) || os(tvOS)
-		@testable import LakestoneCoreIOS
-	#else
-		@testable import LakestoneCore
+    @testable import LakestoneCore
+    
+    #if os(Linux) || os(OSX)
 		import PerfectThread
 	#endif
 	
@@ -93,7 +92,7 @@ class TestHTTP: Test {
 				return
 			}
 			
-			guard let jsonResourceString = jsonData.utf8EncodedStringRepresentation else {
+			guard let jsonResourceString = jsonData.utf8EncodedStringRepresentationº else {
 				XCTFail("Cannot interpret the raw resource as string")
 				return
 			}

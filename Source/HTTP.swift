@@ -1,4 +1,4 @@
-﻿//
+//
 //  HTTP.swift
 //  LakestoneCore
 //
@@ -30,7 +30,6 @@
 	
 	import Foundation
 	#if os(OSX) || os(Linux)
-		import PerfectLib
 		import PerfectCURL
 		import cURL
 	#endif
@@ -62,7 +61,13 @@ public class HTTP {
 			static let Unknown = LakestoneError.with(stringRepresentation: "Internal unknown invocation error")
 			
 			#endif
-		}
+            
+            #if os(OSX) || os(Linux)
+            
+            static let NotUTF8EncodedBytes = LakestoneError.with(stringRepresentation: "Received response data cannot be inferred as UTF8 string")
+            
+            #endif
+        }
 		
 		#if os(OSX) || os(Linux)
 		
@@ -144,7 +149,10 @@ public class HTTP {
 				
 				let request = CURL(url: self.url.absoluteString)
 				let (invocationCode, headerBytes, bodyData) = request.performFully()
-				let headerString = UTF8Encoding.encode(bytes: headerBytes)
+                guard let headerString = String(bytes: headerBytes, encoding: String.Encoding.utf8) else {
+                    throw HTTP.Request.Error.NotUTF8EncodedBytes
+                }
+                
 				request.close()
 				
 				if CURLcode(rawValue: UInt32(invocationCode)) != CURLE_OK {

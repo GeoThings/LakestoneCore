@@ -14,20 +14,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "______Target_PerfectLib"
-               BuildableName = "PerfectLib.framework"
-               BlueprintName = "PerfectLib"
-               ReferencedContainer = "container:LakestoneCore.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "______Target_PerfectThread"
                BuildableName = "PerfectThread.framework"
                BlueprintName = "PerfectThread"
@@ -97,9 +83,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "______Target_PerfectLib"
-            BuildableName = "PerfectLib.framework"
-            BlueprintName = "PerfectLib"
+            BlueprintIdentifier = "______Target_PerfectThread"
+            BuildableName = "PerfectThread.framework"
+            BlueprintName = "PerfectThread"
             ReferencedContainer = "container:LakestoneCore.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

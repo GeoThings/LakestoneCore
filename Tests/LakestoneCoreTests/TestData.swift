@@ -22,20 +22,16 @@
 
 
 #if COOPER
-	
-	import remobjects.elements.eunit
-	
+    
+    import remobjects.elements.eunit
+    
 #else
-	
-	import XCTest
-	import Foundation
-	
-	#if os(iOS) || os(watchOS) || os(tvOS)
-		@testable import LakestoneCoreIOS
-	#else
-		@testable import LakestoneCore
-	#endif
-	
+    
+    import XCTest
+    import Foundation
+    
+    @testable import LakestoneCore
+    
 #endif
 
 class TestData: Test {

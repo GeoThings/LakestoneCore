@@ -11,5 +11,6 @@ XCTMain([
     testCase(TestFile.allTests),
     testCase(TestDirectory.allTests),
     testCase(TestJSONSerialization.allTests),
-    testCase(TestCustomSerialization.allTests)
+    testCase(TestCustomSerialization.allTests),
+    testCase(TestXMLSerialization.allTests)
 ])

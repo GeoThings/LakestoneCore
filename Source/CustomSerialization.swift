@@ -181,7 +181,7 @@ public class CustomSerialization {
                         type(of: dictionaryEntry) == [Any].self {
                         
                         // ignore the exact array type check
-                        // all dictionary entities will come in [Any], which cannot be changed to [ExactType] on runtime
+                        // all array entities will come in [Any], which cannot be changed to [ExactType] on runtime
                         
                         candidateValueMap[commonKey] = dictionaryEntry
                         

@@ -1,4 +1,4 @@
-﻿//
+//
 //  Directory.swift
 //  LakestoneCore
 //

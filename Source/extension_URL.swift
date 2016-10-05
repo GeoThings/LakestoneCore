@@ -100,6 +100,14 @@ extension URL {
         return URL(fileURLWithPath: self.path.substring(to: prelastComponentStart.lowerBound))
     }
     
+    //TODO: Resolve a relative URL into absolute in Java
+    
+    /// - warning: in JAVA doesn't resolve the relative URL into absolute
+    ///            Available now only for compatibility
+    public var absoluteURL: URL {
+        return self
+    }
+    
     
     #endif
     

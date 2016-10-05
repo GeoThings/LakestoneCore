@@ -1,4 +1,4 @@
-﻿//
+//
 //  TestDirectory.swift
 //  LakestoneCore
 //
@@ -21,20 +21,16 @@
 //
 
 #if COOPER
-	
-	import remobjects.elements.eunit
-	
+    
+    import remobjects.elements.eunit
+    
 #else
-	
-	import XCTest
-	import Foundation
-	
-	#if os(iOS) || os(watchOS) || os(tvOS)
-		@testable import LakestoneCoreIOS
-	#else
-		@testable import LakestoneCore
-	#endif
-	
+    
+    import XCTest
+    import Foundation
+    
+    @testable import LakestoneCore
+    
 #endif
 
 class TestDirectory: Test {
@@ -58,7 +54,9 @@ class TestDirectory: Test {
 		#if COOPER
 			self.workingDirectoryPath = MainActivity.currentInstance.getFilesDir().getCanonicalPath()
 		#elseif os(iOS) || os(watchOS) || os(tvOS)
-			self.workingDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, false)
+            if let documentsDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, false).first {
+                self.workingDirectoryPath = (documentsDirectoryPath as NSString).expandingTildeInPath
+            }
 		#else
 			self.workingDirectoryPath = FileManager.default.currentDirectoryPath
 		#endif
@@ -66,11 +64,9 @@ class TestDirectory: Test {
 	
 	public func testDirectoryOperations(){
 		
-		
-		
-		let testDirectoryURL = URL(fileURLWithPath: workingDirectoryPath).appendingPathComponent("testDirectory")
+        let testDirectoryURL = URL(fileURLWithPath: workingDirectoryPath).appendingPathComponent("testDirectory")
 		let testDirectory = Directory(fileURL: testDirectoryURL)
-		
+        
 		do {
 			
 			if testDirectory.exists {

@@ -1,15 +1,14 @@
 //
-//  LakestoneCoreIOSTests.swift
-//  LakestoneCoreIOSTests
+//  LakestoneCoreTestsIOS.swift
+//  LakestoneCoreTestsIOS
 //
-//  Created by Taras Vozniuk on 9/22/16.
+//  Created by Taras Vozniuk on 10/5/16.
 //
 //
 
 import XCTest
-@testable import LakestoneCoreIOS
 
-class LakestoneCoreIOSTests: XCTestCase {
+class LakestoneCoreTestsIOS: XCTestCase {
     
     override func setUp() {
         super.setUp()

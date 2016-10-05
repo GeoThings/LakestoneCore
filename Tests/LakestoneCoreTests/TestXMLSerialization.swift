@@ -1,8 +1,8 @@
-﻿//
-//  TestUUID.swift
+//
+//  TestXMLSerialization.swift
 //  LakestoneCore
 //
-//  Created by Taras Vozniuk on 9/28/16.
+//  Created by Taras Vozniuk on 10/5/16.
 //  Copyright © 2016 GeoThings. All rights reserved.
 //
 // --------------------------------------------------------
@@ -34,31 +34,21 @@
     
 #endif
 
-class TestUUID: Test {
-	
-	public func testUUID(){
-		
-		let newUUID = UUID()
-		
-		let uuidString = newUUID.uuidString
-		//RFC 4122 UUID: 32 hex digits + 4 dashes
-		Assert.AreEqual(newUUID.uuidString.characterCount, 36)
-		
-		guard let identicalUUID = UUID(uuidString: uuidString) else {
-			Assert.Fail("UUID string has invalid format")
-			return
-		}
-		
-		Assert.AreEqual(newUUID, identicalUUID)
-	}
+class TestXMLSerialization: Test {
+    
+    public func testXMLSerialization(){
+    }
+    
 }
 
 #if !COOPER
-extension TestUUID {
-	static var allTests : [(String, (TestUUID) -> () throws -> Void)] {
-		return [
-			("testUUID", testUUID)
-		]
-	}
+
+extension TestXMLSerialization {
+    static var allTests : [(String, (TestXMLSerialization) -> () throws -> Void)] {
+        return [
+            ("testXMLSerialization", testXMLSerialization)
+        ]
+    }
 }
+
 #endif

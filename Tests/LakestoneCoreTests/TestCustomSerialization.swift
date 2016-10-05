@@ -1,4 +1,4 @@
-﻿//
+//
 //  TestCustomSerialization.swift
 //  LakestoneCore
 //
@@ -29,11 +29,7 @@
 	import XCTest
 	import Foundation
 	
-#if os(iOS) || os(watchOS) || os(tvOS)
-	@testable import LakestoneCoreIOS
-	#else
-	@testable import LakestoneCore
-#endif
+    @testable import LakestoneCore
 	
 #endif
 
@@ -82,6 +78,8 @@ class TestCustomSerialization: Test {
 		
 		do {
 			
+            //XMLSerialization.test()
+            
 			let customDict: [String: Any] =
 				["testString": "someString",
 					"testInt": Int(26),
