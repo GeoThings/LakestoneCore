@@ -266,11 +266,11 @@ public class HTTP {
 		}
 		
 		/// origin of this responses
-		let url: URL
-		let statusCode: Int
-		let statusMessage: String
-		let headerFields: [String: String]
-		let dataº: Data?
+		public let url: URL
+		public let statusCode: Int
+		public let statusMessage: String
+		public let headerFields: [String: String]
+		public let dataº: Data?
 		
 		init(url: URL, statusCode: Int, statusMessage: String, headerFields: [String: String], data: Data? = nil){
 			self.url = url
