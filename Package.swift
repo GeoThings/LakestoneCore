@@ -31,7 +31,6 @@ let package = Package(
     dependencies: [
         .Package(url: "https://github.com/GeoThings/Perfect-CURL.git", majorVersion: 0, minor: 100),
         .Package(url: "https://github.com/GeoThings/Perfect-Thread.git", majorVersion: 0, minor: 100)
-        .Package(url: "https://github.com/GeoThings/SwiftLibXML2.git", majorVersion: 0)
     ]
 )
 

@@ -18,7 +18,6 @@
 		1A1421401DA6492F00ACD18E /* TestURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/TestURL.swift /* TestURL.swift */; };
 		1A1421411DA6493100ACD18E /* testUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/testUtilities.swift /* testUtilities.swift */; };
 		1A1421421DA6493300ACD18E /* TestUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/TestUUID.swift /* TestUUID.swift */; };
-		1A1421451DA6499100ACD18E /* osmChangesetSample.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1A1421431DA6499100ACD18E /* osmChangesetSample.xml */; };
 		1A1421461DA6499100ACD18E /* raster_digitalglobe.json in Resources */ = {isa = PBXBuildFile; fileRef = 1A1421441DA6499100ACD18E /* raster_digitalglobe.json */; };
 		_LinkFileRef_LakestoneCore_via_LakestoneCoreTests /* LakestoneCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_LakestoneCore" /* LakestoneCore.framework */; };
 		_LinkFileRef_PerfectCURL_via_LakestoneCore /* PerfectCURL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_PerfectCURL" /* PerfectCURL.framework */; };
@@ -83,7 +82,6 @@
 /* Begin PBXFileReference section */
 		1A1421301DA648EF00ACD18E /* LakestoneCoreTestsIOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LakestoneCoreTestsIOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A1421341DA648EF00ACD18E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1A1421431DA6499100ACD18E /* osmChangesetSample.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = osmChangesetSample.xml; sourceTree = "<group>"; };
 		1A1421441DA6499100ACD18E /* raster_digitalglobe.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = raster_digitalglobe.json; sourceTree = "<group>"; };
 		__PBXFileRef_LakestoneCore.xcodeproj/Configs/Project.xcconfig /* LakestoneCore.xcodeproj/Configs/Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LakestoneCore.xcodeproj/Configs/Project.xcconfig; sourceTree = "<group>"; };
 		__PBXFileRef_Package.swift /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
@@ -169,7 +167,6 @@
 		1A1421311DA648EF00ACD18E /* LakestoneCoreTestsIOS */ = {
 			isa = PBXGroup;
 			children = (
-				1A1421431DA6499100ACD18E /* osmChangesetSample.xml */,
 				1A1421441DA6499100ACD18E /* raster_digitalglobe.json */,
 				1A1421341DA648EF00ACD18E /* Info.plist */,
 			);
@@ -434,7 +431,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A1421451DA6499100ACD18E /* osmChangesetSample.xml in Resources */,
 				1A1421461DA6499100ACD18E /* raster_digitalglobe.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
