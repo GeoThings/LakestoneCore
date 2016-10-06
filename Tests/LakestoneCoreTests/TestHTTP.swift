@@ -1,4 +1,4 @@
-//
+﻿//
 //  TestHTTP.swift
 //  LakestoneCoreTests
 //
@@ -32,9 +32,10 @@
 	import XCTest
 	import Foundation
 
-    @testable import LakestoneCore
-    
-    #if os(Linux) || os(OSX)
+	@testable import LakestoneCore
+	
+	#if COOPER
+	#elseif os(Linux) || os(OSX)
 		import PerfectThread
 	#endif
 	

@@ -1,4 +1,4 @@
-﻿//
+//
 //  alliases.swift
 //  LakestoneCore
 //
@@ -134,7 +134,7 @@
 	public typealias Date = java.util.Date
 	public typealias UUID = java.util.UUID
 	public typealias File = java.io.File
-	public typealias Error = java.lang.Exception
+	public typealias Error = java.lang.Throwable
 	
 #else
 

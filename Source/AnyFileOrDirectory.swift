@@ -21,69 +21,69 @@
 //
 
 #if !COOPER
-    import Foundation
+	import Foundation
 #endif
 
 public protocol AnyFileOrDirectory {
-    
-    var path: String { get }
-    var exists: Bool { get }
-    var isDirectory: Bool { get }
-    
-    var name: String { get }
-    var size: Int64 { get }
-    var lastModificationDateº: Date? { get }
-    
-    func remove() throws
-    
-    var parentDirectoryº: Directory? { get }
-    
-    //TODO: implement copy(to:, overwrites:), move(to:, overwrites:)
+	
+	var path: String { get }
+	var exists: Bool { get }
+	var isDirectory: Bool { get }
+	
+	var name: String { get }
+	var size: Int64 { get }
+	var lastModificationDateº: Date? { get }
+	
+	func remove() throws
+	
+	var parentDirectoryº: Directory? { get }
+	
+	//TODO: implement copy(to:, overwrites:), move(to:, overwrites:)
 }
 
 #if !COOPER
 extension AnyFileOrDirectory {
-    
-    public var exists: Bool {
-        return FileManager.default.fileExists(atPath: self.path)
-    }
-    
-    public var isDirectory: Bool {
-        var isDirectoryPath: ObjCBool = ObjCBool(false)
-        let doesFileExists = FileManager.default.fileExists(atPath: self.path, isDirectory: &isDirectoryPath)
-        #if os(Linux)
-            return doesFileExists && Bool(isDirectoryPath)
-        #else
-            return doesFileExists && isDirectoryPath.boolValue
-        #endif
-    }
+	
+	public var exists: Bool {
+		return FileManager.default.fileExists(atPath: self.path)
+	}
+	
+	public var isDirectory: Bool {
+		var isDirectoryPath: ObjCBool = ObjCBool(false)
+		let doesFileExists = FileManager.default.fileExists(atPath: self.path, isDirectory: &isDirectoryPath)
+		#if os(Linux)
+			return doesFileExists && Bool(isDirectoryPath)
+		#else
+			return doesFileExists && isDirectoryPath.boolValue
+		#endif
+	}
 
-    public var lastModificationDateº: Date? {
-        guard let fileAttributes = try? FileManager.default.attributesOfItem(atPath: self.path) else {
-            return nil
-        }
-        
-        return fileAttributes[FileAttributeKey.modificationDate] as? Date
-    }
+	public var lastModificationDateº: Date? {
+		guard let fileAttributes = try? FileManager.default.attributesOfItem(atPath: self.path) else {
+			return nil
+		}
+		
+		return fileAttributes[FileAttributeKey.modificationDate] as? Date
+	}
 }
 #endif
 
 
 public func FileOrDirectory(with path: String) -> AnyFileOrDirectory {
-    let file = File(path: path)
-    if (file.isDirectory) {
-        return Directory(path: path)
-    } else {
-        return file
-    }
+	let file = File(path: path)
+	if (file.isDirectory) {
+		return Directory(path: path)
+	} else {
+		return file
+	}
 }
 
 public func FileOrDirectory(with fileURL: URL) -> AnyFileOrDirectory {
-    let file = File(fileURL: fileURL)
-    if (file.isDirectory) {
-        return Directory(fileURL: fileURL)
-    } else {
-        return file
-    }
+	let file = File(fileURL: fileURL)
+	if (file.isDirectory) {
+		return Directory(fileURL: fileURL)
+	} else {
+		return file
+	}
 }
 
