@@ -1,4 +1,4 @@
-//
+﻿//
 //  TestCustomSerialization.swift
 //  LakestoneCore
 //
@@ -29,7 +29,7 @@
 	import XCTest
 	import Foundation
 	
-    @testable import LakestoneCore
+	@testable import LakestoneCore
 	
 #endif
 
@@ -47,21 +47,26 @@ class InternalSomething: CustomSerializable {
 		self.argument3 = variableMap["argument3"] as! Double
 	}
 	
+	static var ignoredVariableNames: Set<String> {
+		return Set<String>()
+	}
 }
 
 class TestSomething: CustomSerializable {
 	
-	var testString = String()
+	var testString: String? = String()
 	var testInt = Int()
 	var testDouble = Double()
 	var testSomething = InternalSomething()
 	var testArray = [Int]()
 	var testSomethingArray = [InternalSomething]()
 	
+	var ignoredString = "ignored sample"
+	
 	required public init(){}
 	
 	required public init(variableMap: [String : Any]) throws {
-		self.testString = variableMap["testString"] as! String
+		self.testString = variableMap["testString"] as? String
 		self.testInt = variableMap["testInt"] as! Int
 		self.testDouble = variableMap["testDouble"] as! Double
 		self.testSomething = variableMap["testSomething"] as! InternalSomething
@@ -69,6 +74,9 @@ class TestSomething: CustomSerializable {
 		self.testSomethingArray = variableMap["testSomethingArray"] as! [InternalSomething]
 	}
 	
+	static var ignoredVariableNames: Set<String> {
+		return Set<String>(["ignoredString"])
+	}
 }
 
 
@@ -78,8 +86,6 @@ class TestCustomSerialization: Test {
 		
 		do {
 			
-            //XMLSerialization.test()
-            
 			let customDict: [String: Any] =
 				["testString": "someString",
 					"testInt": Int(26),
@@ -97,20 +103,43 @@ class TestCustomSerialization: Test {
 									 ["argument1": "oneMoreString",
 									  "argument2": false,
 									  "argument3": 14.0]]
+				
 				 ]
 			
 			let dictAfter = try CustomSerialization.applyCustomSerialization(ofCustomTypes: [TestSomething.self, InternalSomething.self], to: customDict)
 			Assert.IsTrue(dictAfter is TestSomething)
-			Assert.AreEqual((dictAfter as? TestSomething)?.testSomethingArray.first?.argument3 ?? 0, 12.0)
-			Assert.AreEqual((dictAfter as? TestSomething)?.testSomethingArray.last?.argument3 ?? 0, 14.0)
-			Assert.AreEqual((dictAfter as? TestSomething)?.testDouble ?? 0.0, 26.0)
-			Assert.AreEqual((dictAfter as? TestSomething)?.testString ?? "", "someString")
-            Assert.AreEqual((dictAfter as? TestSomething)?.testInt ?? 0, 26)
-            Assert.AreEqual((dictAfter as? TestSomething)?.testArray.first ?? 0, 26)
-            Assert.AreEqual((dictAfter as? TestSomething)?.testArray.last ?? 0, 12)
-            
+			guard let testSomething = dictAfter as? TestSomething else {
+				Assert.Fail("The serialization didn't yield expected type")
+				return
+			}
+			
+			Assert.AreEqual(testSomething.testSomethingArray.first?.argument3 ?? 0, 12.0)
+			Assert.AreEqual(testSomething.testSomethingArray.last?.argument3 ?? 0, 14.0)
+			Assert.AreEqual(testSomething.testDouble, 26.0)
+			Assert.AreEqual(testSomething.testString ?? "", "someString")
+			Assert.AreEqual(testSomething.testInt, 26)
+			Assert.AreEqual(testSomething.testArray.first ?? 0, 26)
+			Assert.AreEqual(testSomething.testArray.last ?? 0, 12)
+ 
+			do {
+				let serializedDict = try CustomSerialization.dictionary(customEntity: testSomething)
+				Assert.AreEqual(serializedDict["testString"] as? String ?? "", "someString")
+				Assert.AreEqual(serializedDict["testInt"] as? Int ?? 0, 26)
+				
+                try JSONSerialization.data(withJSONObject: serializedDict)
+                
+			} catch let error as LakestoneError {
+				if let containerError = error.representation as? CustomSerialization.SerializationError {
+					Assert.Fail("Serialization failed because type:\(containerError.typeName) is not serializable")
+				} else {
+					Assert.Fail("\(error)")
+				}
+			} catch {
+				Assert.Fail("\(error)")
+			}
+			
 		} catch {
-			print(error)
+			Assert.Fail("\(error)")
 		}
 	}
 	
@@ -118,10 +147,10 @@ class TestCustomSerialization: Test {
 
 #if !COOPER
 extension TestCustomSerialization {
-    static var allTests : [(String, (TestCustomSerialization) -> () throws -> Void)] {
-        return [
-            ("testCustomSerialization", testCustomSerialization)
-        ]
-    }
+	static var allTests : [(String, (TestCustomSerialization) -> () throws -> Void)] {
+		return [
+			("testCustomSerialization", testCustomSerialization)
+		]
+	}
 }
 #endif

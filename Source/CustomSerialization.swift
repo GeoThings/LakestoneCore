@@ -23,7 +23,32 @@
 public protocol CustomSerializable {
 	init()
 	init(variableMap: [String: Any]) throws
+	
+	static var ignoredVariableNames: Set<String> { get }
 }
+
+/// protocol that is used for custom types serialization to standard types
+/// that can be then used in JSON, XML formats.
+/// Utilized in CustomSerialization.collection(from:) serialization
+public protocol StringRepresentable {
+	var stringRepresentation: String { get }
+}
+
+
+
+#if !COOPER
+
+fileprivate protocol WrappedTypeRetrievable {
+	var wrappedType: Any.Type { get }
+}
+	
+extension Optional: WrappedTypeRetrievable {
+	fileprivate var wrappedType: Any.Type {
+		return Wrapped.self
+	}
+}
+	
+#endif
 
 #if COOPER
 	public typealias CustomSerializableType = Class
@@ -35,7 +60,22 @@ public protocol CustomSerializable {
 
 public class CustomSerialization {
 	
-	public class func applyCustomSerialization(ofCustomTypes customTypes: [CustomSerializableType], to serializedObject: Any) throws -> Any {
+	public class SerializationError: ErrorRepresentable {
+		
+		let typeName: String
+		let detail: String
+		
+		init(typeWithName: String, detail: String){
+			self.typeName = typeWithName
+			self.detail = detail
+		}
+		
+		public var detailMessage: String {
+			return detail
+		}
+	}
+	
+	public class func applyCustomSerialization(ofCustomTypes customTypes: [CustomSerializableType], to collection: Any) throws -> Any {
 		
 		#if COOPER
 		
@@ -55,7 +95,7 @@ public class CustomSerialization {
 		
 		#endif
 		
-		return try _serialize(object: serializedObject, withCustomVariableMap: variableMap)
+		return try _serialize(object: collection, withCustomVariableMap: variableMap)
 	}
 	
 	private class func _serialize(object: Any, withCustomVariableMap variableMap: [(CustomSerializableType, [ReflectableField])]) throws -> Any {
@@ -85,7 +125,111 @@ public class CustomSerialization {
 			return object
 		}
 	}
+	
+	public class func dictionary(customEntity: CustomSerializable) throws -> [String: Any] {
+		
+		var variableDictionary = [String: Any]()
+		
+		#if COOPER
+		
+			let declaredFields = [ReflectableField](customEntity.Class.getDeclaredFields())
+			
+			for declaredField in declaredFields {
+				declaredField.setAccessible(true)
+				guard let fieldValue = declaredField.`get`(customEntity) else {
+					continue
+				}
+				
+				let fieldNameWithRemovedPrivatePrefix: (ReflectableField) -> String = { (field: ReflectableField) in
+					let fieldName = field.getName()
+					if let privatePrefixRange = fieldName.range(of: "$p_"){
+						return fieldName.replacingCharacters(in: privatePrefixRange, with: String())
+					} else {
+						return fieldName
+					}
+				}
+				
+				let fieldName = fieldNameWithRemovedPrivatePrefix(declaredField)
+				variableDictionary[fieldName] = try _deserialize(entity: fieldValue)
+			}
+		
+		#else
+			
+			// if optional is stored as Any, you cannot unwrap Any type from it
+			
+			for child in Mirror(reflecting: customEntity).children {
+				guard let variableName = child.label
+					else {
+						continue
+				}
+				
+				var value: Any = child.value
+				if Mirror(reflecting: value).displayStyle == .optional {
+					value = Mirror(reflecting: value).descendant("some")!
+				}
+				
+				variableDictionary[variableName] = try _deserialize(entity: value)
+			}
+			
+			
+		#endif
+		
+		return variableDictionary
+	}
 
+	private class func _deserialize(entity: Any) throws -> Any {
+		
+		if entity is String {
+			
+			return entity
+			
+		} else if entity is Int || entity is Bool || entity is Double || entity is Float {
+	
+			return entity
+			
+		} else if let customSerializableEntity = entity as? CustomSerializable {
+			
+			return try dictionary(customEntity: customSerializableEntity)
+			
+		} else if let arrayEntity = entity as? [Any] {
+			
+			var targetArray = [Any]()
+			for entry in arrayEntity {
+				targetArray.append(try _deserialize(entity: entry))
+			}
+			
+			return targetArray
+			
+		} else if let dictionaryEntity = entity as? [String: Any] {
+			
+			var targetDictionary = [String: Any]()
+			for (key, value) in dictionaryEntity {
+				targetDictionary[key] = try _deserialize(entity: value)
+			}
+			
+			return targetDictionary
+			
+		} else if let stringRepresentable = entity as? StringRepresentable {
+			
+			return stringRepresentable.stringRepresentation
+			
+		} else if entity is Int8 || entity is UInt8 || entity is Int16 || entity is UInt16 ||
+			entity is Int32 || entity is UInt32 || entity is Int64 || entity is UInt64 {
+			
+			return entity
+		
+		} else {
+			
+			#if COOPER
+				let serializationError = SerializationError(typeWithName: entity.Class.getName(), detail: "Entity is not serializable")
+			#else
+				let serializationError = SerializationError(typeWithName: "\(type(of: entity))", detail: "Entity is not serializable")
+			#endif
+			
+			throw LakestoneError(serializationError)
+		}
+	}
+	
 	private class func _attemptSerilization(forDictionary dictionaryEntity: [String: Any],
 											withCustomVariableMap variableMap: [(CustomSerializableType, [ReflectableField])]) throws -> Any {
 		
@@ -113,18 +257,30 @@ public class CustomSerialization {
 					}
 				}
 			
-				let variableNamesSet = Set<String>([String](fields.map(fieldNameWithRemovedPrivatePrefix)))
+				var variableNamesSet = Set<String>([String](fields.map(fieldNameWithRemovedPrivatePrefix)))
 				
 				var typesMap = [String: Class]()
 				for field in fields {
 					typesMap[fieldNameWithRemovedPrivatePrefix(field)] = field.getType()
 				}
+				
 			#else
-				let variableNamesSet = Set<String>(fields.flatMap { $0.label })
+				
+				var variableNamesSet = Set<String>(fields.flatMap { $0.label })
 				var typesMap = [String: Any]()
 				for field in (fields.filter { $0.label != nil }) {
 					typesMap[field.label!] = field.value
 				}
+				
+			#endif
+			
+			// remove ignored variables
+			#if COOPER
+				//variableNamesSet = variableNamesSet.subtracting((SomeType as! CustomSerializable).ignoredVariableNames)
+				let ignoredVariableNames = SomeType.getDeclaredMethod("getignoredVariableNames", []).invoke(nil, []) as! Set<String>
+				variableNamesSet = variableNamesSet.subtracting(ignoredVariableNames)
+			#else
+				variableNamesSet = variableNamesSet.subtracting(SomeType.ignoredVariableNames)
 			#endif
 			
 			// dictionary entity doesn't contain all CustomSerializable type fields
@@ -171,10 +327,19 @@ public class CustomSerialization {
 				#else
 					
 					if let expectedEntry = typesMap[commonKey],
-						let dictionaryEntry = dictionaryEntity[commonKey],
-						type(of: expectedEntry) == type(of: dictionaryEntry) {
+					   let dictionaryEntry = dictionaryEntity[commonKey],
+					   type(of: expectedEntry) == type(of: dictionaryEntry) {
 						
 						//dictionary entry matches the class field in type
+						candidateValueMap[commonKey] = dictionaryEntry
+						
+					} else if let dictionaryEntry = dictionaryEntity[commonKey],
+							  let expectedEntry = typesMap[commonKey],
+							  Mirror(reflecting: expectedEntry).displayStyle == .optional,
+							  let wrappedTypeRetrievable = expectedEntry as? WrappedTypeRetrievable,
+							  type(of: dictionaryEntry) == wrappedTypeRetrievable.wrappedType {
+					
+						//dictionary entry matches the class optional field's wrapped type
 						candidateValueMap[commonKey] = dictionaryEntry
 						
 					} else if let dictionaryEntry = dictionaryEntity[commonKey],

@@ -276,8 +276,8 @@
 				__PBXFileRef_Tests/LakestoneCoreTests/TestJSONSerialization.swift /* TestJSONSerialization.swift */,
 				__PBXFileRef_Tests/LakestoneCoreTests/TestString.swift /* TestString.swift */,
 				__PBXFileRef_Tests/LakestoneCoreTests/TestURL.swift /* TestURL.swift */,
-				__PBXFileRef_Tests/LakestoneCoreTests/testUtilities.swift /* testUtilities.swift */,
 				__PBXFileRef_Tests/LakestoneCoreTests/TestUUID.swift /* TestUUID.swift */,
+				__PBXFileRef_Tests/LakestoneCoreTests/testUtilities.swift /* testUtilities.swift */,
 			);
 			name = LakestoneCoreTests;
 			path = Tests/LakestoneCoreTests;
