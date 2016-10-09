@@ -25,16 +25,22 @@ public protocol CustomSerializable {
 	init(variableMap: [String: Any]) throws
 	
 	static var ignoredVariableNames: Set<String> { get }
+	static var allowedTypeDifferentVariableNames: Set<String> { get }
+    var manuallySerializedValues: [String: Any] { get }
 }
 
-/// protocol that is used for custom types serialization to standard types
+/// protocol that are used for custom types serialization to supported types
 /// that can be then used in JSON, XML formats.
 /// Utilized in CustomSerialization.collection(from:) serialization
-public protocol StringRepresentable {
-	var stringRepresentation: String { get }
+///
+///	 Supported Types
+///	 Int, UInt, Int8, UInt8, .... , Int64, UInt64, Float, Double, Bool
+///	 Array, Dictionary, Set
+///	 CustomSerializable
+///
+public protocol SerializableTypeRepresentable {
+	var serializableRepresentation: Any { get }
 }
-
-
 
 #if !COOPER
 
@@ -53,6 +59,9 @@ extension Optional: WrappedTypeRetrievable {
 #if COOPER
 	public typealias CustomSerializableType = Class
 	fileprivate typealias ReflectableField = java.lang.reflect.Field
+	
+	private typealias AnyHashable = Object
+	
 #else
 	public typealias CustomSerializableType = CustomSerializable.Type
 	fileprivate typealias ReflectableField = Mirror.Child
@@ -98,6 +107,65 @@ public class CustomSerialization {
 		return try _serialize(object: collection, withCustomVariableMap: variableMap)
 	}
 	
+	public class func dictionary(from customEntity: CustomSerializable) throws -> [String: Any] {
+		
+		var variableDictionary = [String: Any]()
+		
+		#if COOPER
+			
+			let declaredFields = [ReflectableField](customEntity.Class.getDeclaredFields())
+			for declaredField in declaredFields {
+				declaredField.setAccessible(true)
+				
+				let fieldNameWithRemovedPrivatePrefix: (ReflectableField) -> String = { (field: ReflectableField) in
+					let fieldName = field.getName()
+					if let privatePrefixRange = fieldName.range(of: "$p_"){
+						return fieldName.replacingCharacters(in: privatePrefixRange, with: String())
+					} else {
+						return fieldName
+					}
+				}
+				
+				let fieldName = fieldNameWithRemovedPrivatePrefix(declaredField)
+				
+				if let manuallySerializedValue = customEntity.manuallySerializedValues[fieldName] {
+                    variableDictionary[fieldName] = manuallySerializedValue
+				} else if let fieldValue = declaredField.`get`(customEntity) {
+					variableDictionary[fieldName] = try _deserialize(entity: fieldValue)
+				} else {
+					continue
+				}
+			}
+			
+		#else
+			
+			// if optional is stored as Any, you cannot unwrap Any type from it
+			
+			for child in Mirror(reflecting: customEntity).children {
+				guard let variableName = child.label
+					else {
+						continue
+				}
+				
+				if let manuallySerializedValue = customEntity.manuallySerializedValues[variableName] {
+					variableDictionary[variableName] = manuallySerializedValue
+					continue
+				}
+				
+				var value: Any = child.value
+				if Mirror(reflecting: value).displayStyle == .optional {
+					value = Mirror(reflecting: value).descendant("some")!
+				}
+				
+				variableDictionary[variableName] = try _deserialize(entity: value)
+			}
+			
+			
+		#endif
+		
+		return variableDictionary
+	}
+	
 	private class func _serialize(object: Any, withCustomVariableMap variableMap: [(CustomSerializableType, [ReflectableField])]) throws -> Any {
 		
 		if let dictionaryEntity = object as? [String: Any]{
@@ -126,70 +194,15 @@ public class CustomSerialization {
 		}
 	}
 	
-	public class func dictionary(customEntity: CustomSerializable) throws -> [String: Any] {
-		
-		var variableDictionary = [String: Any]()
-		
-		#if COOPER
-		
-			let declaredFields = [ReflectableField](customEntity.Class.getDeclaredFields())
-			
-			for declaredField in declaredFields {
-				declaredField.setAccessible(true)
-				guard let fieldValue = declaredField.`get`(customEntity) else {
-					continue
-				}
-				
-				let fieldNameWithRemovedPrivatePrefix: (ReflectableField) -> String = { (field: ReflectableField) in
-					let fieldName = field.getName()
-					if let privatePrefixRange = fieldName.range(of: "$p_"){
-						return fieldName.replacingCharacters(in: privatePrefixRange, with: String())
-					} else {
-						return fieldName
-					}
-				}
-				
-				let fieldName = fieldNameWithRemovedPrivatePrefix(declaredField)
-				variableDictionary[fieldName] = try _deserialize(entity: fieldValue)
-			}
-		
-		#else
-			
-			// if optional is stored as Any, you cannot unwrap Any type from it
-			
-			for child in Mirror(reflecting: customEntity).children {
-				guard let variableName = child.label
-					else {
-						continue
-				}
-				
-				var value: Any = child.value
-				if Mirror(reflecting: value).displayStyle == .optional {
-					value = Mirror(reflecting: value).descendant("some")!
-				}
-				
-				variableDictionary[variableName] = try _deserialize(entity: value)
-			}
-			
-			
-		#endif
-		
-		return variableDictionary
-	}
-
 	private class func _deserialize(entity: Any) throws -> Any {
 		
 		if entity is String {
 			
 			return entity
 			
-		} else if entity is Int || entity is Bool || entity is Double || entity is Float {
+		} else if entity is Int || entity is Bool || entity is Double || entity is Float || entity is Int64 || entity is UInt  {
 	
 			return entity
-			
-		} else if let customSerializableEntity = entity as? CustomSerializable {
-			
-			return try dictionary(customEntity: customSerializableEntity)
 			
 		} else if let arrayEntity = entity as? [Any] {
 			
@@ -209,15 +222,28 @@ public class CustomSerialization {
 			
 			return targetDictionary
 			
-		} else if let stringRepresentable = entity as? StringRepresentable {
+		} else if let customSerializableEntity = entity as? CustomSerializable {
 			
-			return stringRepresentable.stringRepresentation
+			return try dictionary(from: customSerializableEntity)
+			
+		} else if let serializableTypeRepresentable = entity as? SerializableTypeRepresentable {
+			
+			return serializableTypeRepresentable.serializableRepresentation
 			
 		} else if entity is Int8 || entity is UInt8 || entity is Int16 || entity is UInt16 ||
-			entity is Int32 || entity is UInt32 || entity is Int64 || entity is UInt64 {
+			entity is Int32 || entity is UInt32 || entity is UInt64 {
 			
 			return entity
 		
+		} else if let setEntity = entity as? Set<AnyHashable> {
+		
+			var targetArray = [Any]()
+			for entry in setEntity {
+				targetArray.append(try _deserialize(entity: entry))
+			}
+			
+			return targetArray
+			
 		} else {
 			
 			#if COOPER
@@ -240,9 +266,6 @@ public class CustomSerialization {
 		
 		// the #entries difference between dictionary keys and class variables
 		var targetDifference = Int.max
-		
-		// the final variable map that will be used to initialize CustomSerializable instance
-		var targetValueMap = [String: Any]()
 		
 		for (SomeType, fields) in variableMap {
 			
@@ -279,8 +302,12 @@ public class CustomSerialization {
 				//variableNamesSet = variableNamesSet.subtracting((SomeType as! CustomSerializable).ignoredVariableNames)
 				let ignoredVariableNames = SomeType.getDeclaredMethod("getignoredVariableNames", []).invoke(nil, []) as! Set<String>
 				variableNamesSet = variableNamesSet.subtracting(ignoredVariableNames)
+				
+				let allowedTypeDifferentVariableNames = SomeType.getDeclaredMethod("getallowedTypeDifferentVariableNames", []).invoke(nil, []) as! Set<String>
 			#else
 				variableNamesSet = variableNamesSet.subtracting(SomeType.ignoredVariableNames)
+				
+				let allowedTypeDifferentVariableNames = SomeType.allowedTypeDifferentVariableNames
 			#endif
 			
 			// dictionary entity doesn't contain all CustomSerializable type fields
@@ -297,18 +324,20 @@ public class CustomSerialization {
 			
 			// check if variable types match dictionary entries types
 			var typesMatch: Bool = true
-			var candidateValueMap = [String: Any]()
-			for commonKey in keysSet.union(variableNamesSet) {
+			for commonKey in keysSet.intersection(variableNamesSet) {
 				
 				#if COOPER
 					
-					if let ExpectedType = typesMap[commonKey],
+					if allowedTypeDifferentVariableNames.contains(commonKey) {
+						
+						//types allowed to be different, no type matching check needed
+						
+					} else if let ExpectedType = typesMap[commonKey],
 					   let dictionaryEntry = dictionaryEntity[commonKey],
 					   ExpectedType.isAssignableFrom(dictionaryEntry.getClass()) {
 						
 						//dictionary entry matches the class field in type
-						candidateValueMap[commonKey] = dictionaryEntry
-					
+						
 					// clause for a primitive type comparison.
 					// (First clause will fail in cases like < ExpectedType: double, dictionaryEntry.getClass(): java.lang.Double >)
 					} else if let ExpectedType = typesMap[commonKey],
@@ -317,7 +346,6 @@ public class CustomSerialization {
 						   ExpectedType.isAssignableFrom(mappedPrimitiveType) {
 						
 						//dictionary entry matches the class field in type
-						candidateValueMap[commonKey] = dictionaryEntry
 						
 					} else {
 						typesMatch = false
@@ -326,12 +354,15 @@ public class CustomSerialization {
 					
 				#else
 					
-					if let expectedEntry = typesMap[commonKey],
+					if allowedTypeDifferentVariableNames.contains(commonKey) {
+						
+						//types allowed to be different, no type matching check needed
+						
+					} else if let expectedEntry = typesMap[commonKey],
 					   let dictionaryEntry = dictionaryEntity[commonKey],
 					   type(of: expectedEntry) == type(of: dictionaryEntry) {
 						
 						//dictionary entry matches the class field in type
-						candidateValueMap[commonKey] = dictionaryEntry
 						
 					} else if let dictionaryEntry = dictionaryEntity[commonKey],
 							  let expectedEntry = typesMap[commonKey],
@@ -340,15 +371,12 @@ public class CustomSerialization {
 							  type(of: dictionaryEntry) == wrappedTypeRetrievable.wrappedType {
 					
 						//dictionary entry matches the class optional field's wrapped type
-						candidateValueMap[commonKey] = dictionaryEntry
 						
 					} else if let dictionaryEntry = dictionaryEntity[commonKey],
 						type(of: dictionaryEntry) == [Any].self {
 						
 						// ignore the exact array type check
 						// all array entities will come in [Any], which cannot be changed to [ExactType] on runtime
-						
-						candidateValueMap[commonKey] = dictionaryEntry
 						
 					} else {
 						typesMatch = false
@@ -361,7 +389,6 @@ public class CustomSerialization {
 			if typesMatch {
 				targetCandidateº = (SomeType, fields)
 				targetDifference = difference.count
-				targetValueMap = candidateValueMap
 				
 				// the dictionary maps 1-to-1 to CustomSerializable type
 				// consider match found
@@ -377,13 +404,13 @@ public class CustomSerialization {
 			#if COOPER
 			
 				if let constructor = SomeType.getDeclaredConstructor(java.util.HashMap<String, Object>.self){
-					return constructor.newInstance(targetValueMap)
+					return constructor.newInstance(dictionaryEntity)
 				} else {
 					return dictionaryEntity
 				}
 				
 			#else
-				return try SomeType.init(variableMap: targetValueMap)
+				return try SomeType.init(variableMap: dictionaryEntity)
 			#endif
 			
 		} else {

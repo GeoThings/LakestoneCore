@@ -34,8 +34,7 @@
 #endif
 
 class InternalSomething: CustomSerializable {
-	
-	var argument1 = String()
+    var argument1 = String()
 	var argument2 = false
 	var argument3 = Double()
 	
@@ -50,6 +49,15 @@ class InternalSomething: CustomSerializable {
 	static var ignoredVariableNames: Set<String> {
 		return Set<String>()
 	}
+    
+    static var allowedTypeDifferentVariableNames: Set<String> {
+        return Set<String>()
+    }
+    
+    public var manuallySerializedValues: [String : Any] {
+        return [String: Any]()
+    }
+    
 }
 
 class TestSomething: CustomSerializable {
@@ -57,6 +65,7 @@ class TestSomething: CustomSerializable {
 	var testString: String? = String()
 	var testInt = Int()
 	var testDouble = Double()
+    var testDate = Date()
 	var testSomething = InternalSomething()
 	var testArray = [Int]()
 	var testSomethingArray = [InternalSomething]()
@@ -72,12 +81,39 @@ class TestSomething: CustomSerializable {
 		self.testSomething = variableMap["testSomething"] as! InternalSomething
 		self.testArray = variableMap["testArray"] as! [Int]
 		self.testSomethingArray = variableMap["testSomethingArray"] as! [InternalSomething]
+        self.testDate = Date.with(xsdGMTDateTimeString: (variableMap["testDate"] as! String))!
+        
+        //validate that the extra variable is passed 
+        Assert.AreEqual(variableMap["someOtherVariable"] as? Int ?? 0, 12)
 	}
 	
 	static var ignoredVariableNames: Set<String> {
 		return Set<String>(["ignoredString"])
 	}
+    
+    static var allowedTypeDifferentVariableNames: Set<String> {
+        return Set<String>(["testDate"])
+    }
+    
+    // Method 2: Provide your own serialization
+    // These values will be presented in a resulting serialized dictionary
+    // No type check or additional processing will be done for these values
+    var manuallySerializedValues: [String : Any] {
+        return ["testDate": self.testDate.xsdGMTDateTimeString]
+    }
 }
+
+/*
+
+// Method 1: Conform to SerializableTypeRepresentable,
+// which will allow CustomSerialization serialize object to it by itself
+extension Date: SerializableTypeRepresentable {
+    public var serializableRepresentation: Any {
+        return self.xsdGMTDateTimeString
+    }
+}
+ 
+*/
 
 
 class TestCustomSerialization: Test {
@@ -91,6 +127,7 @@ class TestCustomSerialization: Test {
 					"testInt": Int(26),
 				 "testDouble": 26.0,
 				  "testArray": [Int]([26, 12, 42, 53, 12]),
+				  "testDate": "2016-09-01T00:00:00Z",
 			  "testSomething": ["argument1": "someString",
 								"argument2": false,
 								"argument3": 26.0],
@@ -102,7 +139,8 @@ class TestCustomSerialization: Test {
 									  "argument3": 26.0],
 									 ["argument1": "oneMoreString",
 									  "argument2": false,
-									  "argument3": 14.0]]
+									  "argument3": 14.0]],
+			  "someOtherVariable": 12
 				
 				 ]
 			
@@ -121,11 +159,14 @@ class TestCustomSerialization: Test {
 			Assert.AreEqual(testSomething.testArray.first ?? 0, 26)
 			Assert.AreEqual(testSomething.testArray.last ?? 0, 12)
  
+            Assert.AreEqual(testSomething.testDate, Date(timeIntervalSince1970: 1472688000.0))
+            
 			do {
-				let serializedDict = try CustomSerialization.dictionary(customEntity: testSomething)
+				let serializedDict = try CustomSerialization.dictionary(from: testSomething)
 				Assert.AreEqual(serializedDict["testString"] as? String ?? "", "someString")
 				Assert.AreEqual(serializedDict["testInt"] as? Int ?? 0, 26)
-				
+				Assert.AreEqual(serializedDict["testDate"] as? String ?? "", "2016-09-01T00:00:00Z")
+                
                 try JSONSerialization.data(withJSONObject: serializedDict)
                 
 			} catch let error as LakestoneError {
