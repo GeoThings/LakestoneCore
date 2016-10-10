@@ -369,7 +369,7 @@ extension PersistentPropertyList {
 			
 		#else
 		
-			return self.userDefaults.value(forKey: key) as? Date
+			return self.userDefaults.object(forKey: key) as? Date
 			
 		#endif
 	}
