@@ -44,6 +44,8 @@ public class TestPersistentPropertyList: Test {
 			let persistentPropertyList = PersistentPropertyList()
 		#endif
 		
+        // UserDefaults is not fully implemented on Linux with 3.0.0 shipped Foundation
+        // object(forKey: ) will yield nil in Linux for now
 		persistentPropertyList.set(true, forKey: "boolTest")
 		persistentPropertyList.set(26, forKey: "intTest")
 		persistentPropertyList.set(Float(26.0), forKey: "floatTest")
@@ -62,6 +64,7 @@ public class TestPersistentPropertyList: Test {
 		persistentPropertyList.set(UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!, forKey: "uuidTest")
 		persistentPropertyList.synchronize()
 		
+        //for now UserDefaults object(forKey:) will fail
 		Assert.AreEqual(persistentPropertyList.bool(forKey: "boolTest") ?? false, true)
 		Assert.AreEqual(persistentPropertyList.integer(forKey: "intTest") ?? 0, 26)
 		Assert.AreEqual(persistentPropertyList.float(forKey: "floatTest") ?? Float(0.0), Float(26.0))
