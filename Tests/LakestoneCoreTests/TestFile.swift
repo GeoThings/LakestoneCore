@@ -1,4 +1,4 @@
-//
+﻿//
 //  TestFile.swift
 //  LakestoneCore
 //
@@ -21,19 +21,19 @@
 //
 
 #if COOPER
-    
-    import remobjects.elements.eunit
-    
+	
+	import remobjects.elements.eunit
+	
 #else
-    
-    import XCTest
-    import Foundation
-    
-    @testable import LakestoneCore
-    
+	
+	import XCTest
+	import Foundation
+	
+	@testable import LakestoneCore
+	
 #endif
 
-class TestFile: Test {
+public class TestFile: Test {
 	
 	var workingDirectoryPath: String!
 	
@@ -43,7 +43,7 @@ class TestFile: Test {
 		self.commonSetup()
 	}
 	#else
-	override func setUp() {
+	override public func setUp() {
 		super.setUp()
 		self.commonSetup()
 	}
@@ -54,9 +54,9 @@ class TestFile: Test {
 		#if COOPER
 			self.workingDirectoryPath = MainActivity.currentInstance.getFilesDir().getCanonicalPath()
 		#elseif os(iOS) || os(watchOS) || os(tvOS)
-            if let documentsDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, false).first {
-                self.workingDirectoryPath = (documentsDirectoryPath as NSString).expandingTildeInPath
-            }
+			if let documentsDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, false).first {
+				self.workingDirectoryPath = (documentsDirectoryPath as NSString).expandingTildeInPath
+			}
 		#else
 			self.workingDirectoryPath = FileManager.default.currentDirectoryPath
 		#endif
@@ -110,16 +110,16 @@ class TestFile: Test {
 			try sameFileInitedWithPath.remove()
 			Assert.IsFalse(sameFileInitedWithPath.exists)
 			
-            guard let parentDirectory = testFile.parentDirectoryº else {
-                Assert.Fail("Cannot retrieve parent directory (already root)")
-                return
-            }
-            
-            Assert.AreEqual(parentDirectory.path, self.workingDirectoryPath)
+			guard let parentDirectory = testFile.parentDirectoryº else {
+				Assert.Fail("Cannot retrieve parent directory (already root)")
+				return
+			}
+			
+			Assert.AreEqual(parentDirectory.path, self.workingDirectoryPath)
 
-            let sameTestFile = File(fileURL: testFileURL)
-            Assert.AreEqual(sameTestFile, testFile)
-            
+			let sameTestFile = File(fileURL: testFileURL)
+			Assert.AreEqual(sameTestFile, testFile)
+			
 		} catch {
 			Assert.Fail("File operation failed: \(error)")
 		}

@@ -31,8 +31,8 @@ public class PersistentPropertyList {
 	
 	#if COOPER
 	
-	private let sharedPreference: SharedPreferences
-	private let sharedPreferenceEditor: SharedPreferences.Editor
+	fileprivate let sharedPreference: SharedPreferences
+	fileprivate let sharedPreferenceEditor: SharedPreferences.Editor
 	public init(applicationContext: Context, preferenceFileKey: String? = nil){
 		
 		if let passedPreferenceKey = preferenceFileKey {
@@ -46,7 +46,7 @@ public class PersistentPropertyList {
 	
 	#else
 	
-	private let userDefaults: UserDefaults
+	fileprivate let userDefaults: UserDefaults
 	public init(){
 		self.userDefaults = UserDefaults.standard
 	}
@@ -63,7 +63,7 @@ public class PersistentPropertyList {
 	
 	public func set(_ value: Int, forKey key: String){
 		#if COOPER
-			self.sharedPreferenceEditor.putInt(key, value)
+			self.sharedPreferenceEditor.putLong(key, value)
 		#else
 			self.userDefaults.set(value, forKey: key)
 		#endif
@@ -113,7 +113,7 @@ public class PersistentPropertyList {
 	
 	public func integer(forKey key: String) -> Int? {
 		#if COOPER
-			return (self.sharedPreference.contains(key)) ? self.sharedPreference.getInt(key, 0) : nil
+			return (self.sharedPreference.contains(key)) ? self.sharedPreference.getLong(key, 0) : nil
 		#else
 			return (self.userDefaults.object(forKey: key) != nil) ? self.userDefaults.integer(forKey: key) : nil
 		#endif
@@ -169,7 +169,7 @@ public class PersistentPropertyList {
 			
 		#endif   
 	}
-    
+	
 	public func removeObject(forKey key: String){
 		
 		#if COOPER
@@ -187,20 +187,309 @@ public class PersistentPropertyList {
 		#endif
 	}
 	
-	public var allKeys: Set<String> {
+	public func contains(key: String) -> Bool {
 		#if COOPER
-			
-			let javaStringSet = self.sharedPreference.getAll().keySet()
-			let returnSet = Set<String>()
-			for entity in javaStringSet {
-				returnSet.insert(entity)
+			return self.sharedPreference.contains(key)
+		#else
+			return self.userDefaults.object(forKey: key) != nil
+		#endif
+	}
+	
+	
+	#if COOPER
+	
+	public var allKeys: Set<String> {
+	
+		let javaStringSet = self.sharedPreference.getAll().keySet()
+		let returnSet = Set<String>()
+		for entity in javaStringSet {
+					returnSet.insert(entity)
+		}
+	
+		return returnSet
+	}
+	
+	#elseif !os(Linux)
+	
+	public var allKeys: Set<String> {
+		return Set<String>(self.userDefaults.dictionaryRepresentation().keys)
+	}
+	
+	#endif
+	
+	
+}
+
+// Array, Dictionary, Date, String, URL, UUID
+
+
+extension PersistentPropertyList {
+	 
+	/// -remark: Overloading with '_ value:' will result in dex failure in Silver
+	public func set(array: [Any], forKey key: String) {
+		
+		#if COOPER
+		
+			guard let jsonString = try? JSONSerialization.string(withJSONObject: array) else {
+				return
 			}
-			return returnSet
+			
+			self.set(jsonString, forKey: key)
 			
 		#else
-			return Set<String>(self.userDefaults.dictionaryRepresentation().keys)
+		
+			self.userDefaults.set(array, forKey: key)
 			
 		#endif
 	}
 	
+    public func set(set: Set<AnyHashable>, forKey key: String){
+        self.set(array: [AnyHashable](set), forKey: key)
+    }
+    
+	public func set(_ value: [String: Any], forKey key: String) {
+		
+		#if COOPER
+		
+			guard let jsonString = try? JSONSerialization.string(withJSONObject: value) else {
+				return
+			}
+			
+			self.set(jsonString, forKey: key)
+			
+		#else
+			
+			self.userDefaults.set(value, forKey: key)
+		
+		#endif
+	}
+	
+	
+	public func set(_ value: Date, forKey key: String) {
+		
+		#if COOPER
+		
+			let timeInterval = value.timeIntervalSince1970
+			self.set(timeInterval, forKey: key)
+			
+		#else
+		
+			self.userDefaults.set(value, forKey: key)
+			
+		#endif
+	}
+	
+	public func set(_ value: URL, forKey key: String) {
+		
+		#if COOPER
+		
+			let absoluteString = value.absoluteString
+			self.set(absoluteString, forKey: key)
+			
+		#else
+		
+			self.userDefaults.set(value, forKey: key)
+		
+		#endif
+	}
+	
+	public func set(_ uuid: UUID, forKey key: String){
+		
+		self.set(uuid.uuidString, forKey: key)
+	}
+	
+	public func array(forKey key: String) -> [Any]? {
+		
+		#if COOPER
+		
+			guard let jsonString = self.string(forKey: key),
+				  let jsonData = Data.with(utf8EncodedString: jsonString)
+			else {
+				return nil
+			}
+				  
+			guard let jsonObject = try? JSONSerialization.jsonObject(with: jsonData)
+			else {
+				return nil
+			}
+			
+			return jsonObject as? [Any]
+			
+		#else
+		
+			return self.userDefaults.array(forKey: key)
+			
+		#endif
+	}
+	
+    public func set(forKey key: String) -> Set<AnyHashable>? {
+        
+        guard let array = self.array(forKey: key) as? [AnyHashable] else {
+            return nil
+        }
+        
+        return Set<AnyHashable>(array)
+    }
+    
+	public func dictionary(forKey key: String) -> [String: Any]? {
+		
+		#if COOPER
+			
+			guard let jsonString = self.string(forKey: key),
+				  let jsonData = Data.with(utf8EncodedString: jsonString)
+			else {
+				return nil
+			}
+				
+			guard let jsonObject = try? JSONSerialization.jsonObject(with: jsonData)
+			else {
+				 return nil
+			}
+			
+			return jsonObject as? [String: Any]
+			
+		#else
+			
+			return self.userDefaults.dictionary(forKey: key)
+			
+		#endif
+	}
+	
+	
+	
+	public func date(forKey key: String) -> Date? {
+		
+		#if COOPER
+		
+			guard let timeInterval = self.double(forKey: key) else {
+				return nil
+			}
+			
+			return Date(timeIntervalSince1970: timeInterval)
+			
+		#else
+		
+			return self.userDefaults.value(forKey: key) as? Date
+			
+		#endif
+	}
+	
+	public func url(forKey key: String) -> URL? {
+	
+		#if COOPER
+		
+			guard let absoluteString = self.string(forKey: key) else {
+				return nil
+			}
+			
+			return URL(string: absoluteString)
+			
+		#else
+			
+			return self.userDefaults.url(forKey: key)
+		
+		#endif
+	}
+	
+	public func uuid(forKey key: String) -> UUID? {
+		
+		guard let uuidString = self.string(forKey: key) else {
+			return nil
+		}
+		
+		return UUID(uuidString: uuidString)
+	}
+	
+	
 }
+
+// CustomSerializable support
+extension PersistentPropertyList {
+	
+	public func set(_ customSerializable: CustomSerializable, forKey key: String) throws {
+		
+		let serializedDict = try CustomSerialization.dictionary(from: customSerializable)
+		
+		#if COOPER
+			
+			let jsonString = try JSONSerialization.string(withJSONObject: serializedDict)
+			self.set(jsonString, forKey: key)
+			
+		#else
+			
+			self.userDefaults.set(serializedDict, forKey: key)
+			
+		#endif
+	}
+	
+	public func set(customSerializableArray: [CustomSerializable], forKey key: String) throws {
+		
+		let serializedArray = try CustomSerialization.array(from: customSerializableArray)
+		
+		#if COOPER
+			
+			let jsonString = try JSONSerialization.string(withJSONObject: serializedArray)
+			self.set(jsonString, forKey: key)
+			
+		#else
+			
+			self.userDefaults.set(serializedArray, forKey: key)
+			
+		#endif
+	}
+	
+	#if COOPER
+	
+	// if using generics with Class<T> in Silver, the return type of T? will be interpretted as? '? extends CustomSerializable'
+	// while in Swift you can have strong typing with 
+	// public func customSerializable<T: CustomSerializable>(forKey key: String, ofDesiredType: T.Type, withTotalCustomTypes: [CustomSerializableType]) -> T?
+	// using the CustomSerializable return type for the sake of matching declarations for now
+	
+	private func _performCustomSerializationToUnderlyingParsedJSONEntity(forKey key: String, withCustomTypes: [CustomSerializableType]) -> Any? {
+		
+		guard let jsonString = self.string(forKey: key),
+			  let jsonData = Data.with(utf8EncodedString: jsonString),
+			  let jsonObject = try? JSONSerialization.jsonObject(with: jsonData),
+			  let targetEntity = try? CustomSerialization.applyCustomSerialization(ofCustomTypes: withCustomTypes, to: jsonObject)
+		else {
+			return nil
+		}
+		
+		return targetEntity
+	}
+	
+	public func customSerializable(forKey key: String, withCustomTypes: [CustomSerializableType]) -> CustomSerializable? {
+		return _performCustomSerializationToUnderlyingParsedJSONEntity(forKey: key, withCustomTypes: withCustomTypes) as? CustomSerializable
+	}
+	
+	public func customSerializableArray(forKey key: String, withCustomTypes: [CustomSerializableType]) -> [CustomSerializable]? {
+		return _performCustomSerializationToUnderlyingParsedJSONEntity(forKey: key, withCustomTypes: withCustomTypes) as? [CustomSerializable]
+	}
+	
+	#else
+	
+	public func customSerializable(forKey key: String, withCustomTypes: [CustomSerializableType]) -> CustomSerializable? {
+		
+		guard let storedDictionary = self.userDefaults.dictionary(forKey: key),
+			  let customSerializable = try? CustomSerialization.applyCustomSerialization(ofCustomTypes: withCustomTypes, to: storedDictionary)
+		else {
+			return nil
+		}
+		
+		return customSerializable as? CustomSerializable
+	}
+	
+	public func customSerializableArray(forKey key: String, withCustomTypes: [CustomSerializableType]) -> [CustomSerializable]? {
+		
+		guard let storedDictionary = self.userDefaults.array(forKey: key),
+			  let customSerializableArray = try? CustomSerialization.applyCustomSerialization(ofCustomTypes: withCustomTypes, to: storedDictionary)
+		else {
+			return nil
+		}
+		
+		return customSerializableArray as? [CustomSerializable]
+	}
+	
+	#endif
+}
+

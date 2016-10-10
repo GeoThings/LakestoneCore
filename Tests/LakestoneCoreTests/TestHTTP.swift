@@ -42,7 +42,7 @@
 #endif
 
 
-class TestHTTP: Test {
+public class TestHTTP: Test {
 		
 	var expectedResourceString: String!
 	
@@ -52,7 +52,7 @@ class TestHTTP: Test {
 		self.commonSetup()
 	}
 	#else
-	override func setUp() {
+	override public func setUp() {
 		super.setUp()
 		self.commonSetup()
 	}

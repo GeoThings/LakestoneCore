@@ -135,6 +135,9 @@
 	public typealias UUID = java.util.UUID
 	public typealias File = java.io.File
 	public typealias Error = java.lang.Throwable
+    
+    public typealias AnyHashable = java.lang.Object
+    
 	
 #else
 

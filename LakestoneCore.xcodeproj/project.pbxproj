@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A0856AA1DAA491E00006EC4 /* PersistentPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF1E311DA6B8B100CD4720 /* PersistentPropertyList.swift */; };
+		1A0856AC1DAA90F900006EC4 /* TestPersistentPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0856AB1DAA90F900006EC4 /* TestPersistentPropertyList.swift */; };
+		1A0856AD1DAA90F900006EC4 /* TestPersistentPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0856AB1DAA90F900006EC4 /* TestPersistentPropertyList.swift */; };
+		1A0856AE1DAB6C6B00006EC4 /* TestCustomSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/TestCustomSerialization.swift /* TestCustomSerialization.swift */; };
 		1A1421381DA6491D00ACD18E /* TestCustomSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/TestCustomSerialization.swift /* TestCustomSerialization.swift */; };
 		1A1421391DA6491F00ACD18E /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/TestData.swift /* TestData.swift */; };
 		1A14213A1DA6492200ACD18E /* TestDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/TestDate.swift /* TestDate.swift */; };
@@ -19,7 +23,6 @@
 		1A1421411DA6493100ACD18E /* testUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/testUtilities.swift /* testUtilities.swift */; };
 		1A1421421DA6493300ACD18E /* TestUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/TestUUID.swift /* TestUUID.swift */; };
 		1A1421461DA6499100ACD18E /* raster_digitalglobe.json in Resources */ = {isa = PBXBuildFile; fileRef = 1A1421441DA6499100ACD18E /* raster_digitalglobe.json */; };
-		1AAF1E321DA6B8B100CD4720 /* PersistentPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF1E311DA6B8B100CD4720 /* PersistentPropertyList.swift */; };
 		_LinkFileRef_LakestoneCore_via_LakestoneCoreTests /* LakestoneCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_LakestoneCore" /* LakestoneCore.framework */; };
 		_LinkFileRef_PerfectCURL_via_LakestoneCore /* PerfectCURL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_PerfectCURL" /* PerfectCURL.framework */; };
 		_LinkFileRef_PerfectCURL_via_LakestoneCoreTests /* PerfectCURL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_PerfectCURL" /* PerfectCURL.framework */; };
@@ -43,7 +46,6 @@
 		__src_cc_ref_Source/extension_String.swift /* extension_String.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/extension_String.swift /* extension_String.swift */; };
 		__src_cc_ref_Source/extension_URL.swift /* extension_URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/extension_URL.swift /* extension_URL.swift */; };
 		__src_cc_ref_Source/extension_UUID.swift /* extension_UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Source/extension_UUID.swift /* extension_UUID.swift */; };
-		__src_cc_ref_Tests/LakestoneCoreTests/TestCustomSerialization.swift /* TestCustomSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/TestCustomSerialization.swift /* TestCustomSerialization.swift */; };
 		__src_cc_ref_Tests/LakestoneCoreTests/TestData.swift /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/TestData.swift /* TestData.swift */; };
 		__src_cc_ref_Tests/LakestoneCoreTests/TestDate.swift /* TestDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/TestDate.swift /* TestDate.swift */; };
 		__src_cc_ref_Tests/LakestoneCoreTests/TestDirectory.swift /* TestDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/TestDirectory.swift /* TestDirectory.swift */; };
@@ -81,6 +83,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A0856AB1DAA90F900006EC4 /* TestPersistentPropertyList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestPersistentPropertyList.swift; sourceTree = "<group>"; };
 		1A1421301DA648EF00ACD18E /* LakestoneCoreTestsIOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LakestoneCoreTestsIOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A1421341DA648EF00ACD18E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A1421441DA6499100ACD18E /* raster_digitalglobe.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = raster_digitalglobe.json; sourceTree = "<group>"; };
@@ -267,7 +270,6 @@
 		"_______Group_LakestoneCoreTests" /* LakestoneCoreTests */ = {
 			isa = PBXGroup;
 			children = (
-				__PBXFileRef_Tests/LakestoneCoreTests/TestCustomSerialization.swift /* TestCustomSerialization.swift */,
 				__PBXFileRef_Tests/LakestoneCoreTests/TestData.swift /* TestData.swift */,
 				__PBXFileRef_Tests/LakestoneCoreTests/TestDate.swift /* TestDate.swift */,
 				__PBXFileRef_Tests/LakestoneCoreTests/TestDirectory.swift /* TestDirectory.swift */,
@@ -277,6 +279,8 @@
 				__PBXFileRef_Tests/LakestoneCoreTests/TestString.swift /* TestString.swift */,
 				__PBXFileRef_Tests/LakestoneCoreTests/TestURL.swift /* TestURL.swift */,
 				__PBXFileRef_Tests/LakestoneCoreTests/TestUUID.swift /* TestUUID.swift */,
+				__PBXFileRef_Tests/LakestoneCoreTests/TestCustomSerialization.swift /* TestCustomSerialization.swift */,
+				1A0856AB1DAA90F900006EC4 /* TestPersistentPropertyList.swift */,
 				__PBXFileRef_Tests/LakestoneCoreTests/testUtilities.swift /* testUtilities.swift */,
 			);
 			name = LakestoneCoreTests;
@@ -463,6 +467,7 @@
 				1A1421401DA6492F00ACD18E /* TestURL.swift in Sources */,
 				1A14213E1DA6492B00ACD18E /* TestJSONSerialization.swift in Sources */,
 				1A14213B1DA6492400ACD18E /* TestDirectory.swift in Sources */,
+				1A0856AD1DAA90F900006EC4 /* TestPersistentPropertyList.swift in Sources */,
 				1A1421411DA6493100ACD18E /* testUtilities.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -477,6 +482,7 @@
 				__src_cc_ref_Source/Directory.swift /* Directory.swift in Sources */,
 				__src_cc_ref_Source/extension_Data.swift /* extension_Data.swift in Sources */,
 				__src_cc_ref_Source/extension_Date.swift /* extension_Date.swift in Sources */,
+				1A0856AA1DAA491E00006EC4 /* PersistentPropertyList.swift in Sources */,
 				__src_cc_ref_Source/extension_String.swift /* extension_String.swift in Sources */,
 				__src_cc_ref_Source/extension_URL.swift /* extension_URL.swift in Sources */,
 				__src_cc_ref_Source/extension_UUID.swift /* extension_UUID.swift in Sources */,
@@ -492,8 +498,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				__src_cc_ref_Tests/LakestoneCoreTests/TestCustomSerialization.swift /* TestCustomSerialization.swift in Sources */,
 				__src_cc_ref_Tests/LakestoneCoreTests/TestData.swift /* TestData.swift in Sources */,
+				1A0856AE1DAB6C6B00006EC4 /* TestCustomSerialization.swift in Sources */,
 				__src_cc_ref_Tests/LakestoneCoreTests/TestDate.swift /* TestDate.swift in Sources */,
 				__src_cc_ref_Tests/LakestoneCoreTests/TestDirectory.swift /* TestDirectory.swift in Sources */,
 				__src_cc_ref_Tests/LakestoneCoreTests/TestFile.swift /* TestFile.swift in Sources */,
@@ -502,6 +508,7 @@
 				__src_cc_ref_Tests/LakestoneCoreTests/TestString.swift /* TestString.swift in Sources */,
 				__src_cc_ref_Tests/LakestoneCoreTests/TestURL.swift /* TestURL.swift in Sources */,
 				__src_cc_ref_Tests/LakestoneCoreTests/testUtilities.swift /* testUtilities.swift in Sources */,
+				1A0856AC1DAA90F900006EC4 /* TestPersistentPropertyList.swift in Sources */,
 				__src_cc_ref_Tests/LakestoneCoreTests/TestUUID.swift /* TestUUID.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -518,7 +525,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				1AAF1E321DA6B8B100CD4720 /* PersistentPropertyList.swift in Sources */,
 				"__src_cc_ref_Packages/PerfectThread-0.100.1/Sources/Threading.swift" /* Threading.swift in Sources */,
 				"__src_cc_ref_Packages/PerfectThread-0.100.1/Sources/ThreadQueue.swift" /* ThreadQueue.swift in Sources */,
 			);

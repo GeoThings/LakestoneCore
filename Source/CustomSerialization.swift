@@ -1,4 +1,4 @@
-﻿//
+//
 //  CustomSerialization.swift
 //  LakestoneCore
 //
@@ -20,13 +20,17 @@
 // limitations under the License.
 //
 
+#if !COOPER
+	import Foundation
+#endif
+
 public protocol CustomSerializable {
 	init()
 	init(variableMap: [String: Any]) throws
 	
 	static var ignoredVariableNames: Set<String> { get }
 	static var allowedTypeDifferentVariableNames: Set<String> { get }
-    var manuallySerializedValues: [String: Any] { get }
+	var manuallySerializedValues: [String: Any] { get }
 }
 
 /// protocol that are used for custom types serialization to supported types
@@ -53,15 +57,27 @@ extension Optional: WrappedTypeRetrievable {
 		return Wrapped.self
 	}
 }
+
+// for type matching with __NSCFNumber
+fileprivate protocol Numeric {}
+extension Int: Numeric {}
+extension UInt: Numeric {}
+extension Int8: Numeric {}
+extension UInt8: Numeric {}
+extension Int16: Numeric {}
+extension UInt16: Numeric {}
+extension Int32: Numeric {}
+extension UInt32: Numeric {}
+extension Int64: Numeric {}
+extension UInt64: Numeric {}
+extension Float: Numeric {}
+extension Double: Numeric {}
 	
 #endif
 
 #if COOPER
-	public typealias CustomSerializableType = Class
+	public typealias CustomSerializableType = Class<CustomSerializable>
 	fileprivate typealias ReflectableField = java.lang.reflect.Field
-	
-	private typealias AnyHashable = Object
-	
 #else
 	public typealias CustomSerializableType = CustomSerializable.Type
 	fileprivate typealias ReflectableField = Mirror.Child
@@ -88,6 +104,7 @@ public class CustomSerialization {
 		
 		#if COOPER
 		
+			//in silver you can still pass a non Class<CustomSerializable> in customTypes -> filtering them away...
 			let customSerializableTypes = [Class](customTypes.filter { CustomSerializable.self.isAssignableFrom($0) })
 			var variableMap = [(CustomSerializableType, [ReflectableField])]()
 			for SomeType in customSerializableTypes {
@@ -113,6 +130,8 @@ public class CustomSerialization {
 		
 		#if COOPER
 			
+			let ignoredVariableNames = customEntity.getClass().getDeclaredMethod("getignoredVariableNames", []).invoke(nil, []) as! Set<String>
+			
 			let declaredFields = [ReflectableField](customEntity.Class.getDeclaredFields())
 			for declaredField in declaredFields {
 				declaredField.setAccessible(true)
@@ -127,9 +146,12 @@ public class CustomSerialization {
 				}
 				
 				let fieldName = fieldNameWithRemovedPrivatePrefix(declaredField)
+				if ignoredVariableNames.contains(fieldName){
+					continue
+				}
 				
 				if let manuallySerializedValue = customEntity.manuallySerializedValues[fieldName] {
-                    variableDictionary[fieldName] = manuallySerializedValue
+					variableDictionary[fieldName] = manuallySerializedValue
 				} else if let fieldValue = declaredField.`get`(customEntity) {
 					variableDictionary[fieldName] = try _deserialize(entity: fieldValue)
 				} else {
@@ -139,11 +161,8 @@ public class CustomSerialization {
 			
 		#else
 			
-			// if optional is stored as Any, you cannot unwrap Any type from it
-			
 			for child in Mirror(reflecting: customEntity).children {
-				guard let variableName = child.label
-					else {
+				guard let variableName = child.label else {
 						continue
 				}
 				
@@ -152,9 +171,18 @@ public class CustomSerialization {
 					continue
 				}
 				
+				if type(of: customEntity).ignoredVariableNames.contains(variableName){
+					continue
+				}
+				
 				var value: Any = child.value
 				if Mirror(reflecting: value).displayStyle == .optional {
-					value = Mirror(reflecting: value).descendant("some")!
+					// if optional is stored as Any, you cannot unwrap Any type from it with as? operator
+					if let unwrappedValue = Mirror(reflecting: value).descendant("some") {
+						value = unwrappedValue
+					} else {
+						continue
+					}
 				}
 				
 				variableDictionary[variableName] = try _deserialize(entity: value)
@@ -166,6 +194,16 @@ public class CustomSerialization {
 		return variableDictionary
 	}
 	
+    public class func array(from customSerializables: [CustomSerializable]) throws -> [[String: Any]] {
+        
+        var targetArray = [[String: Any]]()
+        for customSerializable in customSerializables {
+            targetArray.append(try CustomSerialization.dictionary(from: customSerializable))
+        }
+        
+        return targetArray
+    }
+    
 	private class func _serialize(object: Any, withCustomVariableMap variableMap: [(CustomSerializableType, [ReflectableField])]) throws -> Any {
 		
 		if let dictionaryEntity = object as? [String: Any]{
@@ -346,25 +384,58 @@ public class CustomSerialization {
 						   ExpectedType.isAssignableFrom(mappedPrimitiveType) {
 						
 						//dictionary entry matches the class field in type
+					  
+					} else if let ExpectedType = typesMap[commonKey],
+						   let dictionaryEntry = dictionaryEntity[commonKey],
+						   let mappedPrimitiveType = self.primitiveTypeMap["\(dictionaryEntry.getClass())"],
+						   mappedPrimitiveType == java.lang.Long.self && ExpectedType == java.lang.Double.self {
+						
+						// post to talk.remobjects about the long to double conversion
+						// .doubleValue() is unavailable both on compile time and with reflection
+						// since java.lang.Long bridges to RemObjects.Oxygene.System.Int64 which appearently doesn't have doubleValue()
+						// dictionaryEntity[commonKey] = java.lang.Long.self.getDeclaredMethod("doubleValue", []).invoke(dictionaryEntry, []) as! Double
+						
+						// JSONObject will parse .0 numbers as decimal
+						// handling this case when double is expected instead
+						
+						dictionaryEntity[commonKey] = Double.parseDouble(Long.toString(dictionaryEntry as! Int64))
 						
 					} else {
+						print(commonKey)
+						print(dictionaryEntity[commonKey]!.getClass())
+						print(typesMap[commonKey])
+						
 						typesMatch = false
 						break
 					}
 					
 				#else
 					
+					var dictionaryEntryº: Any? = dictionaryEntity[commonKey]
+					
+					// when reading from NSUserDefaults
+					// strings might unwrap as NSTaggedPointerString
+					// bool will unwrap as __NCFBoolean
+					// all numeric types will unwrap as __NSCFNumber
+					//
+					// type matching will fail, so explicit constructor is needed
+					if let stringEntry = dictionaryEntryº as? String {
+						dictionaryEntryº = String(stringEntry)
+					} else if let boolEntry = dictionaryEntryº as? Bool {
+						dictionaryEntryº = Bool(boolEntry)
+					}
+					
 					if allowedTypeDifferentVariableNames.contains(commonKey) {
 						
 						//types allowed to be different, no type matching check needed
 						
 					} else if let expectedEntry = typesMap[commonKey],
-					   let dictionaryEntry = dictionaryEntity[commonKey],
+					   let dictionaryEntry = dictionaryEntryº,
 					   type(of: expectedEntry) == type(of: dictionaryEntry) {
 						
 						//dictionary entry matches the class field in type
 						
-					} else if let dictionaryEntry = dictionaryEntity[commonKey],
+					} else if let dictionaryEntry = dictionaryEntryº,
 							  let expectedEntry = typesMap[commonKey],
 							  Mirror(reflecting: expectedEntry).displayStyle == .optional,
 							  let wrappedTypeRetrievable = expectedEntry as? WrappedTypeRetrievable,
@@ -372,13 +443,23 @@ public class CustomSerialization {
 					
 						//dictionary entry matches the class optional field's wrapped type
 						
-					} else if let dictionaryEntry = dictionaryEntity[commonKey],
+					} else if let dictionaryEntry = dictionaryEntryº,
 						type(of: dictionaryEntry) == [Any].self {
 						
 						// ignore the exact array type check
 						// all array entities will come in [Any], which cannot be changed to [ExactType] on runtime
 						
+					} else if let dictionaryEntry = dictionaryEntryº,
+						dictionaryEntry is NSNumber,
+						let expectedEntry = typesMap[commonKey],
+						expectedEntry is Numeric {
+				
+						// numbers will be read from NSUserDefaults as NSNumber
+						// expectedEntry is numeric
+				
 					} else {
+						print(type(of: dictionaryEntity[commonKey]!))
+						
 						typesMatch = false
 						break
 					}

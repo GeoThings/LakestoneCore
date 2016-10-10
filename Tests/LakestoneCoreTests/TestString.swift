@@ -1,4 +1,4 @@
-//
+﻿//
 //  TestString.swift
 //  LakestoneCore
 //
@@ -22,19 +22,19 @@
 
 
 #if COOPER
-    
-    import remobjects.elements.eunit
-    
+	
+	import remobjects.elements.eunit
+	
 #else
-    
-    import XCTest
-    import Foundation
-    
-    @testable import LakestoneCore
-    
+	
+	import XCTest
+	import Foundation
+	
+	@testable import LakestoneCore
+	
 #endif
 
-class TestString: Test {
+public class TestString: Test {
 	
 	public func testUpperLowerEmptiness(){
 		
@@ -117,8 +117,8 @@ class TestString: Test {
 	public func testNumericConversions(){
 		
 		Assert.IsTrue("3219123080918".isNumeric)
-        Assert.IsFalse("-3219123080918".isNumeric)
-        Assert.IsFalse("12122211221.".isNumeric)
+		Assert.IsFalse("-3219123080918".isNumeric)
+		Assert.IsFalse("12122211221.".isNumeric)
 		Assert.IsFalse("".isNumeric)
 		Assert.IsFalse("322222d000".isNumeric)
 		Assert.IsTrue("-3219123080918".representsLongDecimal)
@@ -143,12 +143,12 @@ class TestString: Test {
 		Assert.IsFalse("322323.0\n".representsDouble)
 		Assert.IsFalse(" 322323.0".representsFloat)
 		Assert.IsFalse(" 322323.0".representsDouble)
-        Assert.IsFalse("\n322323.0".representsFloat)
-        Assert.IsFalse("\n322323.0".representsDouble)
-        Assert.IsFalse("\t322323.0".representsFloat)
-        Assert.IsFalse("\t322323.0".representsDouble)
-        
-        
+		Assert.IsFalse("\n322323.0".representsFloat)
+		Assert.IsFalse("\n322323.0".representsDouble)
+		Assert.IsFalse("\t322323.0".representsFloat)
+		Assert.IsFalse("\t322323.0".representsDouble)
+		
+		
 		Assert.IsNotNil("1121212".decimalRepresentation)
 		Assert.IsNil("111112 ".decimalRepresentation)
 		Assert.IsNotNil("-11212121121212".longDecimalRepresentation)
@@ -164,7 +164,7 @@ class TestString: Test {
 		Assert.IsNotNil("0".boolRepresentation)
 		Assert.IsNil("".boolRepresentation)
 		Assert.IsNil(" true".boolRepresentation)
-    }
+	}
 }
 
 #if !COOPER

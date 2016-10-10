@@ -54,20 +54,26 @@ public class JSONSerialization {
 		}
 	}
 	
+    public class func string(withJSONObject jsonObject: Any) throws -> String {
+        
+        let jsonString: String
+        if let dictionaryEntity = jsonObject as? [String: Any] {
+            let targetJSONObject = _deserialize(dictionary: dictionaryEntity)
+            jsonString = targetJSONObject.toString()
+            
+        } else if let arrayEntity = jsonObject as? [Any] {
+            let targetJSONArray = _deserialize(array: arrayEntity)
+            jsonString = targetJSONArray.toString()
+        } else {
+            throw Error.ObjectIsNotSerializable
+        }
+        
+        return jsonString
+    }
+    
 	public class func data(withJSONObject jsonObject: Any) throws -> Data {
 		
-		let jsonString: String
-		if let dictionaryEntity = jsonObject as? [String: Any] {
-			let targetJSONObject = _deserialize(dictionary: dictionaryEntity)
-			jsonString = targetJSONObject.toString()
-			
-		} else if let arrayEntity = jsonObject as? [Any] {
-			let targetJSONArray = _deserialize(array: arrayEntity)
-			jsonString = targetJSONArray.toString()
-		} else {
-			throw Error.ObjectIsNotSerializable
-		}
-		
+        let jsonString = try JSONSerialization.string(withJSONObject: jsonObject)
 		guard let jsonData = Data.with(utf8EncodedString: jsonString) else {
 			throw Error.NonUTF8CompatibleString
 		}
@@ -158,4 +164,23 @@ public class JSONSerialization {
 	}
 }
 
+#else
+
+extension JSONSerialization {
+    
+    public class Error {
+        static let UnsupportedEncoding = LakestoneError.with(stringRepresentation: "JSON data is not UTF8 encoded. (Other encodings are not yet supported)")
+    }
+    
+    public class func string(withJSONObject jsonObject: Any) throws -> String {
+     
+        guard let jsonString = try JSONSerialization.data(withJSONObject: jsonObject).utf8EncodedStringRepresentationº else {
+            throw Error.UnsupportedEncoding
+        }
+        
+        return jsonString
+    }
+    
+}
+    
 #endif

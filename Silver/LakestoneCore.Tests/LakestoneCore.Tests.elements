@@ -99,9 +99,6 @@
         <Compile Include="..\..\Tests\LakestoneCoreTests\testUtilities.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
-        <Compile Include="..\..\Tests\LakestoneCoreTests\TestHTTP.swift">
-            <VirtualFolder>Tests</VirtualFolder>
-        </Compile>
         <Compile Include="..\..\Tests\LakestoneCoreTests\TestData.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
@@ -127,6 +124,12 @@
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
         <Compile Include="..\..\Tests\LakestoneCoreTests\TestCustomSerialization.swift">
+            <VirtualFolder>Tests</VirtualFolder>
+        </Compile>
+        <Compile Include="..\..\Tests\LakestoneCoreTests\TestHTTP.swift">
+            <VirtualFolder>Tests</VirtualFolder>
+        </Compile>
+        <Compile Include="..\..\Tests\LakestoneCoreTests\TestPersistentPropertyList.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
     </ItemGroup>
