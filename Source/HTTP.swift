@@ -26,12 +26,14 @@
 #if COOPER
 	import java.net
 	import java.io
+	import android.util
 #else
 	
 	import Foundation
 	#if os(OSX) || os(Linux)
 		import PerfectCURL
 		import cURL
+		import PerfectThread
 	#endif
 		
 #endif
@@ -50,8 +52,53 @@ public class HTTP {
 			self.url = url
 		}
 		
-        public let queue: ThreadQueue = Threading.serialQueue(withLabel: "lakestonecore.http.request.queue")
-        
+		public var method: Method = .get
+		public var basicAuthentificationStringº: String? {
+			didSet {
+				if let basicAuthentificationString = basicAuthentificationStringº {
+					self.headers["Authorization"] = "Basic \(basicAuthentificationString)"
+				} else {
+					self.headers["Authorization"] = nil
+				}
+			}
+		}
+		
+		public var headers = [String: String]()
+		public var dataº: Data?
+		
+		public let queue: ThreadQueue = Threading.serialQueue(withLabel: "lakestonecore.http.request.queue")
+		
+		#if os(iOS) || os(watchOS) || os(tvOS)
+		private var _downloadDelegateº: _DownloadDelegate?
+		#endif
+		
+		// Silver is fragile with string-backed enums, plain enum in the meanwhile
+		public enum Method {
+			case get
+			case post
+			case put
+			
+			#if os(OSX) || os(Linux)
+			
+			public var methodCurlOption: CURLoption {
+				switch self {
+				case .get: return CURLOPT_HTTPGET
+				case .post: return CURLOPT_POST
+				case .put: return CURLOPT_PUT
+				}
+			}
+			
+			#endif
+		}
+		
+		public var methodString: String {
+			switch self.method {
+			case .get: return "GET"
+			case .post: return "POST"
+			case .put: return "PUT"
+			}
+		}
+		
 		public class Error {
 			
 			#if !COOPER
@@ -61,12 +108,14 @@ public class HTTP {
 			///		   It is unlikely that this error will be ever thrown
 			static let Unknown = LakestoneError.with(stringRepresentation: "Internal unknown invocation error")
 			
+			static let AddingPercentEncodingWithAllowedCharacterFailure = LakestoneError.with(stringRepresentation: "Adding percent encoding with allowed character set failed")
+			
 			#endif
 			
 			#if os(OSX) || os(Linux)
 			
 			static let NotUTF8EncodedBytes = LakestoneError.with(stringRepresentation: "Received response data cannot be inferred as UTF8 string")
-			
+	
 			#endif
 		}
 		
@@ -89,6 +138,117 @@ public class HTTP {
 		
 		#endif
 		
+		public func addBasicAuthentification(with username: String, and password: String){
+			
+			#if COOPER
+				self.basicAuthentificationStringº = Base64.encodeToString("\(username):\(password)".getBytes(), 0)
+			#else
+				self.basicAuthentificationStringº = Data.with(utf8EncodedString: "\(username):\(password)")?.base64EncodedString()
+			#endif
+		}
+		
+		public func setFormURLEncodedData(with parameters:[String:Any]) throws {
+			
+			#if !COOPER
+				var allowedCharacterSet = CharacterSet.urlQueryAllowed
+				//if '&' is present as part of value it needs to be escaped, since non escaped '&' will be treated as key=value pair seperator
+				allowedCharacterSet.remove(charactersIn: "&")
+			#endif
+			
+			var urlEncodedString = String()
+			for (keyIndex, key) in parameters.keys.enumerated() {
+				guard let value = parameters[key] else {
+					continue
+				}
+				
+				#if COOPER
+					
+					let urlEncodedValue = URLEncoder.encode(String.derived(from: value), "UTF-8")
+					let urlEncodedKey = URLEncoder.encode(key, "UTF-8")
+					
+				#else
+					
+					guard let urlEncodedValue = String.derived(from: value).addingPercentEncoding(withAllowedCharacters: allowedCharacterSet),
+						  let urlEncodedKey = key.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)
+					else {
+						throw Error.AddingPercentEncodingWithAllowedCharacterFailure
+					}
+					
+				#endif
+				
+				urlEncodedString += "\(urlEncodedKey)=\(urlEncodedValue)"
+				if (keyIndex < parameters.keys.count - 1){
+					urlEncodedString += "&"
+				}
+			}
+			
+			guard let encodedData = Data.with(utf8EncodedString: urlEncodedString) else {
+				throw Data.Error.UTF8IncompatibleString
+			}
+			
+			self.dataº = encodedData
+			self.headers["Content-Type"] = "application/x-www-form-urlencoded"
+		}
+		
+		public func setMutlipartFormData(with parameters: [String: Any], andMimeTypes mimeTypes: [String: String] = [:]) throws {
+			
+			let boundary = "Boundary-\(UUID().uuidString)"
+			
+			var multipartString = String()
+			var contentFragements = [Any]()
+			for (key, value) in parameters {
+				
+				multipartString += "--\(boundary)\r\n"
+				multipartString += "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n"
+				
+				if let mimeType = mimeTypes[key] {
+					multipartString += "Content-Type: \(mimeType)\r\n\r\n"
+				}
+				
+				if let data = value as? Data {
+					contentFragements.append(multipartString)
+					contentFragements.append(data)
+					multipartString = String()
+					multipartString += "\r\n"
+					
+				} else {
+					multipartString += "\(String.derived(from: value))\r\n"
+				}
+			}
+			
+			multipartString += "--\(boundary)--\r\n"
+			
+			var targetData = Data.empty
+			for contentFragement in contentFragements {
+				
+				if let stringFragment = contentFragement as? String {
+					guard let encodedData = Data.with(utf8EncodedString: stringFragment) else {
+						throw Data.Error.UTF8IncompatibleString
+					}
+					
+					targetData = targetData.appending(encodedData)
+	
+				} else if let partialData = contentFragement as? Data {
+					targetData = targetData.appending(partialData)
+					
+				} else {
+					#if COOPER
+						let contentType = contentFragement.Class
+					#else
+						let contentType = type(of: contentFragement)
+					#endif
+					
+					print("WARNING: \(#function): Unexpected content fragment type: \(contentType). Fragment ignored")
+				}
+			}
+			
+			guard let encodedRemainingFragment = Data.with(utf8EncodedString: multipartString) else {
+				throw Data.Error.UTF8IncompatibleString
+			}
+			
+			self.dataº = targetData.appending(encodedRemainingFragment)
+			self.headers["Content-Type"] = "multipart/form-data; boundary=\(boundary)"
+		}
 		
 		/// synchronous request invocation
 		/// - throws:  **Java**:
@@ -104,52 +264,127 @@ public class HTTP {
 		///
 		/// - warning: This will block the current thread until completed.
 		///			Therefore avoid calling it on the main thread.
+		
+		
+		#if COOPER
+		
 		public func performSync() throws -> Response {
+			return try self._performSyncCore(with: nil)
+		}
+		
+		private func _performSyncCore(with progressDelegateº: ((Double) -> Void)?) throws -> Response {
 			
-			#if COOPER
-				
 				let currentConnection = self.url.openConnection() as! HttpURLConnection
-				
-				let inputStream = BufferedInputStream(currentConnection.getInputStream())
-				let outputStream = ByteArrayOutputStream()
-				let contentLength = currentConnection.getContentLength()
-				
-				let bytes = java.lang.reflect.Array.newInstance(Byte.self, contentLength) as! ByteStaticArray
-				var nRead: Int
-				while ( (nRead = inputStream.read(bytes, 0, contentLength)) != -1){
-					outputStream.write(bytes, 0, nRead)
-				}
-				
-				let completeData = Data.wrap(outputStream.toByteArray())
-				inputStream.close()
-				outputStream.close()
-				
-				let responseCode = currentConnection.getResponseCode()
-				let responseHeaders = currentConnection.getHeaderFields()
-				let responseMessage = currentConnection.getResponseMessage()
-				currentConnection.disconnect()
-				
-				// header values are represented in List<String> for each individual key
-				// concatenate for unification-sake
-				//TODO: review whether this concatenation is neccesary
-				let targetPlainHeaderDict = [String: String]()
-				for entry in responseHeaders.entrySet() {
-					let key = entry.getKey()
-					var concatantedValues = String()
+				do {
 					
-					for individualValue in entry.getValue() {
-						concatantedValues = (concatantedValues.isEmpty()) ? individualValue : concatantedValues + ", \(individualValue)"
+					currentConnection.setDoOutput(true)
+					currentConnection.setUseCaches(false)
+					currentConnection.setRequestMethod(self.methodString)
+					
+					for (headerKey, headerValue) in self.headers {
+						currentConnection.setRequestProperty(headerKey, headerValue)
 					}
 					
-					targetPlainHeaderDict[key] = concatantedValues
+					if self.method != .get {
+						
+						currentConnection.setDoInput(true)
+						// writing off the data
+						if let data = self.dataº {
+							let outputStream = BufferedOutputStream(currentConnection.getOutputStream())
+							outputStream.write(data.plainBytes)
+							outputStream.close()
+						}
+					}
+							
+					currentConnection.connect()
+					let inputStream = BufferedInputStream(currentConnection.getInputStream())
+					let outputByteStream = ByteArrayOutputStream()
+					
+					var readSize = currentConnection.getContentLength()
+					let batchReadSize = 16384
+					if progressDelegateº != nil && batchReadSize < readSize {
+						readSize = batchReadSize
+					}
+					
+					// reading the response
+					let bytes = java.lang.reflect.Array.newInstance(Byte.self, readSize) as! ByteStaticArray
+					var nRead: Int
+					var totalRead: Int = 0
+					while ( (nRead = inputStream.read(bytes, 0, readSize)) != -1){
+						outputByteStream.write(bytes, 0, nRead)
+						
+						totalRead += nRead
+						let progress = Double(totalRead)/Double(currentConnection.getContentLength())
+						if progress < 1 {
+							progressDelegateº?(progress)
+						}
+					}
+					
+					let completeData = Data.wrap(outputByteStream.toByteArray())
+					inputStream.close()
+					outputByteStream.close()
+					
+					let responseCode = currentConnection.getResponseCode()
+					let responseHeaders = currentConnection.getHeaderFields()
+					let responseMessage = currentConnection.getResponseMessage()
+					currentConnection.disconnect()
+					
+					// header values are represented in List<String> for each individual key
+					// concatenate for unification-sake
+					//TODO: review whether this concatenation is neccesary
+					let targetPlainHeaderDict = [String: String]()
+					for entry in responseHeaders.entrySet() {
+						let key = entry.getKey()
+						var concatantedValues = String()
+						
+						for individualValue in entry.getValue() {
+							concatantedValues = (concatantedValues.isEmpty()) ? individualValue : concatantedValues + ", \(individualValue)"
+						}
+						
+						targetPlainHeaderDict[key] = concatantedValues
+					}
+					
+					return HTTP.Response(url: self.url, statusCode: responseCode, statusMessage: responseMessage, headerFields: targetPlainHeaderDict, data: completeData)
+					
+				} catch {
+					currentConnection.disconnect()
+					throw error
 				}
-				
-				return HTTP.Response(url: self.url, statusCode: responseCode, statusMessage: responseMessage, headerFields: targetPlainHeaderDict, data: completeData) 
 			
-			#elseif os(OSX) || os(Linux)
+		}
+		
+		#else
+		
+		public func performSync() throws -> Response {
+		
+			#if os(OSX) || os(Linux)
 				
 				let request = CURL(url: self.url.absoluteString)
+				
+				var code = request.setOption(CURLOPT_FRESH_CONNECT, int: 1)
+				if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
+				
+				code = request.setOption(self.method.methodCurlOption, int: 1)
+				if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
+				
+				for (headerKey, headerValue) in self.headers {
+					code = request.setOption(CURLOPT_HTTPHEADER, s: "\(headerKey): \(headerValue)")
+					if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
+				}
+				
+				if self.method != .get {
+				
+					if let bytes = self.dataº?.bytes {
+						code = request.setOption(CURLOPT_POSTFIELDS, v: UnsafeMutableRawPointer(mutating: bytes))
+						if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
+						
+						code = request.setOption(CURLOPT_POSTFIELDSIZE, int: bytes.count)
+						if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
+					}
+				}
+				
 				let (invocationCode, headerBytes, bodyData) = request.performFully()
+				
 				guard let headerString = String(bytes: headerBytes, encoding: String.Encoding.utf8) else {
 					throw HTTP.Request.Error.NotUTF8EncodedBytes
 				}
@@ -199,13 +434,21 @@ public class HTTP {
 				
 			#else
 				
-				let request = URLRequest(url: self.url)
+				var request = URLRequest(url: self.url)
+				request.httpMethod = self.methodString
+				for (headerKey, headerValue) in self.headers {
+					request.setValue(headerValue, forHTTPHeaderField: headerKey)
+				}
+				
+				if self.method != .get {
+					request.httpBody = self.dataº
+				}
+				
 				let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
 				
 				var targetDataº: Data?
 				var targetResponseº: URLResponse?
 				var targetErrorº: Swift.Error?
-				
 				
 				let semaphore = DispatchSemaphore(value: 0)
 				let dataTask = session.dataTask(with: request){ (dataº: Data?, responseº: URLResponse?, errorº: Swift.Error?) in
@@ -246,81 +489,52 @@ public class HTTP {
 				return HTTP.Response(url: self.url, statusCode: response.statusCode, statusMessage: statusMessage, headerFields: targetHeaderFields, data: targetDataº)
 				
 			#endif
-			
 		}
 		
-		public func perform(with completionHander: @escaping (ThrowableError?, Response?) -> Void){
+		#endif
+		
+		public func perform(with progressCallbackº:((Double) -> Void)? = nil, and completionHander: @escaping (ThrowableError?, Response?) -> Void){
 			
-			#if COOPER
-			
+			#if os(iOS) || os(watchOS) || os(tvOS)
+				
+				var request = URLRequest(url: self.url)
+				request.httpMethod = self.methodString
+				for (headerKey, headerValue) in self.headers {
+					request.setValue(headerValue, forHTTPHeaderField: headerKey)
+				}
+				
+				if self.method != .get {
+					request.httpBody = self.dataº
+				}
+
+				_downloadDelegateº = _DownloadDelegate(invocationURL: self.url, progressDelegateº: progressCallbackº, completionHandler: completionHander)
+				let session = URLSession(configuration: URLSessionConfiguration.default, delegate: _downloadDelegateº, delegateQueue: nil)
+				let downloadTask = session.downloadTask(with: request)
+				downloadTask.resume()
+				
+			#else
+				
 				self.queue.dispatch {
 					
-					do {  
-						let response = try self.performSync()
+					do {
+						#if COOPER
+							let response = try self._performSyncCore(with: progressCallbackº)
+						#else
+							let response = try self.performSync()
+						#endif
 						completionHander(nil, response)
 						
 					} catch {
-						completionHander(error as! ThrowableError, nil)
+						#if COOPER
+							completionHander(error as! ThrowableError, nil)
+						#else
+							completionHander(error, nil)
+						#endif
 					}
 				}
-                
-            #elseif os(OSX) || os(Linux)
 				
-                // duplicating since #if !os(iOS) will not compile in Silver
-                // ask on talk.remobjects to support #if os() directive in compilation
-                
-                self.queue.dispatch {
-                    
-                    do {
-                        let response = try self.performSync()
-                        completionHander(nil, response)
-                        
-                    } catch {
-                        completionHander(error, nil)
-                    }
-                }
-                
-			#else
-				
-				let request = URLRequest(url: self.url)
-				let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
-				
-				let dataTask = session.dataTask(with: request){ (dataº: Data?, responseº: URLResponse?, errorº: Swift.Error?) in
-					
-					if let error = errorº {
-						completionHander(error, nil)
-						return
-					}
-					
-					// if response is nil and returned error is nil, error is not provided then
-					// this should never happen, but still handling this scenario
-					guard let response = responseº as? HTTPURLResponse else {
-						completionHander(Error.Unknown, nil)
-						return
-					}
-					
-					var targetHeaderFields = [String: String]()
-					for (header, headerValue) in response.allHeaderFields {
-						guard let headerString = header as? String,
-							let headerValueString = headerValue as? String
-							else {
-								print("Header field entry is not a string literal")
-								continue
-						}
-						
-						targetHeaderFields[headerString] = headerValueString
-					}
-					
-					let statusMessage = HTTPURLResponse.localizedString(forStatusCode: response.statusCode)
-					completionHander(nil, HTTP.Response(url: self.url, statusCode: response.statusCode, statusMessage: statusMessage, headerFields: targetHeaderFields, data: dataº))
-				}
-				
-				dataTask.resume()
-			
 			#endif
-			
 		}
-	
 	}
 	
 	/// Container that carries HTTP response entities
@@ -355,4 +569,62 @@ public class HTTP {
 			self.dataº = data
 		}
 	}
+	
+	#if os(iOS) || os(watchOS) || os(tvOS)
+	
+	private class _DownloadDelegate: NSObject, URLSessionDownloadDelegate {
+		
+		let invocationURL: URL
+		let progressDelegateº: ((Double) -> Void)?
+		let completionHandler: (ThrowableError?, Response?) -> Void
+		
+		init(invocationURL: URL, progressDelegateº: ((Double) -> Void)?, completionHandler: @escaping (ThrowableError?, Response?) -> Void){
+			self.invocationURL = invocationURL
+			self.progressDelegateº = progressDelegateº
+			self.completionHandler = completionHandler
+		}
+		
+		fileprivate func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+			
+			guard let response = downloadTask.response as? HTTPURLResponse else {
+				self.completionHandler(HTTP.Request.Error.Unknown, nil)
+				return
+			}
+			
+			var targetHeaderFields = [String: String]()
+			for (header, headerValue) in response.allHeaderFields {
+				guard let headerString = header as? String,
+					  let headerValueString = headerValue as? String
+				else {
+					print("Header field entry is not a string literal")
+					continue
+				}
+				
+				targetHeaderFields[headerString] = headerValueString
+			}
+			
+			let statusMessage = HTTPURLResponse.localizedString(forStatusCode: response.statusCode)
+			self.completionHandler(nil, HTTP.Response(url: self.invocationURL, statusCode: response.statusCode, statusMessage: statusMessage, headerFields: targetHeaderFields, data: FileManager.default.contents(atPath: location.path)
+			))
+		}
+		
+		fileprivate func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
+			self.progressDelegateº?(Double(totalBytesWritten)/Double(totalBytesExpectedToWrite))
+		}
+		
+		fileprivate func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+			self.completionHandler(error, nil)
+		}
+		
+		fileprivate func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+			//the actual completion callback happens in URLSession(session:, downloadTask:, didFinishDownloadingToURL:), however the error callback is here
+			if let encounteredError = error {
+				self.completionHandler(encounteredError, nil)
+			}
+		}
+		
+	}
+	
+	#endif
+
 }

@@ -46,6 +46,10 @@ public protocol SerializableTypeRepresentable {
 	var serializableRepresentation: Any { get }
 }
 
+public protocol StringRepresentable {
+    var stringRepresentation: String { get }
+}
+
 #if !COOPER
 
 fileprivate protocol WrappedTypeRetrievable {
@@ -264,11 +268,15 @@ public class CustomSerialization {
 			
 			return try dictionary(from: customSerializableEntity)
 			
-		} else if let serializableTypeRepresentable = entity as? SerializableTypeRepresentable {
+        } else if let serializableTypeRepresentable = entity as? SerializableTypeRepresentable {
 			
 			return serializableTypeRepresentable.serializableRepresentation
 			
-		} else if entity is Int8 || entity is UInt8 || entity is Int16 || entity is UInt16 ||
+        } else if let stringRepresentable = entity as? StringRepresentable {
+        
+            return stringRepresentable.stringRepresentation
+            
+        } else if entity is Int8 || entity is UInt8 || entity is Int16 || entity is UInt16 ||
 			entity is Int32 || entity is UInt32 || entity is UInt64 {
 			
 			return entity

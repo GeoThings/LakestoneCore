@@ -72,6 +72,24 @@ public class TestData: Test {
 		
 		Assert.AreEqual(testString, targetString)
 	}
+    
+    public func testAppending(){
+        
+        let testString = "ºººUTF-8 TestStringººº"
+        
+        guard let testData = Data.with(utf8EncodedString: testString),
+              let extraPiece = Data.with(utf8EncodedString: "Sample Piece To Append")
+        else {
+            Assert.Fail("String cannot be represented as UTF8 encoded data")
+            return
+        }
+        
+        let modifiedData = testData.appending(extraPiece)
+        Assert.AreEqual(modifiedData.utf8EncodedStringRepresentationº ?? "", "ºººUTF-8 TestStringºººSample Piece To Append")
+        
+        let modificationOverEmpty = Data.empty.appending(testData)
+        Assert.AreEqual(modificationOverEmpty.utf8EncodedStringRepresentationº ?? "", "ºººUTF-8 TestStringººº")
+    }
 	
 }
 
@@ -80,7 +98,8 @@ extension TestData {
 	static var allTests : [(String, (TestData) -> () throws -> Void)] {
 		return [
 			("testNumericConversion", testNumericConversion),
-			("testUTF8StringWrapping", testUTF8StringWrapping)
+			("testUTF8StringWrapping", testUTF8StringWrapping),
+			("testAppending", testAppending)
 		]
 	}
 }

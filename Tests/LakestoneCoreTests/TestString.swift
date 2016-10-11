@@ -1,4 +1,4 @@
-﻿//
+//
 //  TestString.swift
 //  LakestoneCore
 //
@@ -112,6 +112,11 @@ public class TestString: Test {
 		}
 		
 		Assert.AreEqual(pathWithDotsInName.substring(from: pathWithDotsInName.index(after: extensionSeperatorRange.lowerBound)), "test")
+        
+        
+        Assert.AreEqual(String.derived(from: 25), "25")
+        Assert.AreEqual(String.derived(from: "someString"), "someString")
+        Assert.AreEqual(String.derived(from: 25.0), "25.0")
 	}
 	
 	public func testNumericConversions(){

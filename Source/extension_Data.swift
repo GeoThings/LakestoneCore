@@ -94,6 +94,9 @@ extension Data {
 	public var plainBytes: SByteStaticArray {
 	
 		//apple swift doesn't allow Type[] syntax
+		let preservedPosition = self.position()
+		self.position(0)
+		
 		var bytes: SByteStaticArray
 		if self.hasArray() {
 			bytes = self.array()
@@ -102,6 +105,7 @@ extension Data {
 			self.`get`(bytes as! SByteStaticArray)
 		}
 	
+		self.position(preservedPosition)
 		return bytes as! SByteStaticArray
 	}
 	
@@ -181,5 +185,40 @@ extension Data {
 			}
 			
 		#endif
+	}
+	
+	public func appending(_ otherData: Data) -> Data {
+		
+		#if COOPER
+		
+			let outputStream = ByteArrayOutputStream()
+			outputStream.write(self.plainBytes)
+			outputStream.write(otherData.plainBytes)
+			
+			return Data.wrap(outputStream.toByteArray())
+			
+		#else
+			
+			var targetData = self
+			targetData.append(otherData)
+			return targetData
+		
+		#endif
+	}
+	
+	public static var empty: Data {
+		#if COOPER
+			return Data.allocate(0)
+		#else
+			return Data()
+		#endif
+	}
+}
+
+extension Data {
+	
+	public class Error {
+		public static let UTF8IncompatibleString = LakestoneError.with(stringRepresentation: "String cannot be represented as UTF8 encoded data")
+		public static let NonUTF8Encoding = LakestoneError.with(stringRepresentation: "Data is not a valid UTF8 encoded string")
 	}
 }

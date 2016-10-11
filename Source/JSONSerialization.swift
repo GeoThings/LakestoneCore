@@ -1,4 +1,4 @@
-﻿//
+//
 //  JSONSerialization.swift
 //  LakestoneCore
 //
@@ -168,14 +168,10 @@ public class JSONSerialization {
 
 extension JSONSerialization {
     
-    public class Error {
-        static let UnsupportedEncoding = LakestoneError.with(stringRepresentation: "JSON data is not UTF8 encoded. (Other encodings are not yet supported)")
-    }
-    
     public class func string(withJSONObject jsonObject: Any) throws -> String {
      
         guard let jsonString = try JSONSerialization.data(withJSONObject: jsonObject).utf8EncodedStringRepresentationº else {
-            throw Error.UnsupportedEncoding
+            throw Data.Error.UTF8IncompatibleString
         }
         
         return jsonString

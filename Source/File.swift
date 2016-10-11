@@ -124,7 +124,7 @@ extension File {
 		
 		let data = try self.readData()
 		guard let targetString = data.utf8EncodedStringRepresentationº else {
-			throw Error.NonUTF8Encoding
+			throw Data.Error.NonUTF8Encoding
 		}
 		
 		return targetString
@@ -153,7 +153,7 @@ extension File {
 	public func overwrite(with utf8EncodedString: String) throws {
 		
 		guard let utf8Data = Data.with(utf8EncodedString: utf8EncodedString) else {
-			throw Error.UTF8IncompatibleString
+			throw Data.Error.UTF8IncompatibleString
 		}
 		
 		try self.overwrite(with: utf8Data)
@@ -183,7 +183,7 @@ extension File {
 	public func append(utf8EncodedString: String) throws {
 		
 		guard let utf8Data = Data.with(utf8EncodedString: utf8EncodedString) else {
-			throw Error.UTF8IncompatibleString
+			throw Data.Error.UTF8IncompatibleString
 		}
 		
 		try self.append(data: utf8Data)
@@ -213,9 +213,7 @@ extension File: CustomStringConvertible {
 extension File {
 	
 	public class Error {
-		static let UTF8IncompatibleString = LakestoneError.with(stringRepresentation: "String cannot be represented as UTF8 encoded data")
-		static let NonUTF8Encoding = LakestoneError.with(stringRepresentation: "Data is not a valid UTF8 encoded string")
-		static let DeletionFailed = LakestoneError.with(stringRepresentation: "File deletion failed")
+		public static let DeletionFailed = LakestoneError.with(stringRepresentation: "File deletion failed")
 	}
 }
 
