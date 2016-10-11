@@ -1,4 +1,4 @@
-//
+﻿//
 //  HTTP.swift
 //  LakestoneCore
 //
@@ -50,24 +50,25 @@ public class HTTP {
 			self.url = url
 		}
 		
+        public let queue: ThreadQueue = Threading.serialQueue(withLabel: "lakestonecore.http.request.queue")
+        
 		public class Error {
 			
-			#if os(iOS) || os(tvOS) || os(watchOS)
+			#if !COOPER
 			/// indicates the error in underlying invocation which results in both internally returned response objects and error being nil.
-			/// Can only be thrown on iOS.
 			///
 			/// - remark: thrown when Foundation's session.dataTask(with:) callbacks with error and response both nil.
 			///		   It is unlikely that this error will be ever thrown
 			static let Unknown = LakestoneError.with(stringRepresentation: "Internal unknown invocation error")
 			
 			#endif
-            
-            #if os(OSX) || os(Linux)
-            
-            static let NotUTF8EncodedBytes = LakestoneError.with(stringRepresentation: "Received response data cannot be inferred as UTF8 string")
-            
-            #endif
-        }
+			
+			#if os(OSX) || os(Linux)
+			
+			static let NotUTF8EncodedBytes = LakestoneError.with(stringRepresentation: "Received response data cannot be inferred as UTF8 string")
+			
+			#endif
+		}
 		
 		#if os(OSX) || os(Linux)
 		
@@ -149,10 +150,10 @@ public class HTTP {
 				
 				let request = CURL(url: self.url.absoluteString)
 				let (invocationCode, headerBytes, bodyData) = request.performFully()
-                guard let headerString = String(bytes: headerBytes, encoding: String.Encoding.utf8) else {
-                    throw HTTP.Request.Error.NotUTF8EncodedBytes
-                }
-                
+				guard let headerString = String(bytes: headerBytes, encoding: String.Encoding.utf8) else {
+					throw HTTP.Request.Error.NotUTF8EncodedBytes
+				}
+				
 				request.close()
 				
 				if CURLcode(rawValue: UInt32(invocationCode)) != CURLE_OK {
@@ -205,7 +206,7 @@ public class HTTP {
 				var targetResponseº: URLResponse?
 				var targetErrorº: Swift.Error?
 				
-                
+				
 				let semaphore = DispatchSemaphore(value: 0)
 				let dataTask = session.dataTask(with: request){ (dataº: Data?, responseº: URLResponse?, errorº: Swift.Error?) in
 					
@@ -247,47 +248,79 @@ public class HTTP {
 			#endif
 			
 		}
-        
-        #if !COOPER
-        public func perform(with completionHander: @escaping (ThrowableError?, Response?) -> Void){
-            
-            let request = URLRequest(url: self.url)
-            let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
-            
-            let dataTask = session.dataTask(with: request){ (dataº: Data?, responseº: URLResponse?, errorº: Swift.Error?) in
+		
+		public func perform(with completionHander: @escaping (ThrowableError?, Response?) -> Void){
+			
+			#if COOPER
+			
+				self.queue.dispatch {
+					
+					do {  
+						let response = try self.performSync()
+						completionHander(nil, response)
+						
+					} catch {
+						completionHander(error as! ThrowableError, nil)
+					}
+				}
                 
-                if let error = errorº {
-                    completionHander(error, nil)
-                    return
-                }
+            #elseif os(OSX) || os(Linux)
+				
+                // duplicating since #if !os(iOS) will not compile in Silver
+                // ask on talk.remobjects to support #if os() directive in compilation
                 
-                // if response is nil and returned error is nil, error is not provided then
-                // this should never happen, but still handling this scenario
-                guard let response = responseº as? HTTPURLResponse else {
-                    completionHander(Error.Unknown, nil)
-                    return
-                }
-                
-                var targetHeaderFields = [String: String]()
-                for (header, headerValue) in response.allHeaderFields {
-                    guard let headerString = header as? String,
-                        let headerValueString = headerValue as? String
-                        else {
-                            print("Header field entry is not a string literal")
-                            continue
-                    }
+                self.queue.dispatch {
                     
-                    targetHeaderFields[headerString] = headerValueString
+                    do {
+                        let response = try self.performSync()
+                        completionHander(nil, response)
+                        
+                    } catch {
+                        completionHander(error, nil)
+                    }
                 }
                 
-                let statusMessage = HTTPURLResponse.localizedString(forStatusCode: response.statusCode)
-                completionHander(nil, HTTP.Response(url: self.url, statusCode: response.statusCode, statusMessage: statusMessage, headerFields: targetHeaderFields, data: dataº))
-            }
-            
-            dataTask.resume()
-        }
-    
-        #endif
+			#else
+				
+				let request = URLRequest(url: self.url)
+				let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
+				
+				let dataTask = session.dataTask(with: request){ (dataº: Data?, responseº: URLResponse?, errorº: Swift.Error?) in
+					
+					if let error = errorº {
+						completionHander(error, nil)
+						return
+					}
+					
+					// if response is nil and returned error is nil, error is not provided then
+					// this should never happen, but still handling this scenario
+					guard let response = responseº as? HTTPURLResponse else {
+						completionHander(Error.Unknown, nil)
+						return
+					}
+					
+					var targetHeaderFields = [String: String]()
+					for (header, headerValue) in response.allHeaderFields {
+						guard let headerString = header as? String,
+							let headerValueString = headerValue as? String
+							else {
+								print("Header field entry is not a string literal")
+								continue
+						}
+						
+						targetHeaderFields[headerString] = headerValueString
+					}
+					
+					let statusMessage = HTTPURLResponse.localizedString(forStatusCode: response.statusCode)
+					completionHander(nil, HTTP.Response(url: self.url, statusCode: response.statusCode, statusMessage: statusMessage, headerFields: targetHeaderFields, data: dataº))
+				}
+				
+				dataTask.resume()
+			
+			#endif
+			
+		}
+	
 	}
 	
 	/// Container that carries HTTP response entities
