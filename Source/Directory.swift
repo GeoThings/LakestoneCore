@@ -1,4 +1,4 @@
-﻿//
+//
 //  Directory.swift
 //  LakestoneCore
 //
@@ -167,10 +167,15 @@ public class Directory: AnyFileOrDirectory {
 			}
 		}
 	}
-	
-	public var parentDirectoryº: Directory? {
-		return (self.path == "/") ? nil : Directory(fileURL: URL(fileURLWithPath: self.path).deletingLastPathComponent())
-	}
+    
+    public var parentDirectoryº: Directory? {
+        return (self.path == "/") ? nil : Directory(fileURL: URL(fileURLWithPath: self.path).deletingLastPathComponent())
+    }
+    
+    public func copy(to destinationPath: AnyFileOrDirectory, overwrites: Bool) throws {
+        
+    }
+
 }
 
 extension Directory: CustomStringConvertible {
@@ -187,18 +192,18 @@ extension Directory {
 
 extension Directory: Equatable {
 
-	#if COOPER
-	public override func equals(_ o: Object!) -> Bool {
-		
-		guard let other = o as? Self else {
-			return false
-		}
-		
-		return (self == other)
-	}
-	#endif
+    #if COOPER
+    public override func equals(_ o: Object!) -> Bool {
+        
+        guard let other = o as? Self else {
+            return false
+        }
+        
+        return (self == other)
+    }
+    #endif
 }
 
 public func ==(lhs: Directory, rhs: Directory) -> Bool {
-	return lhs.path == rhs.path
+    return lhs.path == rhs.path
 }
