@@ -72,13 +72,28 @@ public class TestFile: Test {
 		let testFileURL = URL(fileURLWithPath: workingDirectoryPath).appendingPathComponent("testFile.txt")
 		let testFile = File(fileURL: testFileURL)
 		
+		let testCopyFileURL = URL(fileURLWithPath: workingDirectoryPath).appendingPathComponent("testCopyFile.txt")
+		let testCopyFile = File(fileURL: testCopyFileURL)
+		
+		let testMoveFileURL = URL(fileURLWithPath: workingDirectoryPath).appendingPathComponent("testMoveFile.txt")
+		let testMoveFile = File(fileURL: testMoveFileURL)
+        let newMoveFile: File
 		
 		do {
 			if testFile.exists {
 				try testFile.remove()
 				Assert.IsFalse(testFile.exists)
 			}
+			if testCopyFile.exists {
+				try testCopyFile.remove()
+				Assert.IsFalse(testCopyFile.exists)
+			}
+			if testMoveFile.exists {
+				try testMoveFile.remove()
+				Assert.IsFalse(testMoveFile.exists)
+			}
 			
+			// test writing and overwriting text in the file
 			try testFile.overwrite(with: sampleText)
 			Assert.AreEqual(try testFile.readUTF8EncodedString(), sampleText)
 			try testFile.overwrite(with: overwriteText)
@@ -88,6 +103,16 @@ public class TestFile: Test {
 			try testFile.append(utf8EncodedString: andSomeMoreText)
 			Assert.AreEqual(try testFile.readUTF8EncodedString(), sampleText + andSomeMoreText)
 			
+			// test file copy and move
+			try testCopyFile.overwrite(with: " ")
+			try testFile.copy(to: testCopyFile, overwrites: true)
+			Assert.AreEqual(try testCopyFile.readUTF8EncodedString(), sampleText + andSomeMoreText)
+			newMoveFile = try testCopyFile.move(to: testMoveFile, overwrites: true)
+			Assert.AreEqual(try testMoveFile.readUTF8EncodedString(), sampleText + andSomeMoreText)
+			Assert.AreEqual(newMoveFile, testMoveFile)
+            Assert.IsFalse(testCopyFile.exists)
+			
+			//test file properties
 			Assert.AreEqual(testFile.name, "testFile")
 			Assert.AreEqual(testFile.extension, "txt")
 			Assert.IsFalse(testFile.isDirectory)
