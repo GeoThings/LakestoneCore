@@ -205,6 +205,7 @@ public class HTTP {
 				var targetResponseº: URLResponse?
 				var targetErrorº: Swift.Error?
 				
+                
 				let semaphore = DispatchSemaphore(value: 0)
 				let dataTask = session.dataTask(with: request){ (dataº: Data?, responseº: URLResponse?, errorº: Swift.Error?) in
 					
@@ -246,6 +247,47 @@ public class HTTP {
 			#endif
 			
 		}
+        
+        #if !COOPER
+        public func perform(with completionHander: @escaping (ThrowableError?, Response?) -> Void){
+            
+            let request = URLRequest(url: self.url)
+            let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
+            
+            let dataTask = session.dataTask(with: request){ (dataº: Data?, responseº: URLResponse?, errorº: Swift.Error?) in
+                
+                if let error = errorº {
+                    completionHander(error, nil)
+                    return
+                }
+                
+                // if response is nil and returned error is nil, error is not provided then
+                // this should never happen, but still handling this scenario
+                guard let response = responseº as? HTTPURLResponse else {
+                    completionHander(Error.Unknown, nil)
+                    return
+                }
+                
+                var targetHeaderFields = [String: String]()
+                for (header, headerValue) in response.allHeaderFields {
+                    guard let headerString = header as? String,
+                        let headerValueString = headerValue as? String
+                        else {
+                            print("Header field entry is not a string literal")
+                            continue
+                    }
+                    
+                    targetHeaderFields[headerString] = headerValueString
+                }
+                
+                let statusMessage = HTTPURLResponse.localizedString(forStatusCode: response.statusCode)
+                completionHander(nil, HTTP.Response(url: self.url, statusCode: response.statusCode, statusMessage: statusMessage, headerFields: targetHeaderFields, data: dataº))
+            }
+            
+            dataTask.resume()
+        }
+    
+        #endif
 	}
 	
 	/// Container that carries HTTP response entities

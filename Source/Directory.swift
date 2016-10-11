@@ -103,7 +103,7 @@ public class Directory: AnyFileOrDirectory {
 	public func create() throws {
 		#if COOPER
 			if (!_fileEntity.mkdir()){
-				throw Errors.DeletionFailed
+				throw Error.DeletionFailed
 			}
 		#else
 			return try FileManager.default.createDirectory(atPath: self.path, withIntermediateDirectories: false, attributes: nil)
@@ -150,7 +150,7 @@ public class Directory: AnyFileOrDirectory {
 		#endif
 	}
 	
-	public func remove(completionHandler: @escaping (Error?) -> Void){
+	public func remove(completionHandler: @escaping (ThrowableError?) -> Void){
 		
 		let deletionQueue = Threading.serialQueue(withLabel: "lakestone.core.file-deletion-queue")
 		deletionQueue.dispatch {
@@ -180,7 +180,7 @@ extension Directory: CustomStringConvertible {
 }
 extension Directory {
 	//prevent name collision with Foundation.Error that is used in remove(completionHandler:)
-	public class Errors {
+	public class Error {
 		static let DeletionFailed = LakestoneError.with(stringRepresentation: "Directory deletion failed")
 	}
 }

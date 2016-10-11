@@ -401,10 +401,6 @@ public class CustomSerialization {
 						dictionaryEntity[commonKey] = Double.parseDouble(Long.toString(dictionaryEntry as! Int64))
 						
 					} else {
-						print(commonKey)
-						print(dictionaryEntity[commonKey]!.getClass())
-						print(typesMap[commonKey])
-						
 						typesMatch = false
 						break
 					}
@@ -418,7 +414,7 @@ public class CustomSerialization {
 					// bool will unwrap as __NCFBoolean
 					// all numeric types will unwrap as __NSCFNumber
 					//
-					// type matching will fail, so explicit constructor is needed
+					// type matching will fail, so explicit coercion is needed
 					if let stringEntry = dictionaryEntryº as? String {
 						dictionaryEntryº = String(stringEntry)
 					} else if let boolEntry = dictionaryEntryº as? Bool {
@@ -458,8 +454,6 @@ public class CustomSerialization {
 						// expectedEntry is numeric
 				
 					} else {
-						print(type(of: dictionaryEntity[commonKey]!))
-						
 						typesMatch = false
 						break
 					}
