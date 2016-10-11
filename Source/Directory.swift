@@ -171,6 +171,11 @@ public class Directory: AnyFileOrDirectory {
     public var parentDirectoryº: Directory? {
         return (self.path == "/") ? nil : Directory(fileURL: URL(fileURLWithPath: self.path).deletingLastPathComponent())
     }
+    
+    public func copy(to destinationPath: AnyFileOrDirectory, overwrites: Bool) throws {
+        
+    }
+
 }
 
 extension Directory: CustomStringConvertible {

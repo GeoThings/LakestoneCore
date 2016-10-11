@@ -1,4 +1,4 @@
-﻿//
+//
 //  AnyFileOrDirectory.swift
 //  LakestoneCore
 //
@@ -37,6 +37,10 @@ public protocol AnyFileOrDirectory {
 	func remove() throws
 	
 	var parentDirectoryº: Directory? { get }
+    
+    // Vova adds 10/07
+    // copy the file or directory with subdirectories to new destination; overwrite existing or throw exception
+    func copy(to destinationPath: AnyFileOrDirectory, overwrites: Bool) throws
 	
 	//TODO: implement copy(to:, overwrites:), move(to:, overwrites:)
 }
