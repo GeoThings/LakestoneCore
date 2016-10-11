@@ -200,7 +200,8 @@ public class TestHTTP: Test {
 extension TestHTTP {
 	static var allTests : [(String, (TestHTTP) -> () throws -> Void)] {
 		return [
-			("testSynchronousHTTPRequest", testSynchronousHTTPRequest)
+			("testSynchronousHTTPRequest", testSynchronousHTTPRequest),
+            ("testAsynchronousHTTPRequest", testAsynchronousHTTPRequest)
 		]
 	}
 }
