@@ -12,4 +12,5 @@ XCTMain([
     testCase(TestDirectory.allTests),
     testCase(TestJSONSerialization.allTests),
     testCase(TestCustomSerialization.allTests),
+    testCase(TestPersistentPropertyList.allTests)
 ])

@@ -1,4 +1,4 @@
-﻿//
+//
 //  File.swift
 //  LakestoneCore
 //
@@ -170,7 +170,7 @@ extension File {
 		#else
 			
 			if let fileHandle = FileHandle(forWritingAtPath: self.path){
-				fileHandle.seekToEndOfFile()
+				_ = fileHandle.seekToEndOfFile()
 				fileHandle.write(data)
 				fileHandle.closeFile()
 			} else {

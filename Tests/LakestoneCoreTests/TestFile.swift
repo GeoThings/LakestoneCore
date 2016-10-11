@@ -33,7 +33,7 @@
 	
 #endif
 
-class TestFile: Test {
+public class TestFile: Test {
 	
 	var workingDirectoryPath: String!
 	
@@ -43,7 +43,7 @@ class TestFile: Test {
 		self.commonSetup()
 	}
 	#else
-	override func setUp() {
+	override public func setUp() {
 		super.setUp()
 		self.commonSetup()
 	}

@@ -1,4 +1,4 @@
-//
+﻿//
 //  TestJSONSerialization.swift
 //  LakestoneCore
 //
@@ -21,20 +21,20 @@
 //
 
 #if COOPER
-    
-    import remobjects.elements.eunit
-    
+	
+	import remobjects.elements.eunit
+	
 #else
-    
-    import XCTest
-    import Foundation
-    
-    @testable import LakestoneCore
-    
+	
+	import XCTest
+	import Foundation
+	
+	@testable import LakestoneCore
+	
 #endif
 
 
-class TestJSONSerialization: Test {
+public class TestJSONSerialization: Test {
 
 	var jsonData: Data!
 	
@@ -44,7 +44,7 @@ class TestJSONSerialization: Test {
 		self.commonSetup()
 	}
 	#else
-	override func setUp() {
+	override public func setUp() {
 		super.setUp()
 		self.commonSetup()
 	}
@@ -122,14 +122,9 @@ class TestJSONSerialization: Test {
 			}
 			
 			Assert.AreEqual(((stopsEntity.first as? [Any])?.first as? Int) ?? 0, 5)
-			
-            //TODO: Investigate java.lang.InterruptedException cause
-			/* 
-             completes gracefully,
-             but keeps throwing java.lang.InterruptedException
-             
+			 
 			let jsonData = try JSONSerialization.data(withJSONObject: jsonObject)
-			Assert.AreEqual(jsonData.bytes.count, 13461)
+			//Assert.AreEqual(jsonData.bytes.count, 13461)
 			
 			let parsedBackjsonObject = try JSONSerialization.jsonObject(with: jsonData)
 			guard let parsedBackJsonDictionary = parsedBackjsonObject as? [String: Any] else {
@@ -144,7 +139,6 @@ class TestJSONSerialization: Test {
 			}
  
 			Assert.AreEqual(((parsedBackStopsEntity.first as? [Any])?.first as? Int) ?? 0, 5)
-			*/
 			
 		} catch {
 			Assert.Fail("JSON parsing failed: \(error))")
@@ -156,10 +150,10 @@ class TestJSONSerialization: Test {
 
 #if !COOPER
 extension TestJSONSerialization {
-    static var allTests : [(String, (TestJSONSerialization) -> () throws -> Void)] {
-        return [
-            ("testJSONSerialization", testJSONSerialization)
-        ]
-    }
+	static var allTests : [(String, (TestJSONSerialization) -> () throws -> Void)] {
+		return [
+			("testJSONSerialization", testJSONSerialization)
+		]
+	}
 }
 #endif

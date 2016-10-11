@@ -33,13 +33,13 @@
 	typealias AwaitToken = IAwaitToken
 #else
 	typealias AwaitToken = XCTestExpectation
-	typealias Test = XCTestCase
+	public typealias Test = XCTestCase
 #endif
 
 
 #if !COOPER
 	
-class Assert {
+public class Assert {
 		
 	static func Fail(_ message: String? = nil){
 		if let msg = message {
@@ -52,34 +52,34 @@ class Assert {
 	static func AreEqual<T: Equatable>(_ lhs: T, _ rhs: T){
 		XCTAssertEqual(lhs, rhs)
 	}
-    
-    static func AreEqual<T: Equatable>(_ lhs: [T], _ rhs: [T]){
-        
-        if lhs.count != rhs.count {
-            Assert.Fail("Sequences differ in length")
-            return
-        }
-        
-        for (index, element) in lhs.enumerated() {
-            Assert.AreEqual(element, rhs[index])
-        }
-    }
-    
+	
+	static func AreEqual<T: Equatable>(_ lhs: [T], _ rhs: [T]){
+		
+		if lhs.count != rhs.count {
+			Assert.Fail("Sequences differ in length")
+			return
+		}
+		
+		for (index, element) in lhs.enumerated() {
+			Assert.AreEqual(element, rhs[index])
+		}
+	}
+	
 	static func IsTrue(_ expression: Bool){
 		XCTAssertTrue(expression)
 	}
-    
-    static func IsFalse(_ expression: Bool){
-        XCTAssertFalse(expression)
-    }
-    
-    static func IsNil(_ expression: Any?){
-        XCTAssertNil(expression)
-    }
-    
-    static func IsNotNil(_ expression: Any?){
-        XCTAssertNotNil(expression)
-    }
+	
+	static func IsFalse(_ expression: Bool){
+		XCTAssertFalse(expression)
+	}
+	
+	static func IsNil(_ expression: Any?){
+		XCTAssertNil(expression)
+	}
+	
+	static func IsNotNil(_ expression: Any?){
+		XCTAssertNotNil(expression)
+	}
 }
 	
 #endif

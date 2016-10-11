@@ -22,19 +22,19 @@
 
 
 #if COOPER
-    
-    import remobjects.elements.eunit
-    
+	
+	import remobjects.elements.eunit
+	
 #else
-    
-    import XCTest
-    import Foundation
-    
-    @testable import LakestoneCore
-    
+	
+	import XCTest
+	import Foundation
+	
+	@testable import LakestoneCore
+	
 #endif
 
-class TestUUID: Test {
+public class TestUUID: Test {
 	
 	public func testUUID(){
 		

@@ -1,4 +1,4 @@
-//
+﻿//
 //  TestDirectory.swift
 //  LakestoneCore
 //
@@ -21,19 +21,19 @@
 //
 
 #if COOPER
-    
-    import remobjects.elements.eunit
-    
+	
+	import remobjects.elements.eunit
+	
 #else
-    
-    import XCTest
-    import Foundation
-    
-    @testable import LakestoneCore
-    
+	
+	import XCTest
+	import Foundation
+	
+	@testable import LakestoneCore
+	
 #endif
 
-class TestDirectory: Test {
+public class TestDirectory: Test {
 
 	var workingDirectoryPath: String!
 	
@@ -43,7 +43,7 @@ class TestDirectory: Test {
 		self.commonSetup()
 	}
 	#else
-	override func setUp() {
+	override public func setUp() {
 		super.setUp()
 		self.commonSetup()
 	}
@@ -54,9 +54,9 @@ class TestDirectory: Test {
 		#if COOPER
 			self.workingDirectoryPath = MainActivity.currentInstance.getFilesDir().getCanonicalPath()
 		#elseif os(iOS) || os(watchOS) || os(tvOS)
-            if let documentsDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, false).first {
-                self.workingDirectoryPath = (documentsDirectoryPath as NSString).expandingTildeInPath
-            }
+			if let documentsDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, false).first {
+				self.workingDirectoryPath = (documentsDirectoryPath as NSString).expandingTildeInPath
+			}
 		#else
 			self.workingDirectoryPath = FileManager.default.currentDirectoryPath
 		#endif
@@ -64,9 +64,9 @@ class TestDirectory: Test {
 	
 	public func testDirectoryOperations(){
 		
-        let testDirectoryURL = URL(fileURLWithPath: workingDirectoryPath).appendingPathComponent("testDirectory")
+		let testDirectoryURL = URL(fileURLWithPath: workingDirectoryPath).appendingPathComponent("testDirectory")
 		let testDirectory = Directory(fileURL: testDirectoryURL)
-        
+		
 		do {
 			
 			if testDirectory.exists {
@@ -113,14 +113,14 @@ class TestDirectory: Test {
 			Assert.AreEqual(testDirectory.filesAndSubdirectories.count, 0)
 			Assert.IsFalse(testDirectory.exists)
 			
-            guard let parentDirectory = testDirectory.parentDirectoryº else {
-                Assert.Fail("Cannot retrieve parent directory (already root)")
-                return
-            }
-            
-            Assert.AreEqual(parentDirectory.path, self.workingDirectoryPath)
-            Assert.AreEqual(parentDirectory, Directory(path: self.workingDirectoryPath))
-            
+			guard let parentDirectory = testDirectory.parentDirectoryº else {
+				Assert.Fail("Cannot retrieve parent directory (already root)")
+				return
+			}
+			
+			Assert.AreEqual(parentDirectory.path, self.workingDirectoryPath)
+			Assert.AreEqual(parentDirectory, Directory(path: self.workingDirectoryPath))
+			
 		} catch {
 			Assert.Fail("Directory operation failed: \(error)")
 		}

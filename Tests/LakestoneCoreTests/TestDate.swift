@@ -1,4 +1,4 @@
-//
+﻿//
 //  TestDate.swift
 //  LakestoneCore
 //
@@ -22,19 +22,19 @@
 
 
 #if COOPER
-    
-    import remobjects.elements.eunit
-    
+	
+	import remobjects.elements.eunit
+	
 #else
-    
-    import XCTest
-    import Foundation
-    
-    @testable import LakestoneCore
-    
+	
+	import XCTest
+	import Foundation
+	
+	@testable import LakestoneCore
+	
 #endif
 
-class TestDate: Test {
+public class TestDate: Test {
 	
 	public func testDateInstantiation(){
 		
@@ -75,12 +75,12 @@ class TestDate: Test {
 
 #if !COOPER
 extension TestDate {
-    static var allTests : [(String, (TestDate) -> () throws -> Void)] {
-        return [
-            ("testDateConversion", testDateConversion),
-            ("testDateInstantiation", testDateInstantiation)
-        ]
-    }
+	static var allTests : [(String, (TestDate) -> () throws -> Void)] {
+		return [
+			("testDateConversion", testDateConversion),
+			("testDateInstantiation", testDateInstantiation)
+		]
+	}
 }
 #endif
 

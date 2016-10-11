@@ -134,10 +134,13 @@
 	public typealias Date = java.util.Date
 	public typealias UUID = java.util.UUID
 	public typealias File = java.io.File
-	public typealias Error = java.lang.Throwable
 	
+    public typealias AnyHashable = java.lang.Object
+    public typealias ThrowableError = java.lang.Throwable
+    
+    
 #else
 
-	
+	public typealias ThrowableError = Error
 	
 #endif
