@@ -160,7 +160,7 @@ public class Directory: AnyFileOrDirectory {
 			} catch {
 				// in Java silver error has Object type, so conditionals to avoid warning for redundant as! in Swift
 				#if COOPER
-					completionHandler(error as! Error)
+					completionHandler(error as! ThrowableError)
 				#else
 					completionHandler(error)
 				#endif
