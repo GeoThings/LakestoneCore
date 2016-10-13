@@ -1,4 +1,4 @@
-//
+﻿//
 //  Directory.swift
 //  LakestoneCore
 //
@@ -45,11 +45,11 @@ public class Directory: AnyFileOrDirectory {
 		#endif
 	}
 	
-	public init(fileURL: URL){
+	public init(directoryURL: URL){
 		#if COOPER
-			_fileEntity = File(fileURL: fileURL)
+			_fileEntity = File(fileURL: directoryURL)
 		#else
-			self.path = fileURL.path
+			self.path = directoryURL.path
 		#endif
 	}
 	
@@ -73,11 +73,15 @@ public class Directory: AnyFileOrDirectory {
 	
 	#endif
 	
+	public var url: URL {
+		return URL(fileURLWithPath: self.path)
+	}
+	
 	public var name: String {
 		#if COOPER
 			return _fileEntity.getName()
 		#else
-			return URL(fileURLWithPath: self.path).lastPathComponent
+			return self.url.lastPathComponent
 		#endif
 	}
 	
@@ -100,18 +104,25 @@ public class Directory: AnyFileOrDirectory {
 		}
 	}
 	
+	/// Creates a directory corresponfing to current Directory object
+	/// - Throws: Creation error
 	public func create() throws {
 		#if COOPER
 			if (!_fileEntity.mkdir()){
-				throw Error.DeletionFailed
+				throw Error.CreationFailed
 			}
 		#else
 			return try FileManager.default.createDirectory(atPath: self.path, withIntermediateDirectories: false, attributes: nil)
 		#endif
 	}
 	
+	/// Creates a new directory within the given one
+	/// - Parameters:
+	///   - named: Subdirectory name
+	/// - Throws: Creation error
+	/// - Returns: Subdirectory object
 	public func createSubdirectory(named: String) throws -> Directory {
-		let subdirectory = Directory(fileURL: URL(fileURLWithPath: self.path).appendingPathComponent(named))
+		let subdirectory = Directory(directoryURL: self.url.appendingPathComponent(named))
 		try subdirectory.create()
 		return subdirectory
 	}
@@ -126,7 +137,7 @@ public class Directory: AnyFileOrDirectory {
 			}
 		#endif
 		
-		return [AnyFileOrDirectory](names.map { URL(fileURLWithPath: self.path).appendingPathComponent($0) } .map { FileOrDirectory(with: $0) })
+		return [AnyFileOrDirectory](names.map { self.url.appendingPathComponent($0) } .map { FileOrDirectory(with: $0) })
 	}
 	
 	public var files: [File] {
@@ -137,7 +148,8 @@ public class Directory: AnyFileOrDirectory {
 		return [Directory](self.filesAndSubdirectories.filter { $0.isDirectory }.map { Directory(path: $0.path) })
 	}
 	
-	
+	/// Removes the target with all files and subdirectories
+	/// - Throws: remove error
 	public func remove() throws {
 		for entity in self.filesAndSubdirectories {
 			try entity.remove()
@@ -150,6 +162,7 @@ public class Directory: AnyFileOrDirectory {
 		#endif
 	}
 	
+	/// Asynchronous calling of remove function
 	public func remove(completionHandler: @escaping (ThrowableError?) -> Void){
 		
 		let deletionQueue = Threading.serialQueue(withLabel: "lakestone.core.file-deletion-queue")
@@ -167,13 +180,101 @@ public class Directory: AnyFileOrDirectory {
 			}
 		}
 	}
+	
+	/// - Returns: nil if already at root directory or Directory object based on target's url without ending
+	public var parentDirectoryº: Directory? {
+		return (self.path == "/") ? nil : Directory(directoryURL: self.url.deletingLastPathComponent())
+	}
+	
+	/// Copies the current folder with all files and subfolders into a new folder location
+	/// - Parameters:
+	///   - destination: Parent directory for new target folder location
+	///   - overwrites: True to overwrite or false to throw exception if any file exists at the new location
+	/// - Throws: Error occurs when the destination doesn't exist or is not a folder; 
+	/// when the new folder cannot be created at the new location; 
+	/// when copying or overwriting fails
+	/// - Returns: The new folder location as AnyFileOrDirectory
+	/// - Note: recursively copies all subfolders, thus may take long time to complete
+	public func copy(to destination: AnyFileOrDirectory, overwrites: Bool) throws -> AnyFileOrDirectory {
+		
+		var destinationFolder: Directory
+		if destination.isDirectory {
+			destinationFolder = Directory (directoryURL: destination.url)
+		} else { throw Error.WrongDestination }
+		
+		// create new subdirectory if necessary
+		let copyDirectory = Directory(directoryURL: destinationFolder.url.appendingPathComponent(self.name))
+		if (!copyDirectory.exists) { try copyDirectory.create() }
+		
+		for entity in self.filesAndSubdirectories {
+            #if COOPER
+                if (entity.isDirectory){
+                    _ = try Directory(path: entity.path).copy(to: copyDirectory, overwrites: overwrites)
+                } else {
+                    _ = try File(path: entity.path).copy(to: copyDirectory, overwrites: overwrites)
+                }
+            #else
+                _ = try entity.copy(to: copyDirectory, overwrites: overwrites)
+            #endif
+		}
+		
+		return copyDirectory
+	}
     
-    public var parentDirectoryº: Directory? {
-        return (self.path == "/") ? nil : Directory(fileURL: URL(fileURLWithPath: self.path).deletingLastPathComponent())
-    }
-    
-    public func copy(to destinationPath: AnyFileOrDirectory, overwrites: Bool) throws {
+    /// Asynchronous calling of copy function
+    public func copy(to destination: AnyFileOrDirectory, overwrites: Bool, completionHandler: @escaping (ThrowableError?, AnyFileOrDirectory?) -> Void){
         
+        let copyQueue = Threading.serialQueue(withLabel: "lakestone.core.filedir-copy-queue")
+        copyQueue.dispatch {
+            do {
+                let copyDirectory = try self.copy(to: destination, overwrites: overwrites)
+                completionHandler(nil, copyDirectory)
+            } catch {
+                // in Java silver error has Object type, so conditionals to avoid warning for redundant as! in Swift
+                #if COOPER
+                    completionHandler(error as! ThrowableError, nil)
+                #else
+                    completionHandler(error, nil)
+                #endif
+            }
+        }
+    }
+
+	/// Moves the current folder with all files and subfolders into a new folder location by copying and then removing original
+	/// - Parameters:
+	///   - destination: Parent directory for new target folder location
+	///   - overwrites: True to overwrite or false to throw exception if any file exists at the new location
+	/// - Throws: Error occurs when the destination doesn't exist or is not a folder; 
+	/// when the new folder cannot be created at the new location; 
+	/// when copying, overwriting or deletion fails
+	/// - Returns: The new folder location as AnyFileOrDirectory
+	/// - Note: recursively moves all subfolders, thus may take long time to complete
+	public func move(to destination: AnyFileOrDirectory, overwrites: Bool) throws -> AnyFileOrDirectory {
+		
+		let destinationFolder = try self.copy(to: destination, overwrites: overwrites)
+		
+		if self.exists { try self.remove() }
+		
+		return destinationFolder
+	}
+    
+    /// Asynchronous calling of move function
+    public func move(to destination: AnyFileOrDirectory, overwrites: Bool, completionHandler: @escaping (ThrowableError?, AnyFileOrDirectory?) -> Void){
+        
+        let moveQueue = Threading.serialQueue(withLabel: "lakestone.core.filedir-move-queue")
+        moveQueue.dispatch {
+            do {
+                let destinationFolder = try self.move(to: destination, overwrites: overwrites)
+                completionHandler(nil, destinationFolder)
+            } catch {
+                // in Java silver error has Object type, so conditionals to avoid warning for redundant as! in Swift
+                #if COOPER
+                    completionHandler(error as! ThrowableError, nil)
+                #else
+                    completionHandler(error, nil)
+                #endif
+            }
+        }
     }
 
 }
@@ -186,24 +287,27 @@ extension Directory: CustomStringConvertible {
 extension Directory {
 	//prevent name collision with Foundation.Error that is used in remove(completionHandler:)
 	public class Error {
+		static let CreationFailed = LakestoneError.with(stringRepresentation: "Directory creation failed")
 		static let DeletionFailed = LakestoneError.with(stringRepresentation: "Directory deletion failed")
+		static let WrongDestination = LakestoneError.with(stringRepresentation: "Provided destination is not a folder or doesn't exist")
+		public static let OverwriteFailed = LakestoneError.with(stringRepresentation: "File(s) already exists. You need to explicitly allow overwriting, if desired.")
 	}
 }
 
 extension Directory: Equatable {
 
-    #if COOPER
-    public override func equals(_ o: Object!) -> Bool {
-        
-        guard let other = o as? Self else {
-            return false
-        }
-        
-        return (self == other)
-    }
-    #endif
+	#if COOPER
+	public override func equals(_ o: Object!) -> Bool {
+		
+		guard let other = o as? Self else {
+			return false
+		}
+		
+		return (self == other)
+	}
+	#endif
 }
 
 public func ==(lhs: Directory, rhs: Directory) -> Bool {
-    return lhs.path == rhs.path
+	return lhs.path == rhs.path
 }

@@ -76,6 +76,10 @@ extension File {
 	}
 	#endif
 	
+    public var url: URL {
+        return URL(fileURLWithPath: self.path)
+    }
+    
 	public var name: String {
 		#if COOPER
 			let nameWithExtension = self.getName()
@@ -83,7 +87,7 @@ extension File {
 				return nameWithExtension
 			}
 		#else
-			let nameWithExtension = URL(fileURLWithPath: self.path).lastPathComponent
+			let nameWithExtension = self.url.lastPathComponent
 			guard let extensionSeperatorRange = nameWithExtension.range(of: ".", options: .backwards) else {
 				return nameWithExtension
 			}
@@ -93,7 +97,7 @@ extension File {
 	}
 	
 	public var `extension`: String {
-		return URL(fileURLWithPath: self.path).pathExtension
+		return self.url.pathExtension
 	}
 	
 	public var size: Int64 {
@@ -116,7 +120,7 @@ extension File {
 		#if COOPER
 			return try Data.from(inputStream: FileInputStream(self))
 		#else
-			return try Data(contentsOf: URL(fileURLWithPath: self.path))
+			return try Data(contentsOf: self.url)
 		#endif
 	}
 	
@@ -146,7 +150,7 @@ extension File {
 			outputChannel.close()
 			
 		#else
-			try data.write(to: URL(fileURLWithPath: self.path))
+			try data.write(to: self.url)
 		#endif
 	}
 	
@@ -200,76 +204,25 @@ extension File {
 	}
 	
 	public var parentDirectoryº: Directory? {
-		return (self.path == "/") ? nil : Directory(fileURL: URL(fileURLWithPath: self.path).deletingLastPathComponent())
+		return (self.path == "/") ? nil : Directory(directoryURL: self.url.deletingLastPathComponent())
 	}
 
-    ///Copies the current file to a new file or folder location
-    /// - Parameters:
-    ///   - destination: New file location following AnyFileOrDirectory protocol
-    ///   - overwrites: True to overwrite or false to throw exception if the file exists at the new location
-    /// - Throws: Copying or overwriting error
-    /// - Note: FileChannel copy in Java won't copy files over 2GB
-	public func copy(to destination: AnyFileOrDirectory, overwrites: Bool) throws {
-		
-		var destinationFile: File
-		if destination.isDirectory {
-			let lastPathComponent = URL(fileURLWithPath: self.path).lastPathComponent
-			destinationFile = File(fileURL: URL(fileURLWithPath: destination.path).appendingPathComponent(lastPathComponent))
-		} else {
-			destinationFile = File(path: destination.path)
-		}
-
-		#if COOPER
-			
-			if (!destinationFile.exists){
-				destinationFile.createNewFile()
-			} else if !overwrites {
-				throw Error.OverwriteFailed
-			}
-			
-			let inputStream: FileInputStream = FileInputStream(self)
-			let outputStream: FileOutputStream = FileOutputStream(destinationFile)
-			defer {
-				outputStream.close()
-				inputStream.close()
-			}
-			
-			let inputChannel = inputStream.getChannel()
-			let outputChannel = outputStream.getChannel()
-			
-			// this can throw exception and streams should be closed by deferred funcs
-			outputChannel.transferFrom(inputChannel, 0, inputChannel.size())
-			
-		#else
-			
-            if destinationFile.exists {
-                if overwrites {
-                    try self.readData().write(to: URL(fileURLWithPath: destinationFile.path))
-                } else { throw Error.OverwriteFailed }
-            } else {
-                try FileManager.default.copyItem(atPath: self.path, toPath: destinationFile.path)
-            }
-            
-		#endif
-	}
-
-    ///Moves the current file to a new file or folder location
+	///Copies the current file to a new file or folder location
 	/// - Parameters:
-    ///   - destination: New file location following AnyFileOrDirectory protocol
-    ///   - overwrites: True to overwrite or false to throw exception if the file exists at the new location
-    /// - Returns: The new file location as File
+	///   - destination: New file location following AnyFileOrDirectory protocol
+	///   - overwrites: True to overwrite or false to throw exception if the file exists at the new location
+	/// - Returns: The new file location as AnyFileOrDirectory
     /// - Throws: Copying or overwriting error
-    /// - Note: FileChannel copy in Java won't copy files over 2GB
-	public func move(to destination: AnyFileOrDirectory, overwrites: Bool) throws -> File {
+	/// - Note: FileChannel copy in Java won't copy files over 2GB
+	public func copy(to destination: AnyFileOrDirectory, overwrites: Bool) throws -> AnyFileOrDirectory {
 		
 		var destinationFile: File
 		if destination.isDirectory {
-			let lastPathComponent = URL(fileURLWithPath: self.path).lastPathComponent
-			destinationFile = File(fileURL: URL(fileURLWithPath: destination.path).appendingPathComponent(lastPathComponent))
+			destinationFile = File(fileURL: destination.url.appendingPathComponent(self.url.lastPathComponent))
 		} else {
 			destinationFile = File(path: destination.path)
 		}
-		
+
 		#if COOPER
 			
 			if (!destinationFile.exists){
@@ -294,16 +247,31 @@ extension File {
 		#else
 			
 			if destinationFile.exists {
-                if overwrites {
-                    try self.readData().write(to: URL(fileURLWithPath: destinationFile.path))
-                } else { throw Error.OverwriteFailed }
-            } else {
-                try FileManager.default.copyItem(atPath: self.path, toPath: destinationFile.path)
-            }
-
+				if overwrites {
+					try self.readData().write(to: destinationFile.url)
+				} else { throw Error.OverwriteFailed }
+			} else {
+				try FileManager.default.copyItem(atPath: self.path, toPath: destinationFile.path)
+			}
+			
 		#endif
 		
+		return destinationFile
+	}
+
+	/// Moves the current file to a new file or folder location by copying and then removing original file
+	/// - Parameters:
+	///   - destination: New file location following AnyFileOrDirectory protocol
+	///   - overwrites: True to overwrite or false to throw exception if the file exists at the new location
+	/// - Returns: The new file location as AnyFileOrDirectory
+	/// - Throws: Copying, overwriting or deletion error
+	/// - Note: FileChannel copy in Java won't copy files over 2GB
+	public func move(to destination: AnyFileOrDirectory, overwrites: Bool) throws -> AnyFileOrDirectory {
+		
+		let destinationFile = try self.copy(to: destination, overwrites: overwrites)
+				
 		if self.exists { try self.remove() }
+		
 		return destinationFile
 	}
 
