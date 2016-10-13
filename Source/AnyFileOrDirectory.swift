@@ -27,6 +27,7 @@
 public protocol AnyFileOrDirectory {
 	
 	var path: String { get }
+    var url: URL { get }
 	var exists: Bool { get }
 	var isDirectory: Bool { get }
 	
@@ -37,12 +38,14 @@ public protocol AnyFileOrDirectory {
 	func remove() throws
 	
 	var parentDirectoryº: Directory? { get }
-    
-    // Vova adds 10/07
-    // copy the file or directory with subdirectories to new destination; overwrite existing or throw exception
-    func copy(to destinationPath: AnyFileOrDirectory, overwrites: Bool) throws
 	
-	//TODO: implement copy(to:, overwrites:), move(to:, overwrites:)
+	// copy the file or directory with subdirectories to new destination; overwrite existing or throw exception
+    // returns new location
+	func copy(to destination: AnyFileOrDirectory, overwrites: Bool) throws -> AnyFileOrDirectory
+	
+	// move the file or directory with subdirectories to new destination; overwrite existing or throw exception
+    // returns new location
+	func move(to destination: AnyFileOrDirectory, overwrites: Bool) throws -> AnyFileOrDirectory
 }
 
 #if !COOPER
@@ -85,7 +88,7 @@ public func FileOrDirectory(with path: String) -> AnyFileOrDirectory {
 public func FileOrDirectory(with fileURL: URL) -> AnyFileOrDirectory {
 	let file = File(fileURL: fileURL)
 	if (file.isDirectory) {
-		return Directory(fileURL: fileURL)
+		return Directory(directoryURL: fileURL)
 	} else {
 		return file
 	}

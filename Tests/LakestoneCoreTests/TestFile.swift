@@ -1,4 +1,4 @@
-﻿//
+//
 //  TestFile.swift
 //  LakestoneCore
 //
@@ -77,8 +77,10 @@ public class TestFile: Test {
 		
 		let testMoveFileURL = URL(fileURLWithPath: workingDirectoryPath).appendingPathComponent("testMoveFile.txt")
 		let testMoveFile = File(fileURL: testMoveFileURL)
-        let newMoveFile: File
-		
+        
+        let testFolderURL = URL(fileURLWithPath: workingDirectoryPath).appendingPathComponent("TestFolder")
+        let testFolder = Directory(directoryURL: testFolderURL)
+        
 		do {
 			if testFile.exists {
 				try testFile.remove()
@@ -92,8 +94,12 @@ public class TestFile: Test {
 				try testMoveFile.remove()
 				Assert.IsFalse(testMoveFile.exists)
 			}
+            if testFolder.exists {
+                try testFolder.remove()
+                Assert.IsFalse(testFolder.exists)
+            }
 			
-			// test writing and overwriting text in the file
+			// MARK: test writing and overwriting text in the file
 			try testFile.overwrite(with: sampleText)
 			Assert.AreEqual(try testFile.readUTF8EncodedString(), sampleText)
 			try testFile.overwrite(with: overwriteText)
@@ -103,16 +109,48 @@ public class TestFile: Test {
 			try testFile.append(utf8EncodedString: andSomeMoreText)
 			Assert.AreEqual(try testFile.readUTF8EncodedString(), sampleText + andSomeMoreText)
 			
-			// test file copy and move
+			// MARK: test file to file copy and move
 			try testCopyFile.overwrite(with: " ")
-			try testFile.copy(to: testCopyFile, overwrites: true)
+			var newFile = try testFile.copy(to: testCopyFile, overwrites: true)
+            Assert.AreEqual(newFile.path, testCopyFile.path)
 			Assert.AreEqual(try testCopyFile.readUTF8EncodedString(), sampleText + andSomeMoreText)
-			newMoveFile = try testCopyFile.move(to: testMoveFile, overwrites: true)
-			Assert.AreEqual(try testMoveFile.readUTF8EncodedString(), sampleText + andSomeMoreText)
-			Assert.AreEqual(newMoveFile, testMoveFile)
-            Assert.IsFalse(testCopyFile.exists)
 			
-			//test file properties
+            try testMoveFile.overwrite(with: " ")
+            newFile = try testCopyFile.move(to: testMoveFile, overwrites: true)
+            Assert.AreEqual(newFile.path, testMoveFile.path)
+			Assert.AreEqual(try testMoveFile.readUTF8EncodedString(), sampleText + andSomeMoreText)
+            Assert.IsFalse(testCopyFile.exists)
+            
+            // existing files at the moment: testFile.txt, testMoveFile.txt
+            
+            // MARK: test file to folder copy and move
+            try testFolder.create()
+            newFile = try testFile.copy(to: testFolder, overwrites: true)
+            Assert.AreEqual(newFile.name, testFile.name)
+            let testFolderCopyFile = File(fileURL: newFile.url)
+            Assert.AreEqual(try testFolderCopyFile.readUTF8EncodedString(), sampleText + andSomeMoreText)
+            
+            newFile = try testMoveFile.move(to: testFolder, overwrites: true)
+            Assert.AreEqual(newFile.name, testMoveFile.name)
+            let testFolderMoveFile = File(fileURL: newFile.url)
+            Assert.AreEqual(try testFolderMoveFile.readUTF8EncodedString(), sampleText + andSomeMoreText)
+            Assert.IsFalse(testMoveFile.exists)
+            
+            guard let parentCopyDirectory = testFolderCopyFile.parentDirectoryº else {
+                Assert.Fail("Cannot get parent dir of copied file")
+                return
+            }
+            Assert.AreEqual(parentCopyDirectory,testFolder)
+            
+            guard let parentMoveDirectory = testFolderMoveFile.parentDirectoryº else {
+                Assert.Fail("Cannot get parent dir of moved file")
+                return
+            }
+            Assert.AreEqual(parentMoveDirectory,testFolder)
+            
+            // existing files at the moment: testFile.txt, TestFolder/testFile.txt, TestFolder/testMoveFile.txt
+			
+			//MARK: test file properties
 			Assert.AreEqual(testFile.name, "testFile")
 			Assert.AreEqual(testFile.extension, "txt")
 			Assert.IsFalse(testFile.isDirectory)
@@ -144,6 +182,12 @@ public class TestFile: Test {
 
 			let sameTestFile = File(fileURL: testFileURL)
 			Assert.AreEqual(sameTestFile, testFile)
+            
+            // cleanup
+            if testFolder.exists {
+                try testFolder.remove()
+                Assert.IsFalse(testFolder.exists)
+            }
 			
 		} catch {
 			Assert.Fail("File operation failed: \(error)")

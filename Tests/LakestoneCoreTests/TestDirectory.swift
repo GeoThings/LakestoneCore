@@ -64,8 +64,12 @@ public class TestDirectory: Test {
 	
 	public func testDirectoryOperations(){
 		
-		let testDirectoryURL = URL(fileURLWithPath: workingDirectoryPath).appendingPathComponent("testDirectory")
-		let testDirectory = Directory(fileURL: testDirectoryURL)
+		let testDirectoryURL = URL(fileURLWithPath: workingDirectoryPath).appendingPathComponent("TestDirectory")
+		let testDirectory = Directory(directoryURL: testDirectoryURL)
+        let testCopyDirectoryURL = URL(fileURLWithPath: workingDirectoryPath).appendingPathComponent("TestCopyDirectory")
+        let testCopyDirectory = Directory(directoryURL: testCopyDirectoryURL)
+        let testMoveDirectoryURL = URL(fileURLWithPath: workingDirectoryPath).appendingPathComponent("TestMoveDirectory")
+        let testMoveDirectory = Directory(directoryURL: testMoveDirectoryURL)
 		
 		do {
 			
@@ -73,6 +77,14 @@ public class TestDirectory: Test {
 				try testDirectory.remove()
 				Assert.IsFalse(testDirectory.exists)
 			}
+            if testCopyDirectory.exists {
+                try testCopyDirectory.remove()
+                Assert.IsFalse(testCopyDirectory.exists)
+            }
+            if testMoveDirectory.exists {
+                try testMoveDirectory.remove()
+                Assert.IsFalse(testMoveDirectory.exists)
+            }
 			
 			try testDirectory.create()
 			Assert.IsTrue(testDirectory.isDirectory)
@@ -107,11 +119,45 @@ public class TestDirectory: Test {
 				}
 			}
 			
+            // MARK: Directory copy and move tests
+            try testCopyDirectory.create()
+            try testMoveDirectory.create()
+            var newLocation = try testDirectory.copy(to: testCopyDirectory, overwrites: true)
+            let copiedDirectory = Directory(directoryURL: newLocation.url)
+            Assert.AreEqual(testDirectory.name, copiedDirectory.name)
+            Assert.AreEqual(testDirectory.filesAndSubdirectories.count, copiedDirectory.filesAndSubdirectories.count)
+            Assert.AreEqual(testDirectory.subdirectories.count, copiedDirectory.subdirectories.count)
+            
+            newLocation = try copiedDirectory.move(to: testMoveDirectory, overwrites: true)
+            Assert.AreEqual(testCopyDirectory.filesAndSubdirectories.count, 0)
+            let movedDirectory = Directory(directoryURL: newLocation.url)
+            Assert.AreEqual(testDirectory.name, movedDirectory.name)
+            Assert.AreEqual(testDirectory.filesAndSubdirectories.count, movedDirectory.filesAndSubdirectories.count)
+            Assert.AreEqual(testDirectory.subdirectories.count, movedDirectory.subdirectories.count)
+            
+            guard let parentCopyDirectory = copiedDirectory.parentDirectoryº else {
+                Assert.Fail("Cannot get parent dir of copied directory")
+                return
+            }
+            Assert.AreEqual(parentCopyDirectory,testCopyDirectory)
+            
+            guard let parentMoveDirectory = movedDirectory.parentDirectoryº else {
+                Assert.Fail("Cannot get parent dir of moved directory")
+                return
+            }
+            Assert.AreEqual(parentMoveDirectory,testMoveDirectory)
+            
+            // MARK: cleanup
 			try testDirectory.remove()
 			Assert.IsFalse(file1.exists)
 			Assert.IsFalse(subdirectory1.exists)
 			Assert.AreEqual(testDirectory.filesAndSubdirectories.count, 0)
 			Assert.IsFalse(testDirectory.exists)
+            try testCopyDirectory.remove()
+            Assert.IsFalse(testCopyDirectory.exists)
+            try testMoveDirectory.remove()
+            Assert.IsFalse(testMoveDirectory.exists)
+            Assert.AreEqual(testMoveDirectory.filesAndSubdirectories.count, 0)
 			
 			guard let parentDirectory = testDirectory.parentDirectoryº else {
 				Assert.Fail("Cannot retrieve parent directory (already root)")
