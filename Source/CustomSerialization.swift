@@ -61,21 +61,6 @@ extension Optional: WrappedTypeRetrievable {
 		return Wrapped.self
 	}
 }
-
-// for type matching with __NSCFNumber
-fileprivate protocol Numeric {}
-extension Int: Numeric {}
-extension UInt: Numeric {}
-extension Int8: Numeric {}
-extension UInt8: Numeric {}
-extension Int16: Numeric {}
-extension UInt16: Numeric {}
-extension Int32: Numeric {}
-extension UInt32: Numeric {}
-extension Int64: Numeric {}
-extension UInt64: Numeric {}
-extension Float: Numeric {}
-extension Double: Numeric {}
 	
 #endif
 
@@ -456,7 +441,7 @@ public class CustomSerialization {
 					} else if let dictionaryEntry = dictionaryEntryº,
 						dictionaryEntry is NSNumber,
 						let expectedEntry = typesMap[commonKey],
-						expectedEntry is Numeric {
+						expectedEntry is AnyNumeric {
 				
 						// numbers will be read from NSUserDefaults as NSNumber
 						// expectedEntry is numeric
