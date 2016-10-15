@@ -1,4 +1,4 @@
-﻿//
+//
 //  ErrorType.swift
 //  LakestoneCore
 //
@@ -184,3 +184,15 @@ extension LakestoneError {
 #endif
 
 
+// Silver will catch the error as being of Object type, while in asynchronous callbacks 
+// you want to return the error straight away as entity of ThrowableError type
+// this is a convenience func for such purpose
+#if COOPER
+public func castedError(_ entity: Any) -> ThrowableError? {
+    return entity as? ThrowableError
+}
+#else
+public func castedError(_ entity: ThrowableError) -> ThrowableError? {
+    return entity
+}
+#endif
