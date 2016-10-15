@@ -107,8 +107,13 @@ extension URL {
 	public var absoluteURL: URL {
 		return self
 	}
-	
-	
+
 	#endif
 	
+}
+
+extension URL: StringRepresentable {
+    public var stringRepresentation: String {
+        return self.absoluteString
+    }
 }

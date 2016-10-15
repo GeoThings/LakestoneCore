@@ -1,4 +1,4 @@
-//
+﻿//
 //  AnyNumeric
 //  LakestoneRealm
 //
@@ -20,10 +20,8 @@
 // limitations under the License.
 //
 
-import Foundation
-
 #if !COOPER
-    
+	
 public protocol AnyNumeric {}
 extension Int: AnyNumeric {}
 extension UInt: AnyNumeric {}
