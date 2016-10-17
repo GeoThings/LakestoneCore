@@ -274,82 +274,90 @@ public class HTTP {
 		
 		private func _performSyncCore(with progressDelegateº: ((Double) -> Void)?) throws -> Response {
 			
-            let currentConnection = self.url.openConnection() as! HttpURLConnection
-            do {
-                
-                currentConnection.setDoOutput(true)
-                currentConnection.setUseCaches(false)
-                currentConnection.setRequestMethod(self.methodString)
-                
-                for (headerKey, headerValue) in self.headers {
-                    currentConnection.setRequestProperty(headerKey, headerValue)
-                }
-                
-                if self.method != .get {
-                    
-                    currentConnection.setDoInput(true)
-                    // writing off the data
-                    if let data = self.dataº {
-                        let outputStream = BufferedOutputStream(currentConnection.getOutputStream())
-                        outputStream.write(data.plainBytes)
-                        outputStream.close()
-                    }
-                }
-                
-                currentConnection.connect()
-                let inputStream = BufferedInputStream(currentConnection.getInputStream())
-                let outputByteStream = ByteArrayOutputStream()
-                
-                var readSize = currentConnection.getContentLength()
-                let batchReadSize = 16384
-                if progressDelegateº != nil && batchReadSize < readSize {
-                    readSize = batchReadSize
-                }
-                
-                // reading the response
-                let bytes = java.lang.reflect.Array.newInstance(Byte.self, readSize) as! ByteStaticArray
-                var nRead: Int
-                var totalRead: Int = 0
-                while ( (nRead = inputStream.read(bytes, 0, readSize)) != -1){
-                    outputByteStream.write(bytes, 0, nRead)
-                    
-                    totalRead += nRead
-                    let progress = Double(totalRead)/Double(currentConnection.getContentLength())
-                    if progress < 1 {
-                        progressDelegateº?(progress)
-                    }
-                }
-                
-                let completeData = Data.wrap(outputByteStream.toByteArray())
-                inputStream.close()
-                outputByteStream.close()
-                
-                let responseCode = currentConnection.getResponseCode()
-                let responseHeaders = currentConnection.getHeaderFields()
-                let responseMessage = currentConnection.getResponseMessage()
-                currentConnection.disconnect()
-                
-                // header values are represented in List<String> for each individual key
-                // concatenate for unification-sake
-                //TODO: review whether this concatenation is neccesary
-                let targetPlainHeaderDict = [String: String]()
-                for entry in responseHeaders.entrySet() {
-                    let key = entry.getKey()
-                    var concatantedValues = String()
-                    
-                    for individualValue in entry.getValue() {
-                        concatantedValues = (concatantedValues.isEmpty()) ? individualValue : concatantedValues + ", \(individualValue)"
-                    }
-                    
-                    targetPlainHeaderDict[key] = concatantedValues
-                }
-                
-                return HTTP.Response(url: self.url, statusCode: responseCode, statusMessage: responseMessage, headerFields: targetPlainHeaderDict, data: completeData)
-                
-            } catch {
-                currentConnection.disconnect()
-                throw error
-            }
+			let currentConnection = self.url.openConnection() as! HttpURLConnection
+			do {
+				
+				currentConnection.setDoOutput(true)
+				currentConnection.setUseCaches(false)
+				currentConnection.setRequestMethod(self.methodString)
+				
+				for (headerKey, headerValue) in self.headers {
+					currentConnection.setRequestProperty(headerKey, headerValue)
+				}
+				
+				if self.method != .get {
+					
+					currentConnection.setDoInput(true)
+					// writing off the data
+					if let data = self.dataº {
+						let outputStream = BufferedOutputStream(currentConnection.getOutputStream())
+						outputStream.write(data.plainBytes)
+						outputStream.close()
+					}
+				}
+				
+				currentConnection.connect()
+				
+				let responseCode = currentConnection.getResponseCode()
+				let responseHeaders = currentConnection.getHeaderFields()
+				let responseMessage = currentConnection.getResponseMessage()
+				
+				let inputStream: InputStream
+				if responseCode >= 400 {
+					inputStream = BufferedInputStream(currentConnection.getErrorStream())
+				} else {
+					inputStream = BufferedInputStream(currentConnection.getInputStream())
+				}
+				
+				let outputByteStream = ByteArrayOutputStream()
+				var readSize = currentConnection.getContentLength()
+				let batchReadSize = 16384
+				if progressDelegateº != nil && batchReadSize < readSize {
+					readSize = batchReadSize
+				} else if readSize < 0 {
+					readSize = batchReadSize
+				}
+				
+				// reading the response
+				let bytes = java.lang.reflect.Array.newInstance(Byte.self, readSize) as! ByteStaticArray
+				var nRead: Int
+				var totalRead: Int = 0
+				while ( (nRead = inputStream.read(bytes, 0, readSize)) != -1){
+					outputByteStream.write(bytes, 0, nRead)
+					
+					totalRead += nRead
+					let progress = Double(totalRead)/Double(currentConnection.getContentLength())
+					if progress < 1 {
+						progressDelegateº?(progress)
+					}
+				}
+				
+				let completeData = Data.wrap(outputByteStream.toByteArray())
+				inputStream.close()
+				outputByteStream.close()
+				currentConnection.disconnect()
+				
+				// header values are represented in List<String> for each individual key
+				// concatenate for unification-sake
+				//TODO: review whether this concatenation is neccesary
+				let targetPlainHeaderDict = [String: String]()
+				for entry in responseHeaders.entrySet() {
+					let key = entry.getKey()
+					var concatantedValues = String()
+					
+					for individualValue in entry.getValue() {
+						concatantedValues = (concatantedValues.isEmpty()) ? individualValue : concatantedValues + ", \(individualValue)"
+					}
+					
+					targetPlainHeaderDict[key] = concatantedValues
+				}
+				
+				return HTTP.Response(url: self.url, statusCode: responseCode, statusMessage: responseMessage, headerFields: targetPlainHeaderDict, data: completeData)
+				
+			} catch {
+				currentConnection.disconnect()
+				throw error
+			}
 
 		}
 		
@@ -372,16 +380,16 @@ public class HTTP {
 					if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
 				}
 				
-                
+				
 				if self.method != .get {
 				
 					if let bytes = self.dataº?.bytes {
-                        
-                        code = request.setOption(CURLOPT_POSTFIELDSIZE, int: bytes.count)
-                        if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
-                        
-                        code = request.setOption(CURLOPT_COPYPOSTFIELDS, v: UnsafeMutableRawPointer(mutating: bytes))
-                        
+						
+						code = request.setOption(CURLOPT_POSTFIELDSIZE, int: bytes.count)
+						if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
+						
+						code = request.setOption(CURLOPT_COPYPOSTFIELDS, v: UnsafeMutableRawPointer(mutating: bytes))
+						
 						if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
 					}
 				}
@@ -543,6 +551,17 @@ public class HTTP {
 	/// Container that carries HTTP response entities
 	public class Response {
 		
+		public class StatusCode {
+			public static let OK = 200
+			public static let BadRequest = 400
+			public static let Unauthorized = 401
+			public static let Forbidden = 403
+			public static let NotFound = 404
+			public static let MethodNotAllowed = 405
+			public static let NotAcceptable = 406
+			public static let UnsupportedMediaType = 415
+		}
+		
 		public class Error {
 			
 			#if os(OSX) || os(Linux)
@@ -570,6 +589,24 @@ public class HTTP {
 			self.statusMessage = statusMessage
 			self.headerFields = headerFields
 			self.dataº = data
+		}
+		
+		public var jsonDictionaryDataº: [String: Any]? {
+			
+			guard let data = self.dataº else {
+				return nil
+			}
+			
+			return (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]
+		}
+		
+		public var jsonArrayDataº: [Any]? {
+			
+			guard let data = self.dataº else {
+				return nil
+			}
+			
+			return (try? JSONSerialization.jsonObject(with: data)) as? [Any]
 		}
 	}
 	
