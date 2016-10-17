@@ -88,7 +88,7 @@ extension URL {
 	public func appendingPathComponent(_ str: String, isDirectory: Bool = false) -> URL {
 	
 		let componentPart = (isDirectory) ? str + "/" : str
-		if self.absoluteString.hasSuffix("/"){
+		if self.absoluteString.hasSuffix("/") || str.hasPrefix("/"){
 			return self.init?(string: self + componentPart)
 		} else {
 			return self.init?(string: self + "/" + componentPart)
