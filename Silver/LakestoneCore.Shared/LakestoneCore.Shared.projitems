@@ -55,6 +55,9 @@
         <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\PersistentPropertyList.swift">
             <VirtualFolder>Source</VirtualFolder>
         </Compile>
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\BoxedNumber.swift">
+            <VirtualFolder>Source</VirtualFolder>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Source">
