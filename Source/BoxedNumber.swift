@@ -19,27 +19,14 @@ public typealias DoubleProxy = BoxedDouble
 public typealias IntProxy = BoxedInt
 public typealias IntegerArithmetic = IntegerArithmeticType
 #endif
-//
-//public class TestClass<T: Comparable> {
-//    
-//    var test: T? = nil
-//}
 
 public class BoxedInt {
     
     fileprivate let _underlyingEntity: Any
-    public init(intValue: Int){
+    public init(_ intValue: Int){
         _underlyingEntity = intValue
     }
-    
-//    public func test(){
-//        
-//        let newTestClass = TestClass<BoxedInt>()
-//        newTestClass.test = self
-//        
-//        let some = newTestClass.test! < self
-//        print (some)
-//    }
+
 }
 
 extension BoxedInt: Equatable {
@@ -116,18 +103,10 @@ public func ==(lhs: BoxedInt, rhs: BoxedInt) -> Bool {
 public class BoxedDouble {
     
     fileprivate let _underlyingEntity: Any
-    public init(intValue: Int){
-        _underlyingEntity = intValue
+    public init(_ doubleValue: Double){
+        _underlyingEntity = doubleValue
     }
-    
-    //    public func test(){
-    //        
-    //        let newTestClass = TestClass<BoxedDouble>()
-    //        newTestClass.test = self
-    //        
-    //        let some = newTestClass.test! < self
-    //        print (some)
-    //    }
+
 }
 
 extension BoxedDouble: Equatable {
@@ -150,8 +129,8 @@ extension BoxedDouble: Comparable {}
 
 public func <(lhs: BoxedDouble, rhs: BoxedDouble) -> Bool {
     
-    if let lhsIntEntity = lhs._underlyingEntity as? Int,
-        let rhsIntEntity = rhs._underlyingEntity as? Int {
+    if let lhsIntEntity = lhs._underlyingEntity as? Double,
+        let rhsIntEntity = rhs._underlyingEntity as? Double {
            
             return lhsIntEntity < rhsIntEntity
         } else {
@@ -161,8 +140,8 @@ public func <(lhs: BoxedDouble, rhs: BoxedDouble) -> Bool {
 
 public func <=(lhs: BoxedDouble, rhs: BoxedDouble) -> Bool {
  
-    if let lhsIntEntity = lhs._underlyingEntity as? Int,
-        let rhsIntEntity = rhs._underlyingEntity as? Int {
+    if let lhsIntEntity = lhs._underlyingEntity as? Double,
+        let rhsIntEntity = rhs._underlyingEntity as? Double {
            
             return lhsIntEntity <= rhsIntEntity
         } else {
@@ -171,8 +150,8 @@ public func <=(lhs: BoxedDouble, rhs: BoxedDouble) -> Bool {
 }
 public func >=(lhs: BoxedDouble, rhs: BoxedDouble) -> Bool {
     
-    if let lhsIntEntity = lhs._underlyingEntity as? Int,
-        let rhsIntEntity = rhs._underlyingEntity as? Int {
+    if let lhsIntEntity = lhs._underlyingEntity as? Double,
+        let rhsIntEntity = rhs._underlyingEntity as? Double {
            
             return lhsIntEntity >= rhsIntEntity
         } else {
@@ -181,8 +160,8 @@ public func >=(lhs: BoxedDouble, rhs: BoxedDouble) -> Bool {
     
 }
 public func >(lhs: BoxedDouble, rhs: BoxedDouble) -> Bool {
-    if let lhsIntEntity = lhs._underlyingEntity as? Int,
-        let rhsIntEntity = rhs._underlyingEntity as? Int {
+    if let lhsIntEntity = lhs._underlyingEntity as? Double,
+        let rhsIntEntity = rhs._underlyingEntity as? Double {
            
             return lhsIntEntity > rhsIntEntity
         } else {
@@ -192,8 +171,8 @@ public func >(lhs: BoxedDouble, rhs: BoxedDouble) -> Bool {
 
 public func ==(lhs: BoxedDouble, rhs: BoxedDouble) -> Bool {
     
-    if let lhsIntEntity = lhs._underlyingEntity as? Int,
-        let rhsIntEntity = rhs._underlyingEntity as? Int {
+    if let lhsIntEntity = lhs._underlyingEntity as? Double,
+        let rhsIntEntity = rhs._underlyingEntity as? Double {
            
             return lhsIntEntity == rhsIntEntity
         } else {
