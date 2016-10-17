@@ -81,6 +81,10 @@ extension URL {
 	
 	/// remark: logic defers from Foundation's conterpart
 	///		 available at https://github.com/apple/swift-corelibs-foundation/blob/master/Foundation/NSURL.swift#L762
+	public func appendingPathComponent(_ str: String) -> URL {
+		return self.appendingPathComponent(str, isDirectory: false)
+	}
+	
 	public func appendingPathComponent(_ str: String, isDirectory: Bool = false) -> URL {
 	
 		let componentPart = (isDirectory) ? str + "/" : str
@@ -107,8 +111,13 @@ extension URL {
 	public var absoluteURL: URL {
 		return self
 	}
-	
-	
+
 	#endif
 	
+}
+
+extension URL: StringRepresentable {
+	public var stringRepresentation: String {
+		return self.absoluteString
+	}
 }

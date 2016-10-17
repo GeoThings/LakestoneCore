@@ -126,3 +126,9 @@ public func ==(lhs: Date, rhs: Date) -> Bool {
 	return lhs.timeIntervalSince1970 == rhs.timeIntervalSince1970
 }
 #endif
+
+extension Date: StringRepresentable {
+    public var stringRepresentation: String {
+        return self.xsdGMTDateTimeString
+    }
+}
