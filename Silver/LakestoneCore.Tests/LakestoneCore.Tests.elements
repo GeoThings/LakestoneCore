@@ -105,9 +105,6 @@
         <Compile Include="..\..\Tests\LakestoneCoreTests\TestDate.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
-        <Compile Include="..\..\Tests\LakestoneCoreTests\TestString.swift">
-            <VirtualFolder>Tests</VirtualFolder>
-        </Compile>
         <Compile Include="..\..\Tests\LakestoneCoreTests\TestUUID.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
@@ -130,6 +127,12 @@
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
         <Compile Include="..\..\Tests\LakestoneCoreTests\TestPersistentPropertyList.swift">
+            <VirtualFolder>Tests</VirtualFolder>
+        </Compile>
+        <Compile Include="..\..\Tests\LakestoneCoreTests\TestString.swift">
+            <VirtualFolder>Tests</VirtualFolder>
+        </Compile>
+        <Compile Include="..\..\Tests\LakestoneCoreTests\TestBoxedNumber.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
     </ItemGroup>
