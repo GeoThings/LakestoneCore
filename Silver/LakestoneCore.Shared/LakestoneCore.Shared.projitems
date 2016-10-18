@@ -58,6 +58,9 @@
         <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\AnyNumeric.swift">
             <VirtualFolder>Source</VirtualFolder>
         </Compile>
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\Locale.swift">
+            <VirtualFolder>Source</VirtualFolder>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Source">

@@ -24,6 +24,7 @@
 		1A1421421DA6493300ACD18E /* TestUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/LakestoneCoreTests/TestUUID.swift /* TestUUID.swift */; };
 		1A1421461DA6499100ACD18E /* raster_digitalglobe.json in Resources */ = {isa = PBXBuildFile; fileRef = 1A1421441DA6499100ACD18E /* raster_digitalglobe.json */; };
 		1A9D371A1DAF361A007C0EDC /* AnyNumeric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9D37191DAF361A007C0EDC /* AnyNumeric.swift */; };
+		1AFDCD531DB48A9900603AAB /* Locale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFDCD521DB48A9900603AAB /* Locale.swift */; };
 		_LinkFileRef_LakestoneCore_via_LakestoneCoreTests /* LakestoneCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_LakestoneCore" /* LakestoneCore.framework */; };
 		_LinkFileRef_PerfectCURL_via_LakestoneCore /* PerfectCURL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_PerfectCURL" /* PerfectCURL.framework */; };
 		_LinkFileRef_PerfectCURL_via_LakestoneCoreTests /* PerfectCURL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_PerfectCURL" /* PerfectCURL.framework */; };
@@ -90,6 +91,7 @@
 		1A1421441DA6499100ACD18E /* raster_digitalglobe.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = raster_digitalglobe.json; sourceTree = "<group>"; };
 		1A9D37191DAF361A007C0EDC /* AnyNumeric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyNumeric.swift; sourceTree = "<group>"; };
 		1AAF1E311DA6B8B100CD4720 /* PersistentPropertyList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentPropertyList.swift; sourceTree = "<group>"; };
+		1AFDCD521DB48A9900603AAB /* Locale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Locale.swift; sourceTree = "<group>"; };
 		__PBXFileRef_LakestoneCore.xcodeproj/Configs/Project.xcconfig /* LakestoneCore.xcodeproj/Configs/Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LakestoneCore.xcodeproj/Configs/Project.xcconfig; sourceTree = "<group>"; };
 		__PBXFileRef_Package.swift /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		"__PBXFileRef_Packages/PerfectCURL-0.100.1/Sources/cURL.swift" /* cURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cURL.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 				__PBXFileRef_Source/LakestoneError.swift /* LakestoneError.swift */,
 				__PBXFileRef_Source/Threading.swift /* Threading.swift */,
 				1AAF1E311DA6B8B100CD4720 /* PersistentPropertyList.swift */,
+				1AFDCD521DB48A9900603AAB /* Locale.swift */,
 			);
 			name = LakestoneCore;
 			path = Source;
@@ -495,6 +498,7 @@
 				__src_cc_ref_Source/JSONSerialization.swift /* JSONSerialization.swift in Sources */,
 				__src_cc_ref_Source/LakestoneError.swift /* LakestoneError.swift in Sources */,
 				__src_cc_ref_Source/Threading.swift /* Threading.swift in Sources */,
+				1AFDCD531DB48A9900603AAB /* Locale.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

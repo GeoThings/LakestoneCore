@@ -277,7 +277,7 @@ public class HTTP {
 			let currentConnection = self.url.openConnection() as! HttpURLConnection
 			do {
 				
-				currentConnection.setDoOutput(true)
+				currentConnection.setDoOutput(false)
 				currentConnection.setUseCaches(false)
 				currentConnection.setRequestMethod(self.methodString)
 				
@@ -288,6 +288,8 @@ public class HTTP {
 				if self.method != .get {
 					
 					currentConnection.setDoInput(true)
+					currentConnection.setDoOutput(true)
+				
 					// writing off the data
 					if let data = self.dataº {
 						let outputStream = BufferedOutputStream(currentConnection.getOutputStream())

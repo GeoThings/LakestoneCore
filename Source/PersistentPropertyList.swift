@@ -406,7 +406,7 @@ extension PersistentPropertyList {
 // CustomSerializable support
 extension PersistentPropertyList {
 	
-	public func set(_ customSerializable: CustomSerializable, forKey key: String) throws {
+	public func setCustomSerializable(_ customSerializable: CustomSerializable, forKey key: String) throws {
 		
 		let serializedDict = try CustomSerialization.dictionary(from: customSerializable)
 		
