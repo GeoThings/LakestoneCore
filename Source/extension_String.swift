@@ -491,7 +491,7 @@ extension String {
                 if let unwrappedValue = Mirror(reflecting: entity).descendant("some") {
                     return String.derived(from: unwrappedValue)
                 } else {
-                    return "nil"
+                    return ""
                 }
             }
         #endif

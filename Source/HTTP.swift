@@ -1,4 +1,4 @@
-﻿//
+//
 //  HTTP.swift
 //  LakestoneCore
 //
@@ -374,9 +374,16 @@ public class HTTP {
 				var code = request.setOption(CURLOPT_FRESH_CONNECT, int: 1)
 				if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
 				
-				code = request.setOption(self.method.methodCurlOption, int: 1)
-				if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
-				
+                
+                if self.method == .put {
+                    //curl put request modified. 
+                    // Setting method as PUT directly will for some reason will result in performFully() never return
+                    code = request.setOption(CURLOPT_CUSTOMREQUEST, s: self.methodString)
+                } else {
+                    code = request.setOption(self.method.methodCurlOption, int: 1)
+                    if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
+                }
+                
 				for (headerKey, headerValue) in self.headers {
 					code = request.setOption(CURLOPT_HTTPHEADER, s: "\(headerKey): \(headerValue)")
 					if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
