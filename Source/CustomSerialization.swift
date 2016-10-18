@@ -1,4 +1,4 @@
-//
+﻿//
 //  CustomSerialization.swift
 //  LakestoneCore
 //
@@ -28,8 +28,12 @@ public protocol CustomSerializable {
 	init()
 	init(variableMap: [String: Any]) throws
 	
-	static var ignoredVariableNames: Set<String> { get }
+	static var readingIgnoredVariableNames: Set<String> { get }
+	static var writingIgnoredVariableNames: Set<String> { get }
+	
 	static var allowedTypeDifferentVariableNames: Set<String> { get }
+	static var variableNamesAlliases: [String: String] { get }
+	
 	var manuallySerializedValues: [String: Any] { get }
 }
 
@@ -47,7 +51,7 @@ public protocol SerializableTypeRepresentable {
 }
 
 public protocol StringRepresentable {
-    var stringRepresentation: String { get }
+	var stringRepresentation: String { get }
 }
 
 #if !COOPER
@@ -73,21 +77,6 @@ extension Optional: WrappedTypeRetrievable {
 #endif
 
 public class CustomSerialization {
-	
-	public class SerializationError: ErrorRepresentable {
-		
-		let typeName: String
-		let detail: String
-		
-		init(typeWithName: String, detail: String){
-			self.typeName = typeWithName
-			self.detail = detail
-		}
-		
-		public var detailMessage: String {
-			return detail
-		}
-	}
 	
 	public class func applyCustomSerialization(ofCustomTypes customTypes: [CustomSerializableType], to collection: Any) throws -> Any {
 		
@@ -119,7 +108,8 @@ public class CustomSerialization {
 		
 		#if COOPER
 			
-			let ignoredVariableNames = customEntity.getClass().getDeclaredMethod("getignoredVariableNames", []).invoke(nil, []) as! Set<String>
+			let ignoredVariableNames = customEntity.getClass().getDeclaredMethod("getwritingIgnoredVariableNames", []).invoke(nil, []) as! Set<String>
+			let variableAlliases = customEntity.getClass().getDeclaredMethod("getvariableNamesAlliases", []).invoke(nil, []) as! [String: String]
 			
 			let declaredFields = [ReflectableField](customEntity.Class.getDeclaredFields())
 			for declaredField in declaredFields {
@@ -134,14 +124,20 @@ public class CustomSerialization {
 					}
 				}
 				
-				let fieldName = fieldNameWithRemovedPrivatePrefix(declaredField)
-				if ignoredVariableNames.contains(fieldName){
+				var fieldName = fieldNameWithRemovedPrivatePrefix(declaredField)
+				if ignoredVariableNames.contains(fieldName) || Set<String>([String](customEntity.manuallySerializedValues.keys)).contains(fieldName) {
 					continue
 				}
 				
-				if let manuallySerializedValue = customEntity.manuallySerializedValues[fieldName] {
-					variableDictionary[fieldName] = manuallySerializedValue
-				} else if let fieldValue = declaredField.`get`(customEntity) {
+				if let aliasedName = variableAlliases[fieldName] {
+					fieldName = aliasedName
+					
+					if Set<String>([String](customEntity.manuallySerializedValues.keys)).contains(fieldName) {
+						continue
+					}
+				}
+				
+				if let fieldValue = declaredField.`get`(customEntity) {
 					variableDictionary[fieldName] = try _deserialize(entity: fieldValue)
 				} else {
 					continue
@@ -151,17 +147,20 @@ public class CustomSerialization {
 		#else
 			
 			for child in Mirror(reflecting: customEntity).children {
-				guard let variableName = child.label else {
+				guard var variableName = child.label else {
+					continue
+				}
+				
+				if type(of: customEntity).writingIgnoredVariableNames.contains(variableName) || customEntity.manuallySerializedValues.keys.contains(variableName) {
+					continue
+				}
+				
+				if let aliasedName = type(of: customEntity).variableNamesAlliases[variableName] {
+					variableName = aliasedName
+					
+					if customEntity.manuallySerializedValues.keys.contains(variableName){
 						continue
-				}
-				
-				if let manuallySerializedValue = customEntity.manuallySerializedValues[variableName] {
-					variableDictionary[variableName] = manuallySerializedValue
-					continue
-				}
-				
-				if type(of: customEntity).ignoredVariableNames.contains(variableName){
-					continue
+					}
 				}
 				
 				var value: Any = child.value
@@ -176,23 +175,27 @@ public class CustomSerialization {
 				
 				variableDictionary[variableName] = try _deserialize(entity: value)
 			}
-			
+
 			
 		#endif
+		
+		for (key, value) in customEntity.manuallySerializedValues {
+			variableDictionary[key] = value
+		}
 		
 		return variableDictionary
 	}
 	
-    public class func array(from customSerializables: [CustomSerializable]) throws -> [[String: Any]] {
-        
-        var targetArray = [[String: Any]]()
-        for customSerializable in customSerializables {
-            targetArray.append(try CustomSerialization.dictionary(from: customSerializable))
-        }
-        
-        return targetArray
-    }
-    
+	public class func array(from customSerializables: [CustomSerializable]) throws -> [[String: Any]] {
+		
+		var targetArray = [[String: Any]]()
+		for customSerializable in customSerializables {
+			targetArray.append(try CustomSerialization.dictionary(from: customSerializable))
+		}
+		
+		return targetArray
+	}
+	
 	private class func _serialize(object: Any, withCustomVariableMap variableMap: [(CustomSerializableType, [ReflectableField])]) throws -> Any {
 		
 		if let dictionaryEntity = object as? [String: Any]{
@@ -253,15 +256,15 @@ public class CustomSerialization {
 			
 			return try dictionary(from: customSerializableEntity)
 			
-        } else if let serializableTypeRepresentable = entity as? SerializableTypeRepresentable {
+		} else if let serializableTypeRepresentable = entity as? SerializableTypeRepresentable {
 			
 			return serializableTypeRepresentable.serializableRepresentation
 			
-        } else if let stringRepresentable = entity as? StringRepresentable {
-        
-            return stringRepresentable.stringRepresentation
-            
-        } else if entity is Int8 || entity is UInt8 || entity is Int16 || entity is UInt16 ||
+		} else if let stringRepresentable = entity as? StringRepresentable {
+		
+			return stringRepresentable.stringRepresentation
+			
+		} else if entity is Int8 || entity is UInt8 || entity is Int16 || entity is UInt16 ||
 			entity is Int32 || entity is UInt32 || entity is UInt64 {
 			
 			return entity
@@ -278,19 +281,42 @@ public class CustomSerialization {
 		} else {
 			
 			#if COOPER
-				let serializationError = SerializationError(typeWithName: entity.Class.getName(), detail: "Entity is not serializable")
+				let serializationErrorRepresentation = SerializationErrorRepresentation(typeWithName: entity.Class.getName(), detail: "Entity is not serializable")
 			#else
-				let serializationError = SerializationError(typeWithName: "\(type(of: entity))", detail: "Entity is not serializable")
+				let serializationErrorRepresentation = SerializationErrorRepresentation(typeWithName: "\(type(of: entity))", detail: "Entity is not serializable")
 			#endif
 			
-			throw LakestoneError(serializationError)
+			throw serializationErrorRepresentation.error
 		}
+	}
+	
+	private class func _alliasRemoved(dictionary: [String: Any], forType SomeType: CustomSerializableType) -> [String: Any] {
+		
+		#if COOPER
+			let alliasedVariables = SomeType.getDeclaredMethod("getvariableNamesAlliases", []).invoke(nil, []) as! [String: String]
+		#else
+			let alliasedVariables = SomeType.variableNamesAlliases
+		#endif
+		
+		var invertedVariableAlliases = [String: String]()
+		for (variable, variableAllias) in alliasedVariables {
+			invertedVariableAlliases[variableAllias] = variable
+		}
+		
+		var alliasedDictionaryEntity = [String: Any]()
+		for (key, entry) in dictionary {
+			if let variableName = invertedVariableAlliases[key]{
+				alliasedDictionaryEntity[variableName] = entry
+			} else {
+				alliasedDictionaryEntity[key] = entry
+			}
+		}
+
+		return alliasedDictionaryEntity
 	}
 	
 	private class func _attemptSerilization(forDictionary dictionaryEntity: [String: Any],
 											withCustomVariableMap variableMap: [(CustomSerializableType, [ReflectableField])]) throws -> Any {
-		
-		let keysSet = Set<String>([String](dictionaryEntity.keys))
 		
 		// found CustomSerializable instance that matches the dictionary entity
 		var targetCandidateº: (CustomSerializableType, [ReflectableField])? = nil
@@ -298,7 +324,12 @@ public class CustomSerialization {
 		// the #entries difference between dictionary keys and class variables
 		var targetDifference = Int.max
 		
+		var dictionaryEntityCandidate = [String: Any]()
+		
 		for (SomeType, fields) in variableMap {
+			
+			let alliasRemovedDictionaryEntity = _alliasRemoved(dictionary: dictionaryEntity, forType: SomeType)
+			let keysSet = Set<String>([String](alliasRemovedDictionaryEntity.keys))
 			
 			#if COOPER
 			
@@ -331,18 +362,19 @@ public class CustomSerialization {
 			// remove ignored variables
 			#if COOPER
 				//variableNamesSet = variableNamesSet.subtracting((SomeType as! CustomSerializable).ignoredVariableNames)
-				let ignoredVariableNames = SomeType.getDeclaredMethod("getignoredVariableNames", []).invoke(nil, []) as! Set<String>
+				let ignoredVariableNames = SomeType.getDeclaredMethod("getreadingIgnoredVariableNames", []).invoke(nil, []) as! Set<String>
 				variableNamesSet = variableNamesSet.subtracting(ignoredVariableNames)
 				
 				let allowedTypeDifferentVariableNames = SomeType.getDeclaredMethod("getallowedTypeDifferentVariableNames", []).invoke(nil, []) as! Set<String>
 			#else
-				variableNamesSet = variableNamesSet.subtracting(SomeType.ignoredVariableNames)
+				variableNamesSet = variableNamesSet.subtracting(SomeType.readingIgnoredVariableNames)
 				
 				let allowedTypeDifferentVariableNames = SomeType.allowedTypeDifferentVariableNames
 			#endif
 			
 			// dictionary entity doesn't contain all CustomSerializable type fields
 			if !variableNamesSet.subtracting(keysSet).isEmpty {
+				//print("\(SomeType): Entities not found in dictionary: \(variableNamesSet.subtracting(keysSet))")
 				continue
 			}
 			
@@ -364,7 +396,7 @@ public class CustomSerialization {
 						//types allowed to be different, no type matching check needed
 						
 					} else if let ExpectedType = typesMap[commonKey],
-					   let dictionaryEntry = dictionaryEntity[commonKey],
+					   let dictionaryEntry = alliasRemovedDictionaryEntity[commonKey],
 					   ExpectedType.isAssignableFrom(dictionaryEntry.getClass()) {
 						
 						//dictionary entry matches the class field in type
@@ -372,14 +404,14 @@ public class CustomSerialization {
 					// clause for a primitive type comparison.
 					// (First clause will fail in cases like < ExpectedType: double, dictionaryEntry.getClass(): java.lang.Double >)
 					} else if let ExpectedType = typesMap[commonKey],
-						   let dictionaryEntry = dictionaryEntity[commonKey],
+						   let dictionaryEntry = alliasRemovedDictionaryEntity[commonKey],
 						   let mappedPrimitiveType = self.primitiveTypeMap["\(dictionaryEntry.getClass())"],
 						   ExpectedType.isAssignableFrom(mappedPrimitiveType) {
 						
 						//dictionary entry matches the class field in type
 					  
 					} else if let ExpectedType = typesMap[commonKey],
-						   let dictionaryEntry = dictionaryEntity[commonKey],
+						   let dictionaryEntry = alliasRemovedDictionaryEntity[commonKey],
 						   let mappedPrimitiveType = self.primitiveTypeMap["\(dictionaryEntry.getClass())"],
 						   mappedPrimitiveType == java.lang.Long.self && ExpectedType == java.lang.Double.self {
 						
@@ -391,7 +423,7 @@ public class CustomSerialization {
 						// JSONObject will parse .0 numbers as decimal
 						// handling this case when double is expected instead
 						
-						dictionaryEntity[commonKey] = Double.parseDouble(Long.toString(dictionaryEntry as! Int64))
+						alliasRemovedDictionaryEntity[commonKey] = Double.parseDouble(Long.toString(dictionaryEntry as! Int64))
 						
 					} else {
 						typesMatch = false
@@ -400,7 +432,7 @@ public class CustomSerialization {
 					
 				#else
 					
-					var dictionaryEntryº: Any? = dictionaryEntity[commonKey]
+					var dictionaryEntryº: Any? = alliasRemovedDictionaryEntity[commonKey]
 					
 					// when reading from NSUserDefaults
 					// strings might unwrap as NSTaggedPointerString
@@ -447,6 +479,11 @@ public class CustomSerialization {
 						// expectedEntry is numeric
 				
 					} else {
+						if let expected = typesMap[commonKey],
+						   let dictionaryEntry = dictionaryEntryº {
+							print("\(SomeType): Type missmatch(\(commonKey)): Expected: \(type(of: expected)), got: \(type(of: dictionaryEntry))")
+						}
+						
 						typesMatch = false
 						break
 					}
@@ -457,6 +494,7 @@ public class CustomSerialization {
 			if typesMatch {
 				targetCandidateº = (SomeType, fields)
 				targetDifference = difference.count
+				dictionaryEntityCandidate = alliasRemovedDictionaryEntity
 				
 				// the dictionary maps 1-to-1 to CustomSerializable type
 				// consider match found
@@ -472,13 +510,13 @@ public class CustomSerialization {
 			#if COOPER
 			
 				if let constructor = SomeType.getDeclaredConstructor(java.util.HashMap<String, Object>.self){
-					return constructor.newInstance(dictionaryEntity)
+					return constructor.newInstance(dictionaryEntityCandidate)
 				} else {
 					return dictionaryEntity
 				}
 				
 			#else
-				return try SomeType.init(variableMap: dictionaryEntity)
+				return try SomeType.init(variableMap: dictionaryEntityCandidate)
 			#endif
 			
 		} else {
@@ -504,4 +542,53 @@ public class CustomSerialization {
 	}
 	
 	#endif
+}
+
+extension CustomSerialization {
+	
+	public class SerializationError: LakestoneError {
+		public var serializationRepresentationº: SerializationErrorRepresentation? {
+			return self.representation as? SerializationErrorRepresentation
+		}
+	}
+	public class SerializationErrorRepresentation: ErrorRepresentable {
+		
+		public let typeName: String
+		public let detail: String
+		
+		public init(typeWithName: String, detail: String){
+			self.typeName = typeWithName
+			self.detail = detail
+		}
+		
+		public var detailMessage: String {
+			return detail
+		}
+		
+		public var error: SerializationError {
+			return SerializationError(self)
+		}
+	}
+	
+	public class InstantiationError: LakestoneError {
+		var instantiationRepresentationº: InstantiationErrorRepresentation? {
+			return self.representation as? InstantiationErrorRepresentation
+		}
+	}
+	public class InstantiationErrorRepresentation: ErrorRepresentable {
+		
+		public let variableName: String
+		public init(variableName: String){
+			self.variableName = variableName
+		}
+		
+		public var detailMessage: String {
+			return "Variable: \(variableName) is missing or has invalid type"
+		}
+		
+		public var error: InstantiationError {
+			return InstantiationError(self)
+		}
+	}
+	
 }

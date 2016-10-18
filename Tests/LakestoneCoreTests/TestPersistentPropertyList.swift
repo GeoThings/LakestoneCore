@@ -137,7 +137,7 @@ public class TestPersistentPropertyList: Test {
 		}
 		
 		do {
-			try persistentPropertyList.set(dictAfter, forKey: "customSerializableTest")
+            try persistentPropertyList.setCustomSerializable(dictAfter, forKey: "customSerializableTest")
 			persistentPropertyList.synchronize()
 		} catch {
 			Assert.Fail("Couldn't store customSerializable into PersistentPropertyList")

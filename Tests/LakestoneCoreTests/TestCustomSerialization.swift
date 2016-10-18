@@ -1,4 +1,4 @@
-//
+﻿//
 //  TestCustomSerialization.swift
 //  LakestoneCore
 //
@@ -46,7 +46,11 @@ public class InternalSomething: CustomSerializable {
 		self.argument3 = variableMap["argument3"] as! Double
 	}
 	
-	public static var ignoredVariableNames: Set<String> {
+	public static var readingIgnoredVariableNames: Set<String> {
+		return Set<String>()
+	}
+	
+	public static var writingIgnoredVariableNames: Set<String> {
 		return Set<String>()
 	}
 	
@@ -56,6 +60,10 @@ public class InternalSomething: CustomSerializable {
 	
 	public var manuallySerializedValues: [String : Any] {
 		return [String: Any]()
+	}
+	
+	public static var variableNamesAlliases: [String : String] {
+		return [String: String]()
 	}
 	
 }
@@ -84,7 +92,11 @@ public class TestSomething: CustomSerializable {
 		self.testDate = Date.with(xsdGMTDateTimeString: (variableMap["testDate"] as! String))!
 	}
 	
-	public static var ignoredVariableNames: Set<String> {
+	public static var readingIgnoredVariableNames: Set<String> {
+		return Set<String>(["ignoredString"])
+	}
+	
+	public static var writingIgnoredVariableNames: Set<String> {
 		return Set<String>(["ignoredString"])
 	}
 	
@@ -97,6 +109,10 @@ public class TestSomething: CustomSerializable {
 	// No type check or additional processing will be done for these values
 	public var manuallySerializedValues: [String : Any] {
 		return ["testDate": self.testDate.xsdGMTDateTimeString]
+	}
+	
+	public static var variableNamesAlliases: [String : String] {
+		return [String: String]()
 	}
 }
 
@@ -168,20 +184,20 @@ public class TestCustomSerialization: Test {
 				Assert.AreEqual(serializedDict["testDouble"] as? Double ?? 0.0, 26.0)
 				Assert.AreEqual(serializedDict["testDate"] as? String ?? "", "2016-09-01T00:00:00Z")
 				
-                //TODO: this JSONSerialization crashes on Linux. Investigate why.
+				//TODO: this JSONSerialization crashes on Linux. Investigate why.
 				//try JSONSerialization.data(withJSONObject: serializedDict)
 				
-                let serializedArray = try CustomSerialization.array(from: testSomething.testSomethingArray)
-                Assert.AreEqual(serializedArray.first?["argument1"] as? String ?? "", "someString")
-                Assert.AreEqual(serializedArray.first?["argument2"] as? Bool ?? true, false)
-                Assert.AreEqual(serializedArray.first?["argument3"] as? Double ?? 0.0, 12.0)
-                
-                //TODO: this JSONSerialization crashes on Linux. Investigate why.
-                //try JSONSerialization.data(withJSONObject: serializedArray)
-                
-			} catch let error as LakestoneError {
-				if let containerError = error.representation as? CustomSerialization.SerializationError {
-					Assert.Fail("Serialization failed because type:\(containerError.typeName) is not serializable")
+				let serializedArray = try CustomSerialization.array(from: testSomething.testSomethingArray)
+				Assert.AreEqual(serializedArray.first?["argument1"] as? String ?? "", "someString")
+				Assert.AreEqual(serializedArray.first?["argument2"] as? Bool ?? true, false)
+				Assert.AreEqual(serializedArray.first?["argument3"] as? Double ?? 0.0, 12.0)
+				
+				//TODO: this JSONSerialization crashes on Linux. Investigate why.
+				//try JSONSerialization.data(withJSONObject: serializedArray)
+				
+			} catch let error as CustomSerialization.SerializationError {
+				if let containedError = error.serializationRepresentationº {
+					Assert.Fail("Serialization failed because type:\(containedError.typeName) is not serializable")
 				} else {
 					Assert.Fail("\(error)")
 				}

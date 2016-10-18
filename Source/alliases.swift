@@ -133,7 +133,8 @@
 	public typealias Date = java.util.Date
 	public typealias UUID = java.util.UUID
 	public typealias File = java.io.File
-	
+	public typealias Locale = java.util.Locale
+    
     public typealias AnyHashable = java.lang.Object
     public typealias ThrowableError = java.lang.Throwable
     
