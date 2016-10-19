@@ -120,8 +120,9 @@
 	
 	import Foundation
 	#if os(iOS) || os(watchOS) || os(tvOS)
-	#else
-		
+        import UIKit
+	#elseif os(OSX)
+		import AppKit
 	#endif
 	
 #endif
@@ -138,9 +139,15 @@
     public typealias AnyHashable = java.lang.Object
     public typealias ThrowableError = java.lang.Throwable
     
+    public typealias Image = android.graphics.Bitmap
     
 #else
 
 	public typealias ThrowableError = Error
-	
+    #if os(iOS) || os(watchOS) || os(tvOS)
+        public typealias Image = UIImage
+    #elseif os(OSX)
+        public typealias Image = NSImage
+    #endif
+    
 #endif

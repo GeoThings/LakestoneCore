@@ -1,4 +1,4 @@
-//
+﻿//
 //  HTTP.swift
 //  LakestoneCore
 //
@@ -190,7 +190,7 @@ public class HTTP {
 			self.headers["Content-Type"] = "application/x-www-form-urlencoded"
 		}
 		
-		public func setMutlipartFormData(with parameters: [String: Any], andMimeTypes mimeTypes: [String: String] = [:]) throws {
+		public func setMutlipartFormData(with parameters: [String: Any], mimeTypes: [String: String] = [:], fileNames: [String: String] = [:]) throws {
 			
 			let boundary = "Boundary-\(UUID().uuidString)"
 			
@@ -199,11 +199,18 @@ public class HTTP {
 			for (key, value) in parameters {
 				
 				multipartString += "--\(boundary)\r\n"
-				multipartString += "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n"
+				
+				multipartString += "Content-Disposition: form-data; name=\"\(key)\";"
+				if let filename = fileNames[key],value is Data {
+					multipartString += "; filename=\"\(filename)\""
+				}
+				multipartString += "\r\n"
+				
 				
 				if let mimeType = mimeTypes[key] {
-					multipartString += "Content-Type: \(mimeType)\r\n\r\n"
+					multipartString += "Content-Type: \(mimeType)\r\n"
 				}
+				multipartString += "\r\n"
 				
 				if let data = value as? Data {
 					contentFragements.append(multipartString)
@@ -280,6 +287,7 @@ public class HTTP {
 				currentConnection.setDoOutput(false)
 				currentConnection.setUseCaches(false)
 				currentConnection.setRequestMethod(self.methodString)
+				currentConnection.setConnectTimeout(10 * 1000)
 				
 				for (headerKey, headerValue) in self.headers {
 					currentConnection.setRequestProperty(headerKey, headerValue)
@@ -374,16 +382,16 @@ public class HTTP {
 				var code = request.setOption(CURLOPT_FRESH_CONNECT, int: 1)
 				if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
 				
-                
-                if self.method == .put {
-                    //curl put request modified. 
-                    // Setting method as PUT directly will for some reason will result in performFully() never return
-                    code = request.setOption(CURLOPT_CUSTOMREQUEST, s: self.methodString)
-                } else {
-                    code = request.setOption(self.method.methodCurlOption, int: 1)
-                    if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
-                }
-                
+				
+				if self.method == .put {
+					//curl put request modified. 
+					// Setting method as PUT directly will for some reason will result in performFully() never return
+					code = request.setOption(CURLOPT_CUSTOMREQUEST, s: self.methodString)
+				} else {
+					code = request.setOption(self.method.methodCurlOption, int: 1)
+					if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
+				}
+				
 				for (headerKey, headerValue) in self.headers {
 					code = request.setOption(CURLOPT_HTTPHEADER, s: "\(headerKey): \(headerValue)")
 					if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }

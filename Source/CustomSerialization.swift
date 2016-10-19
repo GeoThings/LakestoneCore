@@ -374,7 +374,7 @@ public class CustomSerialization {
 			
 			// dictionary entity doesn't contain all CustomSerializable type fields
 			if !variableNamesSet.subtracting(keysSet).isEmpty {
-				//print("\(SomeType): Entities not found in dictionary: \(variableNamesSet.subtracting(keysSet))")
+				print("\(SomeType): Entities not found in dictionary: \(variableNamesSet.subtracting(keysSet))")
 				continue
 			}
 			
@@ -426,6 +426,12 @@ public class CustomSerialization {
 						alliasRemovedDictionaryEntity[commonKey] = Double.parseDouble(Long.toString(dictionaryEntry as! Int64))
 						
 					} else {
+                        
+                        if let ExpectedType = typesMap[commonKey],
+                            let dictionaryEntry = alliasRemovedDictionaryEntity[commonKey] {
+                            print("\(SomeType): Type missmatch(\(commonKey)): Expected: \(ExpectedType), got: \(dictionaryEntry.getClass())")
+                        }
+                        
 						typesMatch = false
 						break
 					}

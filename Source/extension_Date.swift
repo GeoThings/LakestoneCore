@@ -83,11 +83,24 @@ extension Date {
 	
 	public static func with(xsdGMTDateTimeString string: String) -> Date? {
 		
+		//ignore .miliseconds if passed
+		#if COOPER
+			let milisecondsSeperatorRangeº = string.range(of: ".", searchBackwards: true)
+		#else
+			let milisecondsSeperatorRangeº = string.range(of: ".", options: .backwards)
+		#endif
+		
+		var stringToParse = string
+		if let milisecondsSeperatorRange = milisecondsSeperatorRangeº {
+			stringToParse = string.substring(to: milisecondsSeperatorRange.lowerBound)
+			stringToParse += "Z"
+		}
+		
 		#if COOPER
 			//ISO 8601 is not handled in Java until java 7. Once available, use X instead of Z in SimpleDateFormat, and remove replaceAll from here
-			return _xsdGMTDateFormatter.parse(string.replacingOccurrences(of: "Z$", with: "+0000"))
+			return _xsdGMTDateFormatter.parse(stringToParse.replacingOccurrences(of: "Z$", with: "+0000"))
 		#else
-			return _xsdGMTDateFormatter.date(from: string)
+			return _xsdGMTDateFormatter.date(from: stringToParse)
 		#endif
 	}
 	
@@ -128,7 +141,7 @@ public func ==(lhs: Date, rhs: Date) -> Bool {
 #endif
 
 extension Date: StringRepresentable {
-    public var stringRepresentation: String {
-        return self.xsdGMTDateTimeString
-    }
+	public var stringRepresentation: String {
+		return self.xsdGMTDateTimeString
+	}
 }
