@@ -20,7 +20,9 @@
 // limitations under the License.
 //
 
-#if !COOPER
+#if COOPER
+	import java.net
+#else
 	import Foundation
 #endif
 
@@ -113,6 +115,64 @@ extension URL {
 	}
 
 	#endif
+	
+	public func appendingQueryParameter(withKey key: String, value: String?) -> URL? {
+		
+		#if COOPER
+		
+			var newQueryComponent = key
+			if let presentValue = value {
+				newQueryComponent += "=\(presentValue)"
+			}
+			
+			var currentQueryº: String? = self.toURI().getQuery()
+			if currentQueryº != nil {
+				currentQueryº += "&" + newQueryComponent
+			} else {
+				currentQueryº = newQueryComponent
+			}
+			
+			return URI(self.toURI().getScheme(), self.toURI().getAuthority(), self.toURI().getPath(), currentQueryº, self.toURI().getFragment()).toURL()
+			
+		#else
+			
+			guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
+				return nil
+			}
+			
+			components.queryItems = [URLQueryItem(name: key, value: value)]
+			return components.url
+			
+		#endif
+	}
+	
+	public func appendingQueryParameters(_ parameters: [String: Any]) -> URL? {
+		
+		#if COOPER
+			
+			var targetURL: URL? = self
+			for (key, value) in parameters {
+				targetURL = self.appendingQueryParameter(withKey: key, value: String.derived(from: value))
+			}
+			
+			return targetURL
+			
+		#else
+		
+			guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
+				return nil
+			}
+			
+			var queryItems = [URLQueryItem]()
+			for (key, value) in parameters {
+				queryItems.append(URLQueryItem(name: key, value: String.derived(from: value)))
+			}
+			
+			components.queryItems = queryItems
+			return components.url
+		
+		#endif
+	}
 	
 }
 

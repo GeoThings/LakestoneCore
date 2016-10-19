@@ -70,6 +70,21 @@ public class TestURL: Test {
 		Assert.IsFalse(URL(string: "http://someresource.com")!.isFileURL)
 		
 		Assert.AreEqual(url.deletingLastPathComponent().path, "/usr/path/to/some")
+		
+		guard let sampleToAddQueryParams = URL(string: "http://getsomestuff.com:8080/from/here") else {
+			Assert.Fail("Cannot create URL from string")
+			return
+		}
+		
+		guard let sampleWithSingleParam = sampleToAddQueryParams.appendingQueryParameter(withKey: "my", value: nil),
+			  let sampleWithSpacedParameter = sampleToAddQueryParams.appendingQueryParameters(["spacedParam":"spaced parameter"])
+        else {
+            Assert.Fail("Cannot append query parameter")
+            return
+        }
+        
+        Assert.AreEqual(sampleWithSingleParam.absoluteString, "http://getsomestuff.com:8080/from/here?my")
+        Assert.AreEqual(sampleWithSpacedParameter.absoluteString, "http://getsomestuff.com:8080/from/here?spacedParam=spaced%20parameter")
 	}
 }
 
