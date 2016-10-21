@@ -84,11 +84,7 @@ extension Date {
 	public static func with(xsdGMTDateTimeString string: String) -> Date? {
 		
 		//ignore .miliseconds if passed
-		#if COOPER
-			let milisecondsSeperatorRangeº = string.range(of: ".", searchBackwards: true)
-		#else
-			let milisecondsSeperatorRangeº = string.range(of: ".", options: .backwards)
-		#endif
+		let milisecondsSeperatorRangeº = string.range(of: ".", options: .backwards)
 		
 		var stringToParse = string
 		if let milisecondsSeperatorRange = milisecondsSeperatorRangeº {

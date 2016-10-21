@@ -1,4 +1,4 @@
-//
+﻿//
 //  File.swift
 //  LakestoneCore
 //
@@ -76,23 +76,17 @@ extension File {
 	}
 	#endif
 	
-    public var url: URL {
-        return URL(fileURLWithPath: self.path)
-    }
-    
+	public var url: URL {
+		return URL(fileURLWithPath: self.path)
+	}
+	
 	public var name: String {
-		#if COOPER
-			let nameWithExtension = self.getName()
-			guard let extensionSeperatorRange = nameWithExtension.range(of: ".", searchBackwards: true) else {
-				return nameWithExtension
-			}
-		#else
-			let nameWithExtension = self.url.lastPathComponent
-			guard let extensionSeperatorRange = nameWithExtension.range(of: ".", options: .backwards) else {
-				return nameWithExtension
-			}
-		#endif
 		
+		let nameWithExtension = self.url.lastPathComponent
+		guard let extensionSeperatorRange = nameWithExtension.range(of: ".", options: .backwards) else {
+			 return nameWithExtension
+		}
+	   
 		return nameWithExtension.substring(to: extensionSeperatorRange.lowerBound)
 	}
 	
@@ -212,7 +206,7 @@ extension File {
 	///   - destination: New file location following AnyFileOrDirectory protocol
 	///   - overwrites: True to overwrite or false to throw exception if the file exists at the new location
 	/// - Returns: The new file location as AnyFileOrDirectory
-    /// - Throws: Copying or overwriting error
+	/// - Throws: Copying or overwriting error
 	/// - Note: FileChannel copy in Java won't copy files over 2GB
 	public func copy(to destination: AnyFileOrDirectory, overwrites: Bool) throws -> AnyFileOrDirectory {
 		

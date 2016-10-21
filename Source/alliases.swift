@@ -141,9 +141,13 @@
     
     public typealias Image = android.graphics.Bitmap
     
+    public typealias AnyType = java.lang.Class
+    
 #else
 
 	public typealias ThrowableError = Error
+    public typealias AnyType = Any.Type
+    
     #if os(iOS) || os(watchOS) || os(tvOS)
         public typealias Image = UIImage
     #elseif os(OSX)

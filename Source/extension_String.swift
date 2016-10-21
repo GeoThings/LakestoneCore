@@ -49,6 +49,11 @@ extension String {
 	
 	#if COOPER
 	
+    public enum CompareOptions {
+        case none
+        case backwards
+    }
+    
 	//MARK: - Standard Library APIs
 	public func lowercased() -> String {
 		return self.toLowerCase()
@@ -272,10 +277,15 @@ extension String {
 		return self.substring(range.lowerBound, endIndex)
 	}
 	
-	//TODO: Implement String.CompareOptions
+	public func range(of substring: String, options: CompareOptions = .none) -> Range? {
 	
-	public func range(of substring: String, searchBackwards: Bool = false) -> Range? {
-		let startIndex = (searchBackwards) ? self.lastIndexOf(substring) : self.indexOf(substring)
+		let startIndex: Int
+		if let compareOptions = options, compareOptions == .backwards {
+			startIndex = self.lastIndexOf(substring)
+		} else {
+			startIndex = self.indexOf(substring)
+		}
+	
 		return (startIndex >= 0) ? startIndex ..< startIndex + substring.length() : nil
 	}
 	
@@ -478,54 +488,54 @@ extension String {
 			return Double(self)
 		#endif
 	}
-    
-    // modified init(describing:) 
-    // in addition works StringRepresentable, SerializableTypeRepresentable, CustomSerializable
-    // optional values are unwrapped if present, "nil" otherwise
-    //
-    // Array, Set, Dictionary, CustomSerializable is displayed as encoded JSON string
-    public static func derived(from entity: Any) -> String {
-    
-        #if !COOPER
-            if Mirror(reflecting: entity).displayStyle == .optional {
-                if let unwrappedValue = Mirror(reflecting: entity).descendant("some") {
-                    return String.derived(from: unwrappedValue)
-                } else {
-                    return ""
-                }
-            }
-        #endif
-        
-        if let stringEntity = entity as? String {
-            return stringEntity
-        } else if let arrayEntity = entity as? [Any] {
-            return (try? JSONSerialization.data(withJSONObject: arrayEntity))?.utf8EncodedStringRepresentationº ?? ""
-        } else if let dictionaryEntity = entity as? [String: Any] {
-            return (try? JSONSerialization.data(withJSONObject: dictionaryEntity))?.utf8EncodedStringRepresentationº ?? ""
-        } else if let setEntity = entity as? Set<AnyHashable> {
-            return (try? JSONSerialization.data(withJSONObject: [AnyHashable](setEntity)))?.utf8EncodedStringRepresentationº ?? ""
-        } else if let serializableTypeRepresentable = entity as? SerializableTypeRepresentable,
-            //prevent infinite looping if serializableRepresentation is also of SerializableTypeRepresentable type
-            !(serializableTypeRepresentable.serializableRepresentation is SerializableTypeRepresentable){
-            
-            return String.derived(from: serializableTypeRepresentable.serializableRepresentation)
-           
-        } else if let stringTypeRepresentable = entity as? StringRepresentable {
-            
-            return stringTypeRepresentable.stringRepresentation
-            
-        } else if let dataEntity = entity as? Data {
-        
-            return dataEntity.utf8EncodedStringRepresentationº ?? ""
-            
-        } else {
-            #if COOPER
-                return "\(entity)"
-            #else
-                return String(describing: entity)
-            #endif
-        }
-    }
+	
+	// modified init(describing:) 
+	// in addition works StringRepresentable, SerializableTypeRepresentable, CustomSerializable
+	// optional values are unwrapped if present, "nil" otherwise
+	//
+	// Array, Set, Dictionary, CustomSerializable is displayed as encoded JSON string
+	public static func derived(from entity: Any) -> String {
+	
+		#if !COOPER
+			if Mirror(reflecting: entity).displayStyle == .optional {
+				if let unwrappedValue = Mirror(reflecting: entity).descendant("some") {
+					return String.derived(from: unwrappedValue)
+				} else {
+					return ""
+				}
+			}
+		#endif
+		
+		if let stringEntity = entity as? String {
+			return stringEntity
+		} else if let arrayEntity = entity as? [Any] {
+			return (try? JSONSerialization.data(withJSONObject: arrayEntity))?.utf8EncodedStringRepresentationº ?? ""
+		} else if let dictionaryEntity = entity as? [String: Any] {
+			return (try? JSONSerialization.data(withJSONObject: dictionaryEntity))?.utf8EncodedStringRepresentationº ?? ""
+		} else if let setEntity = entity as? Set<AnyHashable> {
+			return (try? JSONSerialization.data(withJSONObject: [AnyHashable](setEntity)))?.utf8EncodedStringRepresentationº ?? ""
+		} else if let serializableTypeRepresentable = entity as? SerializableTypeRepresentable,
+			//prevent infinite looping if serializableRepresentation is also of SerializableTypeRepresentable type
+			!(serializableTypeRepresentable.serializableRepresentation is SerializableTypeRepresentable){
+			
+			return String.derived(from: serializableTypeRepresentable.serializableRepresentation)
+		   
+		} else if let stringTypeRepresentable = entity as? StringRepresentable {
+			
+			return stringTypeRepresentable.stringRepresentation
+			
+		} else if let dataEntity = entity as? Data {
+		
+			return dataEntity.utf8EncodedStringRepresentationº ?? ""
+			
+		} else {
+			#if COOPER
+				return "\(entity)"
+			#else
+				return String(describing: entity)
+			#endif
+		}
+	}
 }
 
 #if COOPER

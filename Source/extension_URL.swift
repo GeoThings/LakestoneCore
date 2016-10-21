@@ -74,7 +74,7 @@ extension URL {
 	}
 
 	public var pathExtension: String {
-		guard let extensionSeperatorRange = self.lastPathComponent.range(of: ".", searchBackwards: true) else {
+		guard let extensionSeperatorRange = self.lastPathComponent.range(of: ".", options: .backwards) else {
 			return String()
 		}
 	
@@ -99,7 +99,7 @@ extension URL {
 	
 	public func deletingLastPathComponent() -> URL {
 	
-		guard let prelastComponentStart = self.path.range(of: "/", searchBackwards: true) else {
+		guard let prelastComponentStart = self.path.range(of: "/", options: .backwards) else {
 			return self
 		}
 	

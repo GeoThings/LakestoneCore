@@ -1,4 +1,4 @@
-﻿//
+//
 //  CustomSerialization.swift
 //  LakestoneCore
 //
@@ -281,9 +281,9 @@ public class CustomSerialization {
 		} else {
 			
 			#if COOPER
-				let serializationErrorRepresentation = SerializationErrorRepresentation(typeWithName: entity.Class.getName(), detail: "Entity is not serializable")
+				let serializationErrorRepresentation = SerializationError.Representation(typeWithName: entity.Class.getName(), detail: "Entity is not serializable")
 			#else
-				let serializationErrorRepresentation = SerializationErrorRepresentation(typeWithName: "\(type(of: entity))", detail: "Entity is not serializable")
+				let serializationErrorRepresentation = SerializationError.Representation(typeWithName: "\(type(of: entity))", detail: "Entity is not serializable")
 			#endif
 			
 			throw serializationErrorRepresentation.error
@@ -551,50 +551,45 @@ public class CustomSerialization {
 }
 
 extension CustomSerialization {
+    
+    public class func applyCustomSerialization(toJSONData jsonData: Data, withCustomTypes customTypes: [CustomSerializableType]) throws -> Any {
+        
+        let jsonObject = try JSONSerialization.jsonObject(with: jsonData)
+        return try self.applyCustomSerialization(ofCustomTypes: customTypes, to: jsonObject)
+    }
+    
+    public class func jsonData(from customEntity: CustomSerializable) throws -> Data {
+        
+        let dict = try self.dictionary(from: customEntity)
+        return try JSONSerialization.data(withJSONObject: dict)
+    }
+}
+
+extension CustomSerialization {
 	
 	public class SerializationError: LakestoneError {
-		public var serializationRepresentationº: SerializationErrorRepresentation? {
-			return self.representation as? SerializationErrorRepresentation
+		public var serializationRepresentationº: Representation? {
+			return self.representation as? Representation
 		}
-	}
-	public class SerializationErrorRepresentation: ErrorRepresentable {
-		
-		public let typeName: String
-		public let detail: String
-		
-		public init(typeWithName: String, detail: String){
-			self.typeName = typeWithName
-			self.detail = detail
-		}
-		
-		public var detailMessage: String {
-			return detail
-		}
-		
-		public var error: SerializationError {
-			return SerializationError(self)
-		}
-	}
-	
-	public class InstantiationError: LakestoneError {
-		var instantiationRepresentationº: InstantiationErrorRepresentation? {
-			return self.representation as? InstantiationErrorRepresentation
-		}
-	}
-	public class InstantiationErrorRepresentation: ErrorRepresentable {
-		
-		public let variableName: String
-		public init(variableName: String){
-			self.variableName = variableName
-		}
-		
-		public var detailMessage: String {
-			return "Variable: \(variableName) is missing or has invalid type"
-		}
-		
-		public var error: InstantiationError {
-			return InstantiationError(self)
-		}
+        
+        public class Representation: ErrorRepresentable {
+            
+            public let typeName: String
+            public let detail: String
+            
+            public init(typeWithName: String, detail: String){
+                self.typeName = typeWithName
+                self.detail = detail
+            }
+            
+            public var detailMessage: String {
+                return detail
+            }
+            
+            public var error: SerializationError {
+                return SerializationError(self)
+            }
+        }
 	}
 	
 }

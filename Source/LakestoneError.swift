@@ -196,3 +196,33 @@ public func castedError(_ entity: ThrowableError) -> ThrowableError? {
     return entity
 }
 #endif
+
+
+public class DictionaryInstantiationError: LakestoneError {
+    var instantiationRepresentationº: Representation? {
+        return self.representation as? Representation
+    }
+    
+    public class Representation: ErrorRepresentable {
+        
+        public let fieldName: String
+        public let detail: String
+        
+        public init(fieldName: String, detail: String){
+            self.fieldName = fieldName
+            self.detail = detail
+        }
+        
+        public var detailMessage: String {
+            return "Entity couldn't be instantiated: error in field: \(fieldName): \(self.detail)"
+        }
+        
+        public var error: DictionaryInstantiationError {
+            return DictionaryInstantiationError(self)
+        }
+    }
+    
+    public static func defaultDetail(forType type: AnyType) -> String {
+        return "Field is missing or has non \(type) type"
+    }
+}
