@@ -40,16 +40,30 @@
 	#endif
 #endif
 
+	
 #if COOPER
 	public typealias ThreadQueue = ExecutorService
-#elseif os(iOS) || os(watchOS) || os(tvOS)
-	public typealias ThreadQueue = DispatchQueue
+	// ReentrantLock provides the corresponding functionaly with matching lock()/tryLock()/unlock() naming
+	public typealias Lock = java.util.concurrent.locks.ReentrantLock
+	public typealias Semaphore = java.util.concurrent.Semaphore
+	
 #else
+
+	public typealias Lock = PerfectThread.Threading.Lock
+
+	#if os(iOS) || os(watchOS) || os(tvOS)
+		public typealias Semaphore = DispatchSemaphore
+		public typealias ThreadQueue = DispatchQueue
+	#elseif os(OSX)
+		public typealias Semaphore = DispatchSemaphore
+	#endif
 	// for OSX and Linux PerfectThread.ThreadQueue corresponding type is used
+	
 #endif
+	
 
 /// Executes the closure synchronized on given reentrant mutual exlusion lock
-public func synchronized(on lock: Threading.Lock, closure: () -> Void){
+public func synchronized(on lock: Lock, closure: () -> Void){
 	lock.lock()
 	closure()
 	lock.unlock()
@@ -59,40 +73,41 @@ public func synchronized(on lock: Threading.Lock, closure: () -> Void){
 
 public class Threading {
 	
-	internal class _Runnable: Runnable {
-		let callback: () -> Void
-		init(callback: () -> Void){
-			self.callback = callback
-		}
-	
-		public func run() {
-			callback()
-		}
-	}
-	
 	public class func dispatchOnMainQueue(_ closure: @escaping () -> Void){
-		Handler(Looper.getMainLooper()).post(_Runnable(callback: closure))
+		Handler(Looper.getMainLooper()).post {
+			closure()
+		}
 	}
 }
 
 extension ThreadQueue {
 		
 	public func dispatch(_ closure: @escaping () -> Void){
-		self.execute(Threading._Runnable(callback: closure))
+		self.execute {
+			closure()
+		}
 	}
 }
 	
 #elseif os(iOS) || os(watchOS) || os(tvOS)
 
 public class Threading {}
-    
+	
 extension ThreadQueue {
-        
-    public func dispatch(_ closure: @escaping () -> Void){
-        self.async(execute: closure)
-    }
+		
+	public func dispatch(_ closure: @escaping () -> Void){
+		self.async(execute: closure)
+	}
 }
 	
+#endif
+
+#if os(OSX)
+extension DispatchQueue {
+	public func dispatch(_ closure: @escaping () -> Void){
+		self.async(execute: closure)
+	}
+}
 #endif
 
 #if !COOPER && !os(Linux)
@@ -103,22 +118,8 @@ extension Threading {
 		DispatchQueue.main.async(execute: closure)
 	}
 }
-    
+	
 #endif
-
-public extension Threading {
-	
-	#if COOPER
-	
-	// ReentrantLock provides the corresponding functionaly with matching lock()/tryLock()/unlock() naming
-	public typealias Lock = java.util.concurrent.locks.ReentrantLock
-	
-	#elseif os(iOS) || os(watchOS) || os(tvOS)
-	
-	public typealias Lock = PerfectThread.Threading.Lock
-	
-	#endif
-}
 
 extension Threading {
 	
@@ -135,3 +136,49 @@ extension Threading {
 	}
 	
 }
+
+#if COOPER
+
+extension Semaphore {
+	
+	public init(value: Int){
+		self.init(value)
+	}
+	
+	public func signal(){
+		self.release()
+	}
+}
+
+#elseif !os(Linux)
+
+extension Semaphore {
+	
+	public func acquire(){
+		self.wait()
+	}
+}
+
+#endif
+
+
+#if COOPER
+	public func dispatch(on looper: android.os.Looper, closure: @escaping () -> Void){
+		Handler(looper).post {
+			closure()
+		}
+	}
+#else
+
+	public func dispatch(on queue: DispatchQueue, closure: @escaping () -> Void){
+		queue.dispatch(closure)
+	}
+	
+	#if os(OSX) || os(Linux)
+		public func dispatch(on queue: ThreadQueue, closure: @escaping () -> Void){
+			queue.dispatch(closure)
+		}
+	#endif
+	
+#endif
+

@@ -54,3 +54,12 @@ extension Image {
 	}
 
 }
+
+extension Size {
+    
+    #if COOPER
+    public init(width: Int32, height: Int32){
+        self.init(width, height)
+    }
+    #endif
+}

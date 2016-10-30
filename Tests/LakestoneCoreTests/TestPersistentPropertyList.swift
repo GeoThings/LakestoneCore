@@ -1,4 +1,4 @@
-﻿//
+//
 //  TestPersistentPropertyList.swift
 //  LakestoneCore
 //
@@ -46,22 +46,22 @@ public class TestPersistentPropertyList: Test {
 		
         // UserDefaults is not fully implemented on Linux with 3.0.0 shipped Foundation
         // object(forKey: ) will yield nil in Linux for now
-		persistentPropertyList.set(true, forKey: "boolTest")
-		persistentPropertyList.set(26, forKey: "intTest")
-		persistentPropertyList.set(Float(26.0), forKey: "floatTest")
-		persistentPropertyList.set(26.0, forKey: "doubleTest")
-		persistentPropertyList.set("testString", forKey: "stringTest")
-		persistentPropertyList.set(Set<String>(["string1", "string2", "string3"]), forKey: "stringSetTest")
-		persistentPropertyList.set(array: [Int]([1,2,3,4,5,6,7,8]), forKey: "arrayTest")
-		persistentPropertyList.set(set: Set<Int>([1,2,3,3]), forKey: "setTest")
-		persistentPropertyList.set(["string": "String",
+		persistentPropertyList.setBool(true, forKey: "boolTest")
+		persistentPropertyList.setInt(26, forKey: "intTest")
+		persistentPropertyList.setFloat(Float(26.0), forKey: "floatTest")
+		persistentPropertyList.setDouble(26.0, forKey: "doubleTest")
+        persistentPropertyList.setString("testString", forKey: "stringTest")
+		persistentPropertyList.setStringSet(Set<String>(["string1", "string2", "string3"]), forKey: "stringSetTest")
+		persistentPropertyList.setArray([Int]([1,2,3,4,5,6,7,8]), forKey: "arrayTest")
+		persistentPropertyList.setSet(Set<Int>([1,2,3,3]), forKey: "setTest")
+		persistentPropertyList.setDictionary(["string": "String",
 									"decimal": Int(35),
 									//if storing 36.0, JSONObject will parse it back as Int
 									"double": 36.2],
 								   forKey: "dictionaryTest")
-		persistentPropertyList.set(Date(timeIntervalSince1970: 1472688000.0), forKey: "dateTest")
-		persistentPropertyList.set(URL(string: "http://google.com")!, forKey: "urlTest")
-		persistentPropertyList.set(UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!, forKey: "uuidTest")
+		persistentPropertyList.setDate(Date(timeIntervalSince1970: 1472688000.0), forKey: "dateTest")
+		persistentPropertyList.setURL(URL(string: "http://google.com")!, forKey: "urlTest")
+		persistentPropertyList.setUUID(UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!, forKey: "uuidTest")
 		persistentPropertyList.synchronize()
 		
         //for now UserDefaults object(forKey:) will fail
@@ -155,7 +155,7 @@ public class TestPersistentPropertyList: Test {
 		Assert.AreEqual(unwrappedCustomSerializable.testInt, 26)
 		
 		do {
-			try persistentPropertyList.set(customSerializableArray: unwrappedCustomSerializable.testSomethingArray, forKey: "customSerializableArrayTest")
+			try persistentPropertyList.setCustomSerializableArray(unwrappedCustomSerializable.testSomethingArray, forKey: "customSerializableArrayTest")
 			persistentPropertyList.synchronize()
 		} catch {
 			Assert.Fail("Couldn't store customSerializable into PersistentPropertyList")

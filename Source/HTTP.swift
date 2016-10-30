@@ -27,6 +27,7 @@
 	import java.net
 	import java.io
 	import android.util
+	import android.os
 #else
 	
 	import Foundation
@@ -145,6 +146,11 @@ public class HTTP {
 			#else
 				self.basicAuthentificationStringº = Data.with(utf8EncodedString: "\(username):\(password)")?.base64EncodedString()
 			#endif
+		}
+		
+		public func setJSONData(with jsonDictionary: [String: Any]) throws {
+			self.dataº = try JSONSerialization.data(withJSONObject: jsonDictionary)
+			self.headers["Content-Type"] = "application/json"
 		}
 		
 		public func setFormURLEncodedData(with parameters:[String:Any]) throws {
@@ -279,7 +285,7 @@ public class HTTP {
 			return try self._performSyncCore(with: nil)
 		}
 		
-		private func _performSyncCore(with progressDelegateº: ((Double) -> Void)?) throws -> Response {
+		private func _performSyncCore(with progressDelegateº: ((Bool, Double) -> Void)?) throws -> Response {
 			
 			let currentConnection = self.url.openConnection() as! HttpURLConnection
 			do {
@@ -299,14 +305,38 @@ public class HTTP {
 					currentConnection.setDoOutput(true)
 				
 					// writing off the data
-					if let data = self.dataº {
+					if var data = self.dataº {
+						let dataLength = data.bytes.count
+						
+						if Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT {
+							currentConnection.setFixedLengthStreamingMode(dataLength)
+						}
+						
+						let batchWriteSize = 16384
+						var writeSize = (dataLength > 16384) ? batchWriteSize : dataLength
+						
 						let outputStream = BufferedOutputStream(currentConnection.getOutputStream())
-						outputStream.write(data.plainBytes)
+						var nWritten = 0
+						data.position(0)
+						while nWritten < dataLength {
+							let bufSize = ( (dataLength - nWritten) < writeSize) ? dataLength - nWritten : writeSize
+							let writeChunk = java.lang.reflect.Array.newInstance(Byte.self, bufSize) as! ByteStaticArray
+							data = data.`get`(writeChunk)
+							
+							outputStream.write(writeChunk)
+							nWritten += bufSize
+		
+							let progress = Double(nWritten)/Double(dataLength)
+							if progress < 1 {
+								progressDelegateº?(false, progress)
+							}
+						}
+						
 						outputStream.close()
 					}
 				}
 				
-				currentConnection.connect()
+				//currentConnection.connect()
 				
 				let responseCode = currentConnection.getResponseCode()
 				let responseHeaders = currentConnection.getHeaderFields()
@@ -321,11 +351,14 @@ public class HTTP {
 				
 				let outputByteStream = ByteArrayOutputStream()
 				var readSize = currentConnection.getContentLength()
+				
+				var isContentLengthAvailable = true
 				let batchReadSize = 16384
 				if progressDelegateº != nil && batchReadSize < readSize {
 					readSize = batchReadSize
 				} else if readSize < 0 {
 					readSize = batchReadSize
+					isContentLengthAvailable = false
 				}
 				
 				// reading the response
@@ -337,8 +370,9 @@ public class HTTP {
 					
 					totalRead += nRead
 					let progress = Double(totalRead)/Double(currentConnection.getContentLength())
-					if progress < 1 {
-						progressDelegateº?(progress)
+					
+					if progress < 1 && isContentLengthAvailable {
+						progressDelegateº?(true, progress)
 					}
 				}
 				
@@ -521,7 +555,7 @@ public class HTTP {
 		
 		#endif
 		
-		public func perform(with progressCallbackº:((Double) -> Void)? = nil, and completionHander: @escaping (ThrowableError?, Response?) -> Void){
+		public func perform(with progressCallbackº:((Bool, Double) -> Void)? = nil, and completionHander: @escaping (ThrowableError?, Response?) -> Void){
 			
 			#if os(iOS) || os(watchOS) || os(tvOS)
 				
@@ -632,13 +666,17 @@ public class HTTP {
 	private class _DownloadDelegate: NSObject, URLSessionDownloadDelegate {
 		
 		let invocationURL: URL
-		let progressDelegateº: ((Double) -> Void)?
+		let progressDelegateº: ((Bool, Double) -> Void)?
 		let completionHandler: (ThrowableError?, Response?) -> Void
 		
-		init(invocationURL: URL, progressDelegateº: ((Double) -> Void)?, completionHandler: @escaping (ThrowableError?, Response?) -> Void){
+		init(invocationURL: URL, progressDelegateº: ((Bool, Double) -> Void)?, completionHandler: @escaping (ThrowableError?, Response?) -> Void){
 			self.invocationURL = invocationURL
 			self.progressDelegateº = progressDelegateº
 			self.completionHandler = completionHandler
+		}
+		
+		fileprivate func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
+			self.progressDelegateº?(false, Double(totalBytesSent)/Double(totalBytesExpectedToSend))
 		}
 		
 		fileprivate func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
@@ -666,7 +704,7 @@ public class HTTP {
 		}
 		
 		fileprivate func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-			self.progressDelegateº?(Double(totalBytesWritten)/Double(totalBytesExpectedToWrite))
+			self.progressDelegateº?(true, Double(totalBytesWritten)/Double(totalBytesExpectedToWrite))
 		}
 		
 		fileprivate func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {

@@ -124,9 +124,15 @@
 	#elseif os(OSX)
 		import AppKit
 	#endif
+    
+    #if !os(Linux)
+        import CoreLocation
+    #endif
 	
 #endif
 
+
+// base alliases
 #if COOPER
 
 	public typealias URL = java.net.URL
@@ -139,7 +145,6 @@
     public typealias AnyHashable = java.lang.Object
     public typealias ThrowableError = java.lang.Throwable
     
-    public typealias Image = android.graphics.Bitmap
     
     public typealias AnyType = java.lang.Class
     
@@ -148,6 +153,24 @@
 	public typealias ThrowableError = Error
     public typealias AnyType = Any.Type
     
+#endif
+
+
+// additional
+
+#if COOPER
+    
+    public typealias Image = android.graphics.Bitmap
+    public typealias Size = android.util.Size
+    public typealias Location = android.location.Location
+    
+#else
+
+    #if !os(Linux)
+        public typealias Size = CGSize
+        public typealias Location = CLLocationCoordinate2D
+    #endif
+    
     #if os(iOS) || os(watchOS) || os(tvOS)
         public typealias Image = UIImage
     #elseif os(OSX)
@@ -155,3 +178,6 @@
     #endif
     
 #endif
+
+
+

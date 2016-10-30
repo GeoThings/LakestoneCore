@@ -268,7 +268,6 @@ extension File {
 		
 		return destinationFile
 	}
-
 }
 
 extension File: CustomStringConvertible {

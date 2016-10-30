@@ -207,38 +207,38 @@ public class Directory: AnyFileOrDirectory {
 		if (!copyDirectory.exists) { try copyDirectory.create() }
 		
 		for entity in self.filesAndSubdirectories {
-            #if COOPER
-                if (entity.isDirectory){
-                    _ = try Directory(path: entity.path).copy(to: copyDirectory, overwrites: overwrites)
-                } else {
-                    _ = try File(path: entity.path).copy(to: copyDirectory, overwrites: overwrites)
-                }
-            #else
-                _ = try entity.copy(to: copyDirectory, overwrites: overwrites)
-            #endif
+			#if COOPER
+				if (entity.isDirectory){
+					_ = try Directory(path: entity.path).copy(to: copyDirectory, overwrites: overwrites)
+				} else {
+					_ = try File(path: entity.path).copy(to: copyDirectory, overwrites: overwrites)
+				}
+			#else
+				_ = try entity.copy(to: copyDirectory, overwrites: overwrites)
+			#endif
 		}
 		
 		return copyDirectory
 	}
-    
-    /// Asynchronous calling of copy function
-    public func copy(to destination: AnyFileOrDirectory, overwrites: Bool, completionHandler: @escaping (ThrowableError?, AnyFileOrDirectory?) -> Void){
-        
-        let copyQueue = Threading.serialQueue(withLabel: "lakestone.core.filedir-copy-queue")
-        copyQueue.dispatch {
-            do {
-                let copyDirectory = try self.copy(to: destination, overwrites: overwrites)
-                completionHandler(nil, copyDirectory)
-            } catch {
-                // in Java silver error has Object type, so conditionals to avoid warning for redundant as! in Swift
-                #if COOPER
-                    completionHandler(error as! ThrowableError, nil)
-                #else
-                    completionHandler(error, nil)
-                #endif
-            }
-        }
-    }
+	
+	/// Asynchronous calling of copy function
+	public func copy(to destination: AnyFileOrDirectory, overwrites: Bool, completionHandler: @escaping (ThrowableError?, AnyFileOrDirectory?) -> Void){
+		
+		let copyQueue = Threading.serialQueue(withLabel: "lakestone.core.filedir-copy-queue")
+		copyQueue.dispatch {
+			do {
+				let copyDirectory = try self.copy(to: destination, overwrites: overwrites)
+				completionHandler(nil, copyDirectory)
+			} catch {
+				// in Java silver error has Object type, so conditionals to avoid warning for redundant as! in Swift
+				#if COOPER
+					completionHandler(error as! ThrowableError, nil)
+				#else
+					completionHandler(error, nil)
+				#endif
+			}
+		}
+	}
 
 	/// Moves the current folder with all files and subfolders into a new folder location by copying and then removing original
 	/// - Parameters:
@@ -257,26 +257,51 @@ public class Directory: AnyFileOrDirectory {
 		
 		return destinationFolder
 	}
-    
-    /// Asynchronous calling of move function
-    public func move(to destination: AnyFileOrDirectory, overwrites: Bool, completionHandler: @escaping (ThrowableError?, AnyFileOrDirectory?) -> Void){
-        
-        let moveQueue = Threading.serialQueue(withLabel: "lakestone.core.filedir-move-queue")
-        moveQueue.dispatch {
-            do {
-                let destinationFolder = try self.move(to: destination, overwrites: overwrites)
-                completionHandler(nil, destinationFolder)
-            } catch {
-                // in Java silver error has Object type, so conditionals to avoid warning for redundant as! in Swift
-                #if COOPER
-                    completionHandler(error as! ThrowableError, nil)
-                #else
-                    completionHandler(error, nil)
-                #endif
-            }
-        }
-    }
+	
+	/// Asynchronous calling of move function
+	public func move(to destination: AnyFileOrDirectory, overwrites: Bool, completionHandler: @escaping (ThrowableError?, AnyFileOrDirectory?) -> Void){
+		
+		let moveQueue = Threading.serialQueue(withLabel: "lakestone.core.filedir-move-queue")
+		moveQueue.dispatch {
+			do {
+				let destinationFolder = try self.move(to: destination, overwrites: overwrites)
+				completionHandler(nil, destinationFolder)
+			} catch {
+				// in Java silver error has Object type, so conditionals to avoid warning for redundant as! in Swift
+				#if COOPER
+					completionHandler(error as! ThrowableError, nil)
+				#else
+					completionHandler(error, nil)
+				#endif
+			}
+		}
+	}
 
+	#if COOPER
+	
+	public static func applicationDefault(inContext context: android.content.Context) -> Directory {
+		return Directory(path:context.getFilesDir().getCanonicalPath())
+	}
+	
+	#else
+	
+	public static var applicationDefault: Directory {
+		#if os(iOS) || os(watchOS) || os(tvOS)
+			if let documentsDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, false).first {
+				return Directory(path: (documentsDirectoryPath as NSString).expandingTildeInPath)
+			} else {
+				return Directory(path: FileManager.default.currentDirectoryPath)
+			}
+		#else
+			return Directory(path: FileManager.default.currentDirectoryPath)
+		#endif
+	}
+		
+	#endif
+	
+	public func file(withName nameWithExtension: String) -> File {
+		return File(fileURL: self.url.appendingPathComponent(nameWithExtension))
+	}
 }
 
 extension Directory: CustomStringConvertible {

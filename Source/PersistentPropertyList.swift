@@ -53,7 +53,7 @@ public class PersistentPropertyList {
 	
 	#endif
 	
-	public func set(_ value: Bool, forKey key: String){
+	public func setBool(_ value: Bool, forKey key: String){
 		#if COOPER
 			self.sharedPreferenceEditor.putBoolean(key, value)
 		#else
@@ -61,7 +61,7 @@ public class PersistentPropertyList {
 		#endif
 	}
 	
-	public func set(_ value: Int, forKey key: String){
+	public func setInt(_ value: Int, forKey key: String){
 		#if COOPER
 			self.sharedPreferenceEditor.putLong(key, value)
 		#else
@@ -69,7 +69,7 @@ public class PersistentPropertyList {
 		#endif
 	}
 	
-	public func set(_ value: Float, forKey key: String){
+	public func setFloat(_ value: Float, forKey key: String){
 		#if COOPER
 			self.sharedPreferenceEditor.putFloat(key, value)
 		#else
@@ -77,7 +77,7 @@ public class PersistentPropertyList {
 		#endif
 	}
 	
-	public func set(_ value: Double, forKey key: String){
+	public func setDouble(_ value: Double, forKey key: String){
 		#if COOPER
 			//android sharedPreference for some reason doesn't have double support, store as string then instead
 			self.sharedPreferenceEditor.putString(key, value.toString())
@@ -86,7 +86,7 @@ public class PersistentPropertyList {
 		#endif
 	}
 	
-	public func set(_ value: String, forKey key: String){
+	public func setString(_ value: String, forKey key: String){
 		#if COOPER
 			self.sharedPreferenceEditor.putString(key, value)
 		#else
@@ -94,7 +94,7 @@ public class PersistentPropertyList {
 		#endif
 	}
 	
-	public func set(_ value: Set<String>, forKey key: String){
+	public func setStringSet(_ value: Set<String>, forKey key: String){
 		#if COOPER
 			var javaSet = java.util.HashSet<String>(value)
 			self.sharedPreferenceEditor.putStringSet(key, javaSet)
@@ -226,7 +226,7 @@ public class PersistentPropertyList {
 extension PersistentPropertyList {
 	 
 	/// -remark: Overloading with '_ value:' will result in dex failure in Silver
-	public func set(array: [Any], forKey key: String) {
+	public func setArray(_ array: [Any], forKey key: String) {
 		
 		#if COOPER
 		
@@ -234,7 +234,7 @@ extension PersistentPropertyList {
 				return
 			}
 			
-			self.set(jsonString, forKey: key)
+			self.setString(jsonString, forKey: key)
 			
 		#else
 		
@@ -243,11 +243,11 @@ extension PersistentPropertyList {
 		#endif
 	}
 	
-    public func set(set: Set<AnyHashable>, forKey key: String){
-        self.set(array: [AnyHashable](set), forKey: key)
-    }
-    
-	public func set(_ value: [String: Any], forKey key: String) {
+	public func setSet(_ `set`: Set<AnyHashable>, forKey key: String){
+		self.setArray([AnyHashable](`set`), forKey: key)
+	}
+	
+	public func setDictionary(_ value: [String: Any], forKey key: String) {
 		
 		#if COOPER
 		
@@ -255,7 +255,7 @@ extension PersistentPropertyList {
 				return
 			}
 			
-			self.set(jsonString, forKey: key)
+			self.setString(jsonString, forKey: key)
 			
 		#else
 			
@@ -265,12 +265,12 @@ extension PersistentPropertyList {
 	}
 	
 	
-	public func set(_ value: Date, forKey key: String) {
+	public func setDate(_ value: Date, forKey key: String) {
 		
 		#if COOPER
 		
 			let timeInterval = value.timeIntervalSince1970
-			self.set(timeInterval, forKey: key)
+			self.setDouble(timeInterval, forKey: key)
 			
 		#else
 		
@@ -279,12 +279,12 @@ extension PersistentPropertyList {
 		#endif
 	}
 	
-	public func set(_ value: URL, forKey key: String) {
+	public func setURL(_ value: URL, forKey key: String) {
 		
 		#if COOPER
 		
 			let absoluteString = value.absoluteString
-			self.set(absoluteString, forKey: key)
+			self.setString(absoluteString, forKey: key)
 			
 		#else
 		
@@ -293,9 +293,9 @@ extension PersistentPropertyList {
 		#endif
 	}
 	
-	public func set(_ uuid: UUID, forKey key: String){
+	public func setUUID(_ uuid: UUID, forKey key: String){
 		
-		self.set(uuid.uuidString, forKey: key)
+		self.setString(uuid.uuidString, forKey: key)
 	}
 	
 	public func array(forKey key: String) -> [Any]? {
@@ -322,15 +322,15 @@ extension PersistentPropertyList {
 		#endif
 	}
 	
-    public func set(forKey key: String) -> Set<AnyHashable>? {
-        
-        guard let array = self.array(forKey: key) as? [AnyHashable] else {
-            return nil
-        }
-        
-        return Set<AnyHashable>(array)
-    }
-    
+	public func set(forKey key: String) -> Set<AnyHashable>? {
+		
+		guard let array = self.array(forKey: key) as? [AnyHashable] else {
+			return nil
+		}
+		
+		return Set<AnyHashable>(array)
+	}
+	
 	public func dictionary(forKey key: String) -> [String: Any]? {
 		
 		#if COOPER
@@ -413,7 +413,7 @@ extension PersistentPropertyList {
 		#if COOPER
 			
 			let jsonString = try JSONSerialization.string(withJSONObject: serializedDict)
-			self.set(jsonString, forKey: key)
+			self.setString(jsonString, forKey: key)
 			
 		#else
 			
@@ -422,14 +422,14 @@ extension PersistentPropertyList {
 		#endif
 	}
 	
-	public func set(customSerializableArray: [CustomSerializable], forKey key: String) throws {
+	public func setCustomSerializableArray(_ customSerializableArray: [CustomSerializable], forKey key: String) throws {
 		
 		let serializedArray = try CustomSerialization.array(from: customSerializableArray)
 		
 		#if COOPER
 			
 			let jsonString = try JSONSerialization.string(withJSONObject: serializedArray)
-			self.set(jsonString, forKey: key)
+			self.setString(jsonString, forKey: key)
 			
 		#else
 			

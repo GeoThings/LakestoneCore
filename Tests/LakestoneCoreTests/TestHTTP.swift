@@ -1,4 +1,4 @@
-//
+﻿//
 //  TestHTTP.swift
 //  LakestoneCoreTests
 //
@@ -153,51 +153,51 @@ public class TestHTTP: Test {
 		
 		awaitToken.waitFor(timeout: 10.0, for: self)
 	}
-    
-    public func testAsynchronousHTTPRequest(){
-        
-        guard let rasterStyleFileURL = URL(string: "http://52.76.15.94/raster-digitalglobe.json") else {
-            Assert.Fail("Remote resource URL has invalid format")
-            return
-        }
-        
-        let request = HTTP.Request(url: rasterStyleFileURL)
-        let awaitToken = AwaitToken.with(description: "Request completion token", for: self)
-        
-        request.perform(with: { (progress: Double) in print("Download progress: \(progress)") }) { (errorº: ThrowableError?, responseº: HTTP.Response?) in
-            awaitToken.fulfillAfter {
-                
-                guard let responseData = responseº?.dataº else {
-                    Assert.Fail("Response data is nil while expected")
-                    return
-                }
-                guard let responseDataString = responseData.utf8EncodedStringRepresentationº else {
-                    Assert.Fail("Data cannot be represented as UTF8 encoded string")
-                    return
-                }
-                
-                let sanitizedResponseString = responseDataString.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "\t", with: "")
-                
-                #if COOPER
-                    Assert.AreEqual(self.expectedResourceString, sanitizedResponseString)
-                #elseif os(iOS) || os(watchOS) || os(tvOS)
-                    let expectedSize = 18771
-                    Assert.AreEqual(responseData.count, expectedSize)
-                    Assert.IsTrue(sanitizedResponseString.contains("mapbox://mapbox.satellite"))
-                    
-                    //TODO: For some reason the full string comparison failes. Inspect why.
-                    // Assert.AreEqual(self.expectedResourceString, sanitizedResponseString)
-                #else
-                    //TODO: Full string comparison from locally loaded resource as above
-                    let expectedSize = 18771
-                    Assert.AreEqual(responseData.count, expectedSize)
-                    Assert.IsTrue(sanitizedResponseString.contains("mapbox://mapbox.satellite"))
-                #endif
-            }
-        }
-        
-        awaitToken.waitFor(timeout: 10.0, for: self)
-    }
+	
+	public func testAsynchronousHTTPRequest(){
+		
+		guard let rasterStyleFileURL = URL(string: "http://52.76.15.94/raster-digitalglobe.json") else {
+			Assert.Fail("Remote resource URL has invalid format")
+			return
+		}
+		
+		let request = HTTP.Request(url: rasterStyleFileURL)
+		let awaitToken = AwaitToken.with(description: "Request completion token", for: self)
+		
+		request.perform(with: { (isDownload: Bool, progress: Double) in print("\((isDownload) ? "Download" : "Upload") progress: \(progress)") }) { (errorº: ThrowableError?, responseº: HTTP.Response?) in
+			awaitToken.fulfillAfter {
+				
+				guard let responseData = responseº?.dataº else {
+					Assert.Fail("Response data is nil while expected")
+					return
+				}
+				guard let responseDataString = responseData.utf8EncodedStringRepresentationº else {
+					Assert.Fail("Data cannot be represented as UTF8 encoded string")
+					return
+				}
+				
+				let sanitizedResponseString = responseDataString.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "\t", with: "")
+				
+				#if COOPER
+					Assert.AreEqual(self.expectedResourceString, sanitizedResponseString)
+				#elseif os(iOS) || os(watchOS) || os(tvOS)
+					let expectedSize = 18771
+					Assert.AreEqual(responseData.count, expectedSize)
+					Assert.IsTrue(sanitizedResponseString.contains("mapbox://mapbox.satellite"))
+					
+					//TODO: For some reason the full string comparison failes. Inspect why.
+					// Assert.AreEqual(self.expectedResourceString, sanitizedResponseString)
+				#else
+					//TODO: Full string comparison from locally loaded resource as above
+					let expectedSize = 18771
+					Assert.AreEqual(responseData.count, expectedSize)
+					Assert.IsTrue(sanitizedResponseString.contains("mapbox://mapbox.satellite"))
+				#endif
+			}
+		}
+		
+		awaitToken.waitFor(timeout: 10.0, for: self)
+	}
 }
 
 #if !COOPER
@@ -205,7 +205,7 @@ extension TestHTTP {
 	static var allTests : [(String, (TestHTTP) -> () throws -> Void)] {
 		return [
 			("testSynchronousHTTPRequest", testSynchronousHTTPRequest),
-            ("testAsynchronousHTTPRequest", testAsynchronousHTTPRequest)
+			("testAsynchronousHTTPRequest", testAsynchronousHTTPRequest)
 		]
 	}
 }
