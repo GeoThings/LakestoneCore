@@ -283,12 +283,16 @@ public class Directory: AnyFileOrDirectory {
 		return Directory(path:context.getFilesDir().getCanonicalPath())
 	}
 	
+	public static func applicationCache(inContext context: android.content.Context) -> Directory? {
+		return Directory(path:context.getCacheDir().getCanonicalPath())
+	}
+	
 	#else
 	
 	public static var applicationDefault: Directory {
 		#if os(iOS) || os(watchOS) || os(tvOS)
-			if let documentsDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, false).first {
-				return Directory(path: (documentsDirectoryPath as NSString).expandingTildeInPath)
+			if let documentsDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first {
+				return Directory(path: documentsDirectoryPath)
 			} else {
 				return Directory(path: FileManager.default.currentDirectoryPath)
 			}
@@ -296,11 +300,62 @@ public class Directory: AnyFileOrDirectory {
 			return Directory(path: FileManager.default.currentDirectoryPath)
 		#endif
 	}
+	
+	public static var applicationCache: Directory? {
+		
+		#if os(iOS) || os(watchOS) || os(tvOS)
+			guard let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+				return nil
+			}
+			
+			let cacheDirectory = Directory(path: cacheDirectoryPath)
+		#else
+			let cacheDirectory = Directory(directoryURL: URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent("cache"))
+		#endif
+		
+		if !cacheDirectory.exists {
+			do {
+				try cacheDirectory.create()
+			} catch {
+				print("Failed to created cache directory: \(error)")
+				return nil
+			}
+		}
+
+		return cacheDirectory
+	}
 		
 	#endif
 	
 	public func file(withName nameWithExtension: String) -> File {
 		return File(fileURL: self.url.appendingPathComponent(nameWithExtension))
+	}
+	
+	/// in Java temp gets appended with .tmp extension
+	public func cacheFile(withName nameWithExtension: String) -> File {
+		
+		#if COOPER
+			var cacheFile = self.file(withName: nameWithExtension.appending(".tmp"))
+			if cacheFile.exists {
+				return cacheFile
+			}
+			
+			//cacheFile = File.createTempFile(nameWithExtension, nil, _fileEntity)
+			//return cacheFile
+			return self.file(withName: nameWithExtension)
+		#else
+			return self.file(withName: nameWithExtension)
+		#endif
+	}
+	
+	public func containsFile(withName nameWithExtension: String) -> Bool {
+		let file = self.file(withName: nameWithExtension)
+		return file.exists
+	}
+	
+	public func containsCacheFile(withName nameWithExtension: String) -> Bool {
+		let tempFile = self.file(withName: nameWithExtension.appending(".tmp"))
+		return tempFile.exists
 	}
 }
 

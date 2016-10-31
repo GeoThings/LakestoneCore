@@ -1,4 +1,4 @@
-﻿//
+//
 //  Threading.swift
 //  geoBingAnCore
 //

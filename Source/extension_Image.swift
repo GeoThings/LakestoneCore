@@ -24,7 +24,8 @@ extension Image {
 	
 	#if COOPER
 	public init?(data: Data){
-		return BitmapFactory.decodeByteArray(data.plainBytes, 0, data.plainBytes.length)
+        let plainData = data.plainBytes
+		return BitmapFactory.decodeByteArray(plainData, 0, plainData.length)
 	}
 	#endif
 	

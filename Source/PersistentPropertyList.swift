@@ -183,7 +183,7 @@ public class PersistentPropertyList {
 		#if COOPER
 			self.sharedPreferenceEditor.apply()
 		#else
-			_ = self.userDefaults.synchronize()
+			//_ = self.userDefaults.synchronize()
 		#endif
 	}
 	

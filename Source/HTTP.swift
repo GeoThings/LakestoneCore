@@ -704,7 +704,9 @@ public class HTTP {
 		}
 		
 		fileprivate func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-			self.progressDelegateº?(true, Double(totalBytesWritten)/Double(totalBytesExpectedToWrite))
+            if totalBytesExpectedToWrite >= 0 {
+                self.progressDelegateº?(true, Double(totalBytesWritten)/Double(totalBytesExpectedToWrite))
+            }
 		}
 		
 		fileprivate func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
