@@ -126,6 +126,15 @@ public class Directory: AnyFileOrDirectory {
 		try subdirectory.create()
 		return subdirectory
 	}
+    
+    public func subdirectory(named: String) throws -> Directory {
+        let subdirectory = Directory(directoryURL: self.url.appendingPathComponent(named))
+        if subdirectory.exists {
+            return subdirectory
+        } else {
+            return try self.createSubdirectory(named: named)
+        }
+    }
 	
 	public var filesAndSubdirectories: [AnyFileOrDirectory] {
 		

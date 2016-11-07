@@ -1,4 +1,4 @@
-﻿//
+//
 //  AnyNumeric
 //  LakestoneRealm
 //
@@ -35,6 +35,9 @@ extension Int64: AnyNumeric {}
 extension UInt64: AnyNumeric {}
 extension Float: AnyNumeric {}
 extension Double: AnyNumeric {}
-extension Float80: AnyNumeric {}
-
+    
+#if os(OSX)
+    extension Float80: AnyNumeric {}
+#endif
+    
 #endif
