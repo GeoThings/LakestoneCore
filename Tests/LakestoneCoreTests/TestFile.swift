@@ -178,7 +178,7 @@ public class TestFile: Test {
 				return
 			}
 			
-			Assert.AreEqual(parentDirectory.path, self.workingDirectoryPath)
+			Assert.AreEqual(parentDirectory.path, self.workingDirectoryPath ?? String())
 
 			let sameTestFile = File(fileURL: testFileURL)
 			Assert.AreEqual(sameTestFile, testFile)

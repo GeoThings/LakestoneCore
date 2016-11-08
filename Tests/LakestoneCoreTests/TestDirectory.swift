@@ -164,7 +164,7 @@ public class TestDirectory: Test {
 				return
 			}
 			
-			Assert.AreEqual(parentDirectory.path, self.workingDirectoryPath)
+			Assert.AreEqual(parentDirectory.path, self.workingDirectoryPath ?? String())
 			Assert.AreEqual(parentDirectory, Directory(path: self.workingDirectoryPath))
 			
 		} catch {
