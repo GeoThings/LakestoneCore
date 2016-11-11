@@ -24,9 +24,18 @@ extension Image {
 	
 	#if COOPER
 	public init?(data: Data){
-        let plainData = data.plainBytes
+		let plainData = data.plainBytes
 		return BitmapFactory.decodeByteArray(plainData, 0, plainData.length)
 	}
+	
+	public var size: Size {
+		return Size(width: Double(self.getWidth()), height: Double(self.getHeight()))
+	}
+	
+	public init?(contentsOfFile filePath: String){
+		return BitmapFactory.decodeFile(filePath);
+	}
+	
 	#endif
 	
 	public var pngRepresentation: Data? {
@@ -53,14 +62,4 @@ extension Image {
 			
 		#endif
 	}
-
-}
-
-extension Size {
-    
-    #if COOPER
-    public init(width: Int32, height: Int32){
-        self.init(width, height)
-    }
-    #endif
 }

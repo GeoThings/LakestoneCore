@@ -1,4 +1,4 @@
-//
+﻿//
 //  alliases.swift
 //  LakestoneCore
 //
@@ -89,14 +89,14 @@
 //		  #endif
 //
 //		  public func remove() throws {
-//             #if COOPER
-//                  if (!self.delete()){
-//                      throw Error.DeletionFailed
-//                  }
-//             #else
-//                  return try FileManager.default.removeItem(atPath: self.path)
-//             #endif
-//        }
+//			 #if COOPER
+//				  if (!self.delete()){
+//					  throw Error.DeletionFailed
+//				  }
+//			 #else
+//				  return try FileManager.default.removeItem(atPath: self.path)
+//			 #endif
+//		}
 //	  }
 //
 //  Preceeding File implementation is container type for the file path
@@ -120,14 +120,14 @@
 	
 	import Foundation
 	#if os(iOS) || os(watchOS) || os(tvOS)
-        import UIKit
+		import UIKit
 	#elseif os(OSX)
 		import AppKit
 	#endif
-    
-    #if !os(Linux)
-        import CoreLocation
-    #endif
+	
+	#if !os(Linux)
+		import CoreLocation
+	#endif
 	
 #endif
 
@@ -141,42 +141,41 @@
 	public typealias UUID = java.util.UUID
 	public typealias File = java.io.File
 	public typealias Locale = java.util.Locale
-    
-    public typealias AnyHashable = java.lang.Object
-    public typealias ThrowableError = java.lang.Throwable
-    
-    
-    public typealias AnyType = java.lang.Class
-    
+	
+	public typealias AnyHashable = java.lang.Object
+	public typealias ThrowableError = java.lang.Throwable
+	
+	
+	public typealias AnyType = java.lang.Class
+	
 #else
 
 	public typealias ThrowableError = Error
-    public typealias AnyType = Any.Type
-    
+	public typealias AnyType = Any.Type
+	
 #endif
 
 
 // additional
 
 #if COOPER
-    
-    public typealias Image = android.graphics.Bitmap
-    public typealias Size = android.util.Size
-    public typealias Location = android.location.Location
-    
+	
+	public typealias Image = android.graphics.Bitmap
+	public typealias Location = android.location.Location
+	
 #else
 
-    #if !os(Linux)
-        public typealias Size = CGSize
-        public typealias Location = CLLocationCoordinate2D
-    #endif
-    
-    #if os(iOS) || os(watchOS) || os(tvOS)
-        public typealias Image = UIImage
-    #elseif os(OSX)
-        public typealias Image = NSImage
-    #endif
-    
+	#if !os(Linux)
+		public typealias Size = CGSize
+		public typealias Location = CLLocationCoordinate2D
+	#endif
+	
+	#if os(iOS) || os(watchOS) || os(tvOS)
+		public typealias Image = UIImage
+	#elseif os(OSX)
+		public typealias Image = NSImage
+	#endif
+	
 #endif
 
 

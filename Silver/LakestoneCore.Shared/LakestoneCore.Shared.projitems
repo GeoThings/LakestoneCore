@@ -70,6 +70,9 @@
         <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\extension_Locale.swift">
             <VirtualFolder>extensions</VirtualFolder>
         </Compile>
+        <Compile Include="$(MSBuildThisFileDirectory)..\..\Source\extension_Size.swift">
+            <VirtualFolder>extensions</VirtualFolder>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Source">
