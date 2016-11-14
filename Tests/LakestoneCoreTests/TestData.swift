@@ -1,4 +1,4 @@
-﻿//
+//
 //  TestData.swift
 //  LakestoneCore
 //

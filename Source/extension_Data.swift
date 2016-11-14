@@ -1,4 +1,4 @@
-﻿//
+//
 //  extension_Data.swift
 //  LakestoneCore
 //
@@ -126,9 +126,10 @@ extension Data {
 			
 		#else
 			
-			return self.withUnsafeBytes {
-				[Int8](UnsafeBufferPointer(start: $0, count: self.count))
-			}
+            var targetBytes = [Int8](repeating: 0, count: self.count)
+            let targetBytesPtr = UnsafeMutableBufferPointer(start: &targetBytes, count: self.count)
+            _ = self.copyBytes(to: targetBytesPtr)
+			return targetBytes
 		
 		#endif
 	}
