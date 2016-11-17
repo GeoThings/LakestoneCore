@@ -44,6 +44,10 @@ public class PersistentPropertyList {
 		self.sharedPreferenceEditor = self.sharedPreference.edit()
 	}
 	
+	public convenience init(applicationContext: Context){
+		self.init(applicationContext: applicationContext, preferenceFileKey: nil)
+	}
+	
 	#else
 	
 	fileprivate let userDefaults: UserDefaults
@@ -493,3 +497,123 @@ extension PersistentPropertyList {
 	#endif
 }
 
+#if COOPER
+extension PersistentPropertyList {
+	
+	public func setBool(_ value: Bool, _ key: String){
+		self.setBool(value, forKey: key)
+	}
+	
+	public func setInt(_ value: Int, _ key: String){
+		self.setInt(value, forKey: key)
+	}
+	
+	public func setDouble(_ value: Double, _ key: String){
+		self.setDouble(value, forKey: key)
+	}
+	
+	public func setString(_ value: String, _ key: String){
+		self.setString(value, forKey: key)
+	}
+	
+	public func setStringSet(_ value: Set<String>, _ key: String){
+		self.setStringSet(value, forKey: key)
+	}
+	
+	public func boolForKey(_ key: String) -> Bool? {
+		return self.bool(forKey: key)
+	}
+	
+	public func integerForKey(_ key: String) -> Int? {
+		return self.integer(forKey: key)
+	}
+	
+	public func floatForKey(_ key: String) -> Float? {
+		return self.float(forKey: key)
+	}
+	
+	public func doubleForKey(_ key: String) -> Double? {
+		return self.double(forKey: key)
+	}
+	
+	public func stringForKey(_ key: String) -> String? {
+		return self.string(forKey: key)
+	}
+	
+	public func stringSetForKey(_ key: String) -> Set<String>? {
+		return self.stringSet(forKey: key)
+	}
+	
+	public func removeObjectForKey(_ key: String){
+		self.removeObject(forKey: key)
+	}
+	
+	public func containsObjectWithKey(_ key: String) -> Bool {
+		return self.contains(key: key)
+	}
+	
+	public func setArray(_ array: [Any], _ key: String){
+		self.setArray(array, forKey: key)
+	}
+	
+	public func setSet(_ `set`: Set<AnyHashable>, _ key: String){
+		self.setSet(`set`, forKey: key)
+	}
+	
+	public func setDictionary(_ value: [String: Any], _ key: String) {
+		self.setDictionary(value, forKey: key)
+	}
+	
+	public func setDate(_ value: Date, _ key: String) {
+		self.setDate(value, forKey: key)
+	}
+	
+	public func setURL(_ value: URL, _ key: String) {
+		self.setURL(value, forKey: key)
+	}
+	
+	public func setUUID(_ uuid: UUID, _ key: String){
+		self.setUUID(uuid, forKey: key)
+	}
+	
+	public func array(_ key: String) -> [Any]? {
+		return self.array(forKey: key)
+	}
+	
+	public func set(_ key: String) -> Set<AnyHashable>? {
+		return self.`set`(forKey: key)
+	}
+	
+	public func dictionary(_ key: String) -> [String: Any]? {
+		return self.dictionary(forKey: key)
+	}
+	
+	public func date(_ key: String) -> Date? {
+		return self.date(forKey: key)
+	}
+	
+	public func url(_ key: String) -> URL? {
+		return self.url(forKey: key)
+	}
+	
+	public func uuid(_ key: String) -> UUID? {
+		return self.uuid(forKey: key)
+	}
+	
+	public func setCustomSerializable(_ customSerializable: CustomSerializable, _ key: String) throws {
+		try self.setCustomSerializable(customSerializable, forKey: key)
+	}
+	
+	public func setCustomSerializableArray(_ customSerializableArray: [CustomSerializable], _ key: String) throws {
+		try self.setCustomSerializableArray(customSerializableArray, key)
+	}
+	
+	public func customSerializable(_ key: String, _ customTypes: [CustomSerializableType]) -> CustomSerializable? {
+		return self.customSerializable(forKey: key, withCustomTypes: customTypes)
+	}
+	
+	public func customSerializableArray(_ key: String, _ customTypes: [CustomSerializableType]) -> [CustomSerializable]? {
+		return self.customSerializableArray(forKey: key, withCustomTypes: customTypes)
+	}
+}
+#endif
