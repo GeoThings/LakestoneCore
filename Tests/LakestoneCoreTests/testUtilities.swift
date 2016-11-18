@@ -1,4 +1,4 @@
-﻿//
+//
 //  testUtilities.swift
 //  LakestoneCore
 //
@@ -23,9 +23,12 @@
 
 #if COOPER
 	import remobjects.elements.eunit
+	import lakestonecore.android
 #else
 	import XCTest
 	import Foundation
+	import LakestoneCore
+	import PerfectThread
 #endif
 
 
@@ -51,6 +54,21 @@ public class Assert {
 	
 	static func AreEqual<T: Equatable>(_ lhs: T, _ rhs: T){
 		XCTAssertEqual(lhs, rhs)
+	}
+	
+	static func AreNotEqual<T: Equatable>(_ lhs: T, _ rhs: T){
+		XCTAssertNotEqual(lhs, rhs)
+	}
+	
+	static func AreNotEqual<T: Equatable>(_ lhs: [T], _ rhs: [T]){
+		
+		if lhs.count != rhs.count {
+			return
+		}
+		
+		for (index, element) in lhs.enumerated() {
+			Assert.AreNotEqual(element, rhs[index])
+		}
 	}
 	
 	static func AreEqual<T: Equatable>(_ lhs: [T], _ rhs: [T]){
@@ -85,6 +103,13 @@ public class Assert {
 #endif
 
 extension AwaitToken {
+	
+	static func perform(for test: Test, withTimeout timeout: Double, asynchClosure: @escaping (AwaitToken) -> Void){
+		
+		let awaitToken = AwaitToken.with(description: "Asynchronous await token", for: test)
+        asynchClosure(awaitToken)
+        awaitToken.waitFor(timeout: timeout, for: test)
+	}
 	
 	static func with(description: String, for testCase: Test) -> AwaitToken {
 		#if COOPER

@@ -1,4 +1,4 @@
-//
+﻿//
 //  extension_URL.swift
 //  LakestoneCore
 //
@@ -140,12 +140,12 @@ extension URL {
 				return nil
 			}
 			
-            if components.queryItems != nil {
-                components.queryItems?.append(contentsOf: [URLQueryItem(name: key, value: value)])
-            } else {
-                components.queryItems = [URLQueryItem(name: key, value: value)]
-            }
-            
+			if components.queryItems != nil {
+				components.queryItems?.append(contentsOf: [URLQueryItem(name: key, value: value)])
+			} else {
+				components.queryItems = [URLQueryItem(name: key, value: value)]
+			}
+			
 			return components.url
 			
 		#endif
@@ -157,7 +157,7 @@ extension URL {
 			
 			var targetURL: URL? = self
 			for (key, value) in parameters {
-				targetURL = self.appendingQueryParameter(withKey: key, value: String.derived(from: value))
+				targetURL = (targetURL ?? self).appendingQueryParameter(withKey: key, value: String.derived(from: value))
 			}
 			
 			return targetURL
@@ -173,49 +173,49 @@ extension URL {
 				queryItems.append(URLQueryItem(name: key, value: String.derived(from: value)))
 			}
 			
-            if components.queryItems != nil {
-                components.queryItems?.append(contentsOf: queryItems)
-            } else {
-                components.queryItems = queryItems
-            }
-            
+			if components.queryItems != nil {
+				components.queryItems?.append(contentsOf: queryItems)
+			} else {
+				components.queryItems = queryItems
+			}
+			
 			return components.url
 		
 		#endif
 	}
-    
-    public func appendingQueryParameters(_ parameters: [(String, Any)]) -> URL? {
-        
-        #if COOPER
-            
-            var targetURL: URL? = self
-            for (key, value) in parameters {
-                targetURL = self.appendingQueryParameter(withKey: key, value: String.derived(from: value))
-            }
-            
-            return targetURL
-            
-        #else
-            
-            guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
-                return nil
-            }
-            
-            var queryItems = [URLQueryItem]()
-            for (key, value) in parameters {
-                queryItems.append(URLQueryItem(name: key, value: String.derived(from: value)))
-            }
-            
-            if components.queryItems != nil {
-                components.queryItems?.append(contentsOf: queryItems)
-            } else {
-                components.queryItems = queryItems
-            }
+	
+	public func appendingQueryParameters(_ parameters: [(String, Any)]) -> URL? {
+		
+		#if COOPER
+			
+			var targetURL: URL? = self
+			for (key, value) in parameters {
+				targetURL = (targetURL ?? self).appendingQueryParameter(withKey: key, value: String.derived(from: value))
+			}
+			
+			return targetURL
+			
+		#else
+			
+			guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
+				return nil
+			}
+			
+			var queryItems = [URLQueryItem]()
+			for (key, value) in parameters {
+				queryItems.append(URLQueryItem(name: key, value: String.derived(from: value)))
+			}
+			
+			if components.queryItems != nil {
+				components.queryItems?.append(contentsOf: queryItems)
+			} else {
+				components.queryItems = queryItems
+			}
 
-            return components.url
-            
-        #endif
-    }
+			return components.url
+			
+		#endif
+	}
 	
 }
 
