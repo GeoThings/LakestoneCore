@@ -1,4 +1,4 @@
-//
+﻿//
 //  Threading.swift
 //  geoBingAnCore
 //
@@ -40,9 +40,13 @@
 	#endif
 #endif
 
-	
+//TODO: GeoThings/LakestoneCore: Issue #5: Reconsider Threading abstractions
+//link: https://github.com/GeoThings/LakestoneCore/issues/5
+
 #if COOPER
 	public typealias ThreadQueue = ExecutorService
+	public typealias ConstraintConcurrentThreadQueue = ExecutorService
+	
 	// ReentrantLock provides the corresponding functionaly with matching lock()/tryLock()/unlock() naming
 	public typealias Lock = java.util.concurrent.locks.ReentrantLock
 	public typealias Semaphore = java.util.concurrent.Semaphore
@@ -54,8 +58,10 @@
 	#if os(iOS) || os(watchOS) || os(tvOS)
 		public typealias Semaphore = DispatchSemaphore
 		public typealias ThreadQueue = DispatchQueue
+		public typealias ConstraintConcurrentThreadQueue = OperationQueue
 	#elseif os(OSX)
 		public typealias Semaphore = DispatchSemaphore
+		public typealias ConstraintConcurrentThreadQueue = OperationQueue
 	#endif
 	// for OSX and Linux PerfectThread.ThreadQueue corresponding type is used
 	
@@ -99,7 +105,7 @@ extension ThreadQueue {
 		self.async(execute: closure)
 	}
 }
-	
+    
 #endif
 
 #if os(OSX)
@@ -118,6 +124,15 @@ extension Threading {
 		DispatchQueue.main.async(execute: closure)
 	}
 }
+    
+extension ConstraintConcurrentThreadQueue {
+        
+    public func dispatch(_ closure: @escaping () -> Void){
+        self.addOperation {
+            closure()
+        }
+    }
+}
 	
 #endif
 
@@ -135,6 +150,18 @@ extension Threading {
 		#endif
 	}
 	
+	#if !os(Linux)
+	public static func concurrentQueue(withMaximumConcurrentThreads threadCount: Int) -> ConstraintConcurrentThreadQueue {
+		#if COOPER
+			//corePoolSize: Integer, maximumPoolSize: Integer, keepAliveTime: Int64, unit: TimeUnit!, workQueue: BlockingQueue<Runnable>!
+			return ThreadPoolExecutor(threadCount, threadCount, 60, TimeUnit.SECONDS, LinkedBlockingQueue<Runnable>())
+		#else
+			let concurrentQueue = OperationQueue()
+            concurrentQueue.maxConcurrentOperationCount = threadCount
+            return concurrentQueue
+		#endif
+	}
+	#endif
 }
 
 #if COOPER

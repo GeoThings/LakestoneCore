@@ -1,4 +1,4 @@
-//
+﻿//
 //  testUtilities.swift
 //  LakestoneCore
 //
@@ -23,7 +23,6 @@
 
 #if COOPER
 	import remobjects.elements.eunit
-	import lakestonecore.android
 #else
 	import XCTest
 	import Foundation
@@ -107,8 +106,8 @@ extension AwaitToken {
 	static func perform(for test: Test, withTimeout timeout: Double, asynchClosure: @escaping (AwaitToken) -> Void){
 		
 		let awaitToken = AwaitToken.with(description: "Asynchronous await token", for: test)
-        asynchClosure(awaitToken)
-        awaitToken.waitFor(timeout: timeout, for: test)
+		asynchClosure(awaitToken)
+		awaitToken.waitFor(timeout: timeout, for: test)
 	}
 	
 	static func with(description: String, for testCase: Test) -> AwaitToken {
