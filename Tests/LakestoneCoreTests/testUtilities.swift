@@ -26,8 +26,6 @@
 #else
 	import XCTest
 	import Foundation
-	import LakestoneCore
-	import PerfectThread
 #endif
 
 
