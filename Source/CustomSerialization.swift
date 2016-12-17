@@ -1,4 +1,4 @@
-//
+﻿//
 //  CustomSerialization.swift
 //  LakestoneCore
 //
@@ -415,23 +415,18 @@ public class CustomSerialization {
 						   let mappedPrimitiveType = self.primitiveTypeMap["\(dictionaryEntry.getClass())"],
 						   mappedPrimitiveType == java.lang.Long.self && ExpectedType == java.lang.Double.self {
 						
-						// post to talk.remobjects about the long to double conversion
-						// .doubleValue() is unavailable both on compile time and with reflection
-						// since java.lang.Long bridges to RemObjects.Oxygene.System.Int64 which appearently doesn't have doubleValue()
-						// dictionaryEntity[commonKey] = java.lang.Long.self.getDeclaredMethod("doubleValue", []).invoke(dictionaryEntry, []) as! Double
-						
 						// JSONObject will parse .0 numbers as decimal
 						// handling this case when double is expected instead
 						
-						alliasRemovedDictionaryEntity[commonKey] = Double.parseDouble(Long.toString(dictionaryEntry as! Int64))
+						alliasRemovedDictionaryEntity[commonKey] = Double(dictionaryEntry as! Int64)
 						
 					} else {
-                        
-                        if let ExpectedType = typesMap[commonKey],
-                            let dictionaryEntry = alliasRemovedDictionaryEntity[commonKey] {
-                            print("\(SomeType): Type missmatch(\(commonKey)): Expected: \(ExpectedType), got: \(dictionaryEntry.getClass())")
-                        }
-                        
+						
+						if let ExpectedType = typesMap[commonKey],
+							let dictionaryEntry = alliasRemovedDictionaryEntity[commonKey] {
+							print("\(SomeType): Type missmatch(\(commonKey)): Expected: \(ExpectedType), got: \(dictionaryEntry.getClass())")
+						}
+						
 						typesMatch = false
 						break
 					}
@@ -551,18 +546,18 @@ public class CustomSerialization {
 }
 
 extension CustomSerialization {
-    
-    public class func applyCustomSerialization(toJSONData jsonData: Data, withCustomTypes customTypes: [CustomSerializableType]) throws -> Any {
-        
-        let jsonObject = try JSONSerialization.jsonObject(with: jsonData)
-        return try self.applyCustomSerialization(ofCustomTypes: customTypes, to: jsonObject)
-    }
-    
-    public class func jsonData(from customEntity: CustomSerializable) throws -> Data {
-        
-        let dict = try self.dictionary(from: customEntity)
-        return try JSONSerialization.data(withJSONObject: dict)
-    }
+	
+	public class func applyCustomSerialization(toJSONData jsonData: Data, withCustomTypes customTypes: [CustomSerializableType]) throws -> Any {
+		
+		let jsonObject = try JSONSerialization.jsonObject(with: jsonData)
+		return try self.applyCustomSerialization(ofCustomTypes: customTypes, to: jsonObject)
+	}
+	
+	public class func jsonData(from customEntity: CustomSerializable) throws -> Data {
+		
+		let dict = try self.dictionary(from: customEntity)
+		return try JSONSerialization.data(withJSONObject: dict)
+	}
 }
 
 extension CustomSerialization {
@@ -571,25 +566,25 @@ extension CustomSerialization {
 		public var serializationRepresentationº: Representation? {
 			return self.representation as? Representation
 		}
-        
-        public class Representation: ErrorRepresentable {
-            
-            public let typeName: String
-            public let detail: String
-            
-            public init(typeWithName: String, detail: String){
-                self.typeName = typeWithName
-                self.detail = detail
-            }
-            
-            public var detailMessage: String {
-                return detail
-            }
-            
-            public var error: SerializationError {
-                return SerializationError(self)
-            }
-        }
+		
+		public class Representation: ErrorRepresentable {
+			
+			public let typeName: String
+			public let detail: String
+			
+			public init(typeWithName: String, detail: String){
+				self.typeName = typeWithName
+				self.detail = detail
+			}
+			
+			public var detailMessage: String {
+				return detail
+			}
+			
+			public var error: SerializationError {
+				return SerializationError(self)
+			}
+		}
 	}
 	
 }

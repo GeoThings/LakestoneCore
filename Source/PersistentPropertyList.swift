@@ -228,7 +228,7 @@ public class PersistentPropertyList {
 
 
 extension PersistentPropertyList {
-	 
+	
 	/// -remark: Overloading with '_ value:' will result in dex failure in Silver
 	public func setArray(_ array: [Any], forKey key: String) {
 		
@@ -444,11 +444,6 @@ extension PersistentPropertyList {
 	
 	#if COOPER
 	
-	// if using generics with Class<T> in Silver, the return type of T? will be interpretted as? '? extends CustomSerializable'
-	// while in Swift you can have strong typing with 
-	// public func customSerializable<T: CustomSerializable>(forKey key: String, ofDesiredType: T.Type, withTotalCustomTypes: [CustomSerializableType]) -> T?
-	// using the CustomSerializable return type for the sake of matching declarations for now
-	
 	private func _performCustomSerializationToUnderlyingParsedJSONEntity(forKey key: String, withCustomTypes: [CustomSerializableType]) -> Any? {
 		
 		guard let jsonString = self.string(forKey: key),
@@ -462,6 +457,25 @@ extension PersistentPropertyList {
 		return targetEntity
 	}
 	
+	// if using generics with Class<T> in Silver, the return type of T? will be interpretted as? '? extends CustomSerializable'
+	// while in Swift you can have strong typing with 
+	// public func customSerializable<T: CustomSerializable>(forKey key: String, ofDesiredType: T.Type, withTotalCustomTypes: [CustomSerializableType]) -> T?
+	// using the CustomSerializable return type for the sake of matching declarations for now
+	
+	//THE PREV THING SEEMS TO BE FIXED WITH THE NEXT METHOD
+	public func customSerializable<T: CustomSerializable>(forKey key: String, ofDesiredType: Class<T>, withCustomTypes: [CustomSerializableType]) -> T? {
+		
+		guard let jsonString = self.string(forKey: key),
+			  let jsonData = Data.with(utf8EncodedString: jsonString),
+			  let jsonObject = try? JSONSerialization.jsonObject(with: jsonData),
+			  let targetEntity = try? CustomSerialization.applyCustomSerialization(ofCustomTypes: withCustomTypes, to: jsonObject)
+		else {
+			return nil
+		}
+		
+		return targetEntity as? T
+	}
+	
 	public func customSerializable(forKey key: String, withCustomTypes: [CustomSerializableType]) -> CustomSerializable? {
 		return _performCustomSerializationToUnderlyingParsedJSONEntity(forKey: key, withCustomTypes: withCustomTypes) as? CustomSerializable
 	}
@@ -472,6 +486,17 @@ extension PersistentPropertyList {
 	
 	#else
 	
+    public func customSerializable<T: CustomSerializable>(forKey key: String, ofDesiredType: T.Type, withCustomTypes: [CustomSerializableType]) -> T? {
+        
+        guard let storedDictionary = self.userDefaults.dictionary(forKey: key),
+            let customSerializable = try? CustomSerialization.applyCustomSerialization(ofCustomTypes: withCustomTypes, to: storedDictionary)
+            else {
+                return nil
+        }
+        
+        return customSerializable as? T
+    }
+    
 	public func customSerializable(forKey key: String, withCustomTypes: [CustomSerializableType]) -> CustomSerializable? {
 		
 		guard let storedDictionary = self.userDefaults.dictionary(forKey: key),

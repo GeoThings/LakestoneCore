@@ -78,13 +78,13 @@ public class TestURL: Test {
 		
 		guard let sampleWithSingleParam = sampleToAddQueryParams.appendingQueryParameter(withKey: "my", value: nil),
 			  let sampleWithSpacedParameter = sampleToAddQueryParams.appendingQueryParameters(["spacedParam":"spaced parameter"])
-        else {
-            Assert.Fail("Cannot append query parameter")
-            return
-        }
-        
-        Assert.AreEqual(sampleWithSingleParam.absoluteString, "http://getsomestuff.com:8080/from/here?my")
-        Assert.AreEqual(sampleWithSpacedParameter.absoluteString, "http://getsomestuff.com:8080/from/here?spacedParam=spaced%20parameter")
+		else {
+			Assert.Fail("Cannot append query parameter")
+			return
+		}
+		
+		Assert.AreEqual(sampleWithSingleParam.absoluteString, "http://getsomestuff.com:8080/from/here?my")
+		Assert.AreEqual(sampleWithSpacedParameter.absoluteString, "http://getsomestuff.com:8080/from/here?spacedParam=spaced%20parameter")
 	}
 }
 

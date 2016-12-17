@@ -1,0 +1,7 @@
+
+<Project xmlns='http://schemas.microsoft.com/developer/msbuild/2003'>
+    <PropertyGroup>
+        <CrossBoxDeviceID>FA31LPN00609</CrossBoxDeviceID>
+        <CrossBoxDevice>HTC Butterfly</CrossBoxDevice>
+    </PropertyGroup>
+</Project>

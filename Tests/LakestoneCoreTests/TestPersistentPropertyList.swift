@@ -144,7 +144,7 @@ public class TestPersistentPropertyList: Test {
 			return
 		}
 		
-		guard let unwrappedCustomSerializable = persistentPropertyList.customSerializable(forKey: "customSerializableTest", withCustomTypes: [TestSomething.self, InternalSomething.self]) as? TestSomething
+		guard let unwrappedCustomSerializable = persistentPropertyList.customSerializable(forKey: "customSerializableTest", ofDesiredType: TestSomething.self, withCustomTypes: [TestSomething.self, InternalSomething.self])
 		else {
 			Assert.Fail("Couldn't unwrap customSerializable from PersistentPropertyList")
 			return

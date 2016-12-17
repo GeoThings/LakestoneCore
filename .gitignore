@@ -67,9 +67,9 @@ Carthage/Build
 
 Silver/LakestoneCore.Android/bin/
 Silver/LakestoneCore.Android/obj/
-Silver/LakestoneCore.Tests/bin/
-Silver/LakestoneCore.Tests/obj/
+Silver/LakestoneCore.EUnit/bin/
+Silver/LakestoneCore.EUnit/obj/
 Silver/LakestoneCore.sln.fire.cache
 Silver/LakestoneCore.sln.fire.user
 Silver/LakestoneCore.Android/LakestoneCore.Android.elements.user
-Silver/LakestoneCore.Tests/LakestoneCore.Tests.elements.user
+Silver/LakestoneCore.EUnit/LakestoneCore.Tests.elements.user

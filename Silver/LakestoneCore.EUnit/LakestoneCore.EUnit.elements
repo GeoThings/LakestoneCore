@@ -2,33 +2,29 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="4.0">
     <PropertyGroup>
         <ProductVersion>3.5</ProductVersion>
-        <ProjectGuid>2C558F6B-6E90-48F7-86D3-B0FC4E0699C9</ProjectGuid>
+        <ProjectGuid>416EBAC0-389E-41AB-9084-0F6410A1CC11</ProjectGuid>
         <OutputType>Library</OutputType>
         <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
         <AllowLegacyCreate>False</AllowLegacyCreate>
+        <Name>lakestonecore.eunit</Name>
+        <RootNamespace>lakestonecore.eunit</RootNamespace>
         <AllowLegacyOutParams>False</AllowLegacyOutParams>
-        <Name>LakestoneCore.Tests</Name>
-        <RootNamespace>lakestonecore.tests</RootNamespace>
-        <AssemblyName>LakestoneCore.Tests</AssemblyName>
         <MinFrameworkVersionRequired>4.0</MinFrameworkVersionRequired>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <Optimize>false</Optimize>
-        <OutputPath>.\bin\Debug</OutputPath>
+        <Optimize>False</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
         <DefineConstants>DEBUG;TRACE;</DefineConstants>
-        <GenerateDebugInfo>True</GenerateDebugInfo>
-        <EnableAsserts>True</EnableAsserts>
-        <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
         <CaptureConsoleOutput>False</CaptureConsoleOutput>
         <StartMode>Project</StartMode>
         <RegisterForComInterop>False</RegisterForComInterop>
         <CpuType>anycpu</CpuType>
         <RuntimeVersion>v25</RuntimeVersion>
         <XmlDoc>False</XmlDoc>
+        <GeneratePDB>True</GeneratePDB>
+        <GenerateMDB>True</GenerateMDB>
         <XmlDocWarningLevel>WarningOnPublicMembers</XmlDocWarningLevel>
-        <WarnOnCaseMismatch>True</WarnOnCaseMismatch>
         <EnableUnmanagedDebugging>False</EnableUnmanagedDebugging>
-        <AndroidDexMode>Incremental</AndroidDexMode>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <Optimize>true</Optimize>
@@ -49,6 +45,10 @@
     <ItemGroup>
         <Folder Include="Properties\"/>
         <Folder Include="res\"/>
+        <Folder Include="res\drawable-hdpi\"/>
+        <Folder Include="res\drawable-ldpi\"/>
+        <Folder Include="res\drawable-mdpi\"/>
+        <Folder Include="res\drawable-xhdpi\"/>
         <Folder Include="res\values\"/>
         <Folder Include="res\layout\"/>
         <Folder Include="Tests">
@@ -56,12 +56,12 @@
         </Folder>
     </ItemGroup>
     <ItemGroup>
-        <None Include="res\values\strings.android-xml">
+        <AndroidResource Include="res\values\strings.android-xml">
             <SubType>Content</SubType>
-        </None>
-        <None Include="res\layout\main.layout-xml">
+        </AndroidResource>
+        <AndroidResource Include="res\layout\main.layout-xml">
             <SubType>Content</SubType>
-        </None>
+        </AndroidResource>
         <None Include="res\drawable-hdpi\icon.png">
             <SubType>Content</SubType>
         </None>
@@ -90,13 +90,14 @@
             <Private>True</Private>
         </Reference>
         <Reference Include="swift">
-            <HintPath>../../SwiftBaseLibrary/Source/bin/Debug/swift.jar</HintPath>
+            <HintPath>../LakestoneCore.Android/bin/Debug/swift.jar</HintPath>
             <Private>True</Private>
         </Reference>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="MainActivity.swift"/>
-        <Compile Include="..\..\Tests\LakestoneCoreTests\testUtilities.swift">
+        <None Include="res\raw\raster_digitalglobe.json"/>
+        <Compile Include="..\..\Tests\LakestoneCoreTests\TestCustomSerialization.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
         <Compile Include="..\..\Tests\LakestoneCoreTests\TestData.swift">
@@ -105,31 +106,31 @@
         <Compile Include="..\..\Tests\LakestoneCoreTests\TestDate.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
-        <Compile Include="..\..\Tests\LakestoneCoreTests\TestUUID.swift">
-            <VirtualFolder>Tests</VirtualFolder>
-        </Compile>
-        <Compile Include="..\..\Tests\LakestoneCoreTests\TestURL.swift">
+        <Compile Include="..\..\Tests\LakestoneCoreTests\TestDirectory.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
         <Compile Include="..\..\Tests\LakestoneCoreTests\TestFile.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
-        <Compile Include="..\..\Tests\LakestoneCoreTests\TestDirectory.swift">
+        <Compile Include="..\..\Tests\LakestoneCoreTests\TestHTTP.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
         <Compile Include="..\..\Tests\LakestoneCoreTests\TestJSONSerialization.swift">
-            <VirtualFolder>Tests</VirtualFolder>
-        </Compile>
-        <Compile Include="..\..\Tests\LakestoneCoreTests\TestCustomSerialization.swift">
-            <VirtualFolder>Tests</VirtualFolder>
-        </Compile>
-        <Compile Include="..\..\Tests\LakestoneCoreTests\TestHTTP.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
         <Compile Include="..\..\Tests\LakestoneCoreTests\TestPersistentPropertyList.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
         <Compile Include="..\..\Tests\LakestoneCoreTests\TestString.swift">
+            <VirtualFolder>Tests</VirtualFolder>
+        </Compile>
+        <Compile Include="..\..\Tests\LakestoneCoreTests\TestURL.swift">
+            <VirtualFolder>Tests</VirtualFolder>
+        </Compile>
+        <Compile Include="..\..\Tests\LakestoneCoreTests\testUtilities.swift">
+            <VirtualFolder>Tests</VirtualFolder>
+        </Compile>
+        <Compile Include="..\..\Tests\LakestoneCoreTests\TestUUID.swift">
             <VirtualFolder>Tests</VirtualFolder>
         </Compile>
         <Compile Include="..\..\Tests\LakestoneCoreTests\TestBoxedNumber.swift">
