@@ -106,72 +106,6 @@ public class TestPersistentPropertyList: Test {
 		Assert.AreEqual(persistentPropertyList.url(forKey: "urlTest") ?? URL(string: "http://not.com")!, URL(string: "http://google.com")!)
 		Assert.AreEqual(persistentPropertyList.uuid(forKey: "uuidTest") ?? UUID(), UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!)
 		
-		
-		// Silver recognizes Int as java.lang.Long,
-		// 26 constant by itself will interpretet as 32bit java.lang.Integer
-		let customDict: [String: Any] =
-			["testString": "someString",
-			 "testInt": Int(26),
-			 "testDouble": 26.0,
-			 "testArray": [Int]([26, 12, 42, 53, 12]),
-			 "testDate": "2016-09-01T00:00:00Z",
-			 "testSomething": ["argument1": "someString",
-							   "argument2": false,
-							   "argument3": 26.0],
-			 "testSomethingArray": [["argument1": "someString",
-									 "argument2": false,
-									 "argument3": 12.0],
-									["argument1": "someOtherString",
-									 "argument2": true,
-									 "argument3": 26.0],
-									["argument1": "oneMoreString",
-									 "argument2": false,
-									 "argument3": 14.0]],
-			 "someOtherVariable": Int(12)
-				
-		]
-		
-		guard let dictAfter = (try? CustomSerialization.applyCustomSerialization(ofCustomTypes: [TestSomething.self, InternalSomething.self], to: customDict)) as? TestSomething else {
-			Assert.Fail("Couldn't perform custom serialization from dictionary to TestSomething entity")
-			return
-		}
-		
-		do {
-            try persistentPropertyList.setCustomSerializable(dictAfter, forKey: "customSerializableTest")
-			persistentPropertyList.synchronize()
-		} catch {
-			Assert.Fail("Couldn't store customSerializable into PersistentPropertyList")
-			return
-		}
-		
-		guard let unwrappedCustomSerializable = persistentPropertyList.customSerializable(forKey: "customSerializableTest", ofDesiredType: TestSomething.self, withCustomTypes: [TestSomething.self, InternalSomething.self])
-		else {
-			Assert.Fail("Couldn't unwrap customSerializable from PersistentPropertyList")
-			return
-		}
-		
-		Assert.AreEqual(unwrappedCustomSerializable.testDouble, 26.0)
-		Assert.AreEqual(unwrappedCustomSerializable.testString ?? "", "someString")
-		Assert.AreEqual(unwrappedCustomSerializable.testInt, 26)
-		
-		do {
-			try persistentPropertyList.setCustomSerializableArray(unwrappedCustomSerializable.testSomethingArray, forKey: "customSerializableArrayTest")
-			persistentPropertyList.synchronize()
-		} catch {
-			Assert.Fail("Couldn't store customSerializable into PersistentPropertyList")
-			return
-		}
-		
-		guard let unwrappedCustomSerializableArray = persistentPropertyList.customSerializableArray(forKey: "customSerializableArrayTest", withCustomTypes: [InternalSomething.self]) as? [InternalSomething]
-		else {
-			Assert.Fail("Couldn't unwrap customSerializableArray from PersistentPropertyList")
-			return
-		}
-		
-		Assert.AreEqual(unwrappedCustomSerializableArray.first?.argument1 ?? "", "someString")
-		Assert.AreEqual(unwrappedCustomSerializableArray.first?.argument2 ?? true, false)
-		Assert.AreEqual(unwrappedCustomSerializableArray.first?.argument3 ?? 0.0, 12.0)
-		
 		persistentPropertyList.removeObject(forKey: "boolTest")
 		persistentPropertyList.removeObject(forKey: "intTest")
 		persistentPropertyList.removeObject(forKey: "floatTest")
@@ -183,8 +117,6 @@ public class TestPersistentPropertyList: Test {
 		persistentPropertyList.removeObject(forKey: "dictionaryTest")
 		persistentPropertyList.removeObject(forKey: "urlTest")
 		persistentPropertyList.removeObject(forKey: "uuidTest")
-		persistentPropertyList.removeObject(forKey: "customSerializableTest")
-		persistentPropertyList.removeObject(forKey: "customSerializableArrayTest")
 		
 		persistentPropertyList.synchronize()
 		
@@ -199,18 +131,5 @@ public class TestPersistentPropertyList: Test {
 		Assert.IsFalse(persistentPropertyList.contains(key: "dictionaryTest"))
 		Assert.IsFalse(persistentPropertyList.contains(key: "urlTest"))
 		Assert.IsFalse(persistentPropertyList.contains(key: "uuidTest"))
-		Assert.IsFalse(persistentPropertyList.contains(key: "customSerializableTest"))
-		Assert.IsFalse(persistentPropertyList.contains(key: "customSerializableArrayTest"))
-		
 	}
 }
-
-#if !COOPER
-extension TestPersistentPropertyList {
-	static var allTests : [(String, (TestPersistentPropertyList) -> () throws -> Void)] {
-		return [
-			("testPersistentPropertyList", testPersistentPropertyList)
-		]
-	}
-}
-#endif

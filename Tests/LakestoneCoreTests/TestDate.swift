@@ -72,15 +72,3 @@ public class TestDate: Test {
 		Assert.AreEqual(convertedBackDateString, dateString)
 	}
 }
-
-#if !COOPER
-extension TestDate {
-	static var allTests : [(String, (TestDate) -> () throws -> Void)] {
-		return [
-			("testDateConversion", testDateConversion),
-			("testDateInstantiation", testDateInstantiation)
-		]
-	}
-}
-#endif
-

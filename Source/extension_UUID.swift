@@ -1,4 +1,4 @@
-﻿//
+//
 //  extension_UUID.swift
 //  LakestoneCore
 //
@@ -61,11 +61,5 @@ public func ==(lhs: UUID, rhs: UUID) -> Bool {
 }
 	
 #endif
-
-extension UUID: StringRepresentable {
-    public var stringRepresentation: String {
-        return self.uuidString
-    }
-}
 
 

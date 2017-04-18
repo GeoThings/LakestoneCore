@@ -89,18 +89,5 @@ public class TestData: Test {
         
         let modificationOverEmpty = Data.empty.appending(testData)
         Assert.AreEqual(modificationOverEmpty.utf8EncodedStringRepresentationº ?? "", "ºººUTF-8 TestStringººº")
-    }
-	
+    }	
 }
-
-#if !COOPER
-extension TestData {
-	static var allTests : [(String, (TestData) -> () throws -> Void)] {
-		return [
-			("testNumericConversion", testNumericConversion),
-			("testUTF8StringWrapping", testUTF8StringWrapping),
-			("testAppending", testAppending)
-		]
-	}
-}
-#endif

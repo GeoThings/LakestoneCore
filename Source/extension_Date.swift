@@ -29,69 +29,70 @@
 #endif
 
 #if COOPER
-	
+
 	private var _xsdGMTDateFormatter: SimpleDateFormat {
 		//ISO 8601 is not handled in Java until java 7. Once available, use X instead of Z, remove replacements in xsdGMTDateTimeString below
 		let formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-		formatter.setTimeZone(TimeZone.getTimeZone("GMT"))
+
+		formatter.setTimeZone(java.util.TimeZone.getTimeZone("GMT"))
 		return formatter
 	}
-	
+
 #else
-	
+
 	private var _xsdGMTDateFormatter: DateFormatter {
-		
+
 		let formatter = DateFormatter()
 		formatter.timeStyle = .full
 		formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 		formatter.timeZone = TimeZone(abbreviation: "GMT")
 		return formatter
 	}
-	
+
 #endif
 
 extension Date {
-	
+
 	#if COOPER
 	//timeInterval is milliseconds stored in 64-bit signed int
 	public init(timeIntervalSince1970 timeInterval: Double){
 		self.init(Int64(timeInterval * 1000))
 	}
-	
+
 	//timeInterval is seconds stored in double
 	public var timeIntervalSince1970: Double {
 		return Double(self.getTime()) / 1000
 	}
-	
+
 	public func addingTimeInterval(_ timeInterval: Double) -> Date {
 		return java.util.Date(timeIntervalSince1970: self.timeIntervalSince1970 + timeInterval)
 	}
-	
+
 	#endif
 
 	public var xsdGMTDateTimeString: String {
-		
+
 		#if COOPER
 			//ISO 8601 is not handled in Java until java 7. Once available, use X instead of Z in SimpleDateFormat, and remove replacement here
 			let timeString = _xsdGMTDateFormatter.format(self/*.addingTimeInterval(-self.currentTimezoneOffsetFromGMT)*/)
 			return timeString.replacingCharacters(in: timeString.index(timeString.endIndex, offsetBy: -5) ..< timeString.endIndex, with: "Z")
-			
+
 		#else
 			return _xsdGMTDateFormatter.string(from: self)
 		#endif
 	}
-	
+
 	public static func with(xsdGMTDateTimeString string: String) -> Date? {
-		
+
 		//ignore .miliseconds if passed
 		let milisecondsSeperatorRangeº = string.range(of: ".", options: .backwards)
-		
+
 		var stringToParse = string
 		if let milisecondsSeperatorRange = milisecondsSeperatorRangeº {
 			stringToParse = string.substring(to: milisecondsSeperatorRange.lowerBound)
 			stringToParse += "Z"
 		}
-		
+
 		#if COOPER
 			//ISO 8601 is not handled in Java until java 7. Once available, use X instead of Z in SimpleDateFormat, and remove replaceAll from here
 			return _xsdGMTDateFormatter.parse(stringToParse.replacingOccurrences(of: "Z$", with: "+0000"))
@@ -99,9 +100,9 @@ extension Date {
 			return _xsdGMTDateFormatter.date(from: stringToParse)
 		#endif
 	}
-	
+
 	public static func with(year: Int, month: Int, day: Int) -> Date? {
-		
+
 		#if COOPER
 			let calendar = Calendar.getInstance()
 			calendar.`set`(year, month - 1, day)
@@ -119,7 +120,7 @@ extension Date {
 			return calendar.date(from: components)
 		#endif
 	}
-	
+
 	public var currentTimezoneOffsetFromGMT: Double {
 		#if COOPER
 			return Double(TimeZone.getDefault().getOffset(Int64(self.timeIntervalSince1970))) / 1000
@@ -135,9 +136,3 @@ public func ==(lhs: Date, rhs: Date) -> Bool {
 	return lhs.timeIntervalSince1970 == rhs.timeIntervalSince1970
 }
 #endif
-
-extension Date: StringRepresentable {
-	public var stringRepresentation: String {
-		return self.xsdGMTDateTimeString
-	}
-}

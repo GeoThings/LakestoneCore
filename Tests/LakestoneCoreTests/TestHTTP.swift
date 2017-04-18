@@ -199,14 +199,3 @@ public class TestHTTP: Test {
 		awaitToken.waitFor(timeout: 10.0, for: self)
 	}
 }
-
-#if !COOPER
-extension TestHTTP {
-	static var allTests : [(String, (TestHTTP) -> () throws -> Void)] {
-		return [
-			("testSynchronousHTTPRequest", testSynchronousHTTPRequest),
-			("testAsynchronousHTTPRequest", testAsynchronousHTTPRequest)
-		]
-	}
-}
-#endif

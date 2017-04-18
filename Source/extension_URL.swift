@@ -107,7 +107,6 @@ extension URL {
 	}
 	
 	//TODO: Resolve a relative URL into absolute in Java
-	
 	/// - warning: in JAVA doesn't resolve the relative URL into absolute
 	///			Available now only for compatibility
 	public var absoluteURL: URL {
@@ -126,7 +125,7 @@ extension URL {
 			}
 			
 			var currentQueryº: String? = self.toURI().getQuery()
-			if currentQueryº != nil {
+			if let currentQuery = currentQueryº {
 				currentQueryº += "&" + newQueryComponent
 			} else {
 				currentQueryº = newQueryComponent
@@ -217,10 +216,4 @@ extension URL {
 		#endif
 	}
 	
-}
-
-extension URL: StringRepresentable {
-	public var stringRepresentation: String {
-		return self.absoluteString
-	}
 }

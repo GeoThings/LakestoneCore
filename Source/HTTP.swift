@@ -29,14 +29,7 @@
 	import android.util
 	import android.os
 #else
-	
 	import Foundation
-	#if os(OSX) || os(Linux)
-		import PerfectCURL
-		import cURL
-		import PerfectThread
-	#endif
-		
 #endif
 
 ///
@@ -69,7 +62,7 @@ public class HTTP {
 		
 		public let queue: ThreadQueue = Threading.serialQueue(withLabel: "lakestonecore.http.request.queue")
 		
-		#if os(iOS) || os(watchOS) || os(tvOS)
+		#if !COOPER
 		private var _downloadDelegateº: _DownloadDelegate?
 		#endif
 		
@@ -78,18 +71,6 @@ public class HTTP {
 			case get
 			case post
 			case put
-			
-			#if os(OSX) || os(Linux)
-			
-			public var methodCurlOption: CURLoption {
-				switch self {
-				case .get: return CURLOPT_HTTPGET
-				case .post: return CURLOPT_POST
-				case .put: return CURLOPT_PUT
-				}
-			}
-			
-			#endif
 		}
 		
 		public var methodString: String {
@@ -112,32 +93,7 @@ public class HTTP {
 			static let AddingPercentEncodingWithAllowedCharacterFailure = LakestoneError.with(stringRepresentation: "Adding percent encoding with allowed character set failed")
 			
 			#endif
-			
-			#if os(OSX) || os(Linux)
-			
-			static let NotUTF8EncodedBytes = LakestoneError.with(stringRepresentation: "Received response data cannot be inferred as UTF8 string")
-	
-			#endif
 		}
-		
-		#if os(OSX) || os(Linux)
-		
-		/// Error representable type that is backend by CURL error
-		public class CURLInvocationErrorType: ErrorRepresentable {
-			
-			let curlCode: Int
-			let errorDetail: String
-			init(curlCode: Int, errorDetail: String){
-				self.curlCode = curlCode
-				self.errorDetail = errorDetail
-			}
-			
-			public var detailMessage: String {
-				return self.errorDetail
-			}
-		}
-		
-		#endif
 		
 		public func addBasicAuthentification(with username: String, and password: String){
 			
@@ -278,7 +234,6 @@ public class HTTP {
 		/// - warning: This will block the current thread until completed.
 		///			Therefore avoid calling it on the main thread.
 		
-		
 		#if COOPER
 		
 		public func performSync() throws -> Response {
@@ -409,155 +364,78 @@ public class HTTP {
 		
 		public func performSync() throws -> Response {
 		
-			#if os(OSX) || os(Linux)
+			var request = URLRequest(url: self.url)
+			request.httpMethod = self.methodString
+			for (headerKey, headerValue) in self.headers {
+				request.setValue(headerValue, forHTTPHeaderField: headerKey)
+			}
+			
+			if self.method != .get {
+				request.httpBody = self.dataº
+			}
+			
+			let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
+			
+			var targetDataº: Data?
+			var targetResponseº: URLResponse?
+			var targetErrorº: Swift.Error?
+			
+			let semaphore = DispatchSemaphore(value: 0)
+			let dataTask = session.dataTask(with: request){ (dataº: Data?, responseº: URLResponse?, errorº: Swift.Error?) in
 				
-				let request = CURL(url: self.url.absoluteString)
+				targetDataº = dataº
+				targetResponseº = responseº
+				targetErrorº = errorº
 				
-				var code = request.setOption(CURLOPT_FRESH_CONNECT, int: 1)
-				if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
-				
-				
-				if self.method == .put {
-					//curl put request modified. 
-					// Setting method as PUT directly will for some reason will result in performFully() never return
-					code = request.setOption(CURLOPT_CUSTOMREQUEST, s: self.methodString)
-				} else {
-					code = request.setOption(self.method.methodCurlOption, int: 1)
-					if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
-				}
-				
-				for (headerKey, headerValue) in self.headers {
-					code = request.setOption(CURLOPT_HTTPHEADER, s: "\(headerKey): \(headerValue)")
-					if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
-				}
-				
-				
-				if self.method != .get {
-				
-					if let bytes = self.dataº?.bytes {
-						
-						code = request.setOption(CURLOPT_POSTFIELDSIZE, int: bytes.count)
-						if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
-						
-						code = request.setOption(CURLOPT_COPYPOSTFIELDS, v: UnsafeMutableRawPointer(mutating: bytes))
-						
-						if (code != CURLE_OK) { throw LakestoneError(CURLInvocationErrorType(curlCode: Int(code.rawValue), errorDetail: request.strError(code: code))) }
-					}
-				}
-				
-				let (invocationCode, headerBytes, bodyData) = request.performFully()
-				
-				guard let headerString = String(bytes: headerBytes, encoding: String.Encoding.utf8) else {
-					throw HTTP.Request.Error.NotUTF8EncodedBytes
-				}
-				
-				request.close()
-				
-				if CURLcode(rawValue: UInt32(invocationCode)) != CURLE_OK {
-					throw LakestoneError(CURLInvocationErrorType(curlCode: invocationCode, errorDetail: request.strError(code: CURLcode(rawValue: UInt32(invocationCode)))))
-				}
-				
-				var headerComponentsStrings = headerString.components(separatedBy: "\r\n").filter { !$0.isEmpty }
-				if headerComponentsStrings.isEmpty {
-					//curl invocation code is CURLE_OK however for header components are unexpectedly empty
-					throw HTTP.Response.Error.UnexpectedEmptyHeaderData
-				}
-				
-				let statusComponents = headerComponentsStrings.removeFirst().components(separatedBy: " ")
-				guard statusComponents.count >= 3,
-					  let statusCode = Int(statusComponents[1])
-				else {
-					throw HTTP.Response.Error.StatusLineFormatInvalid
-				}
-				
-				let statusMessage = Array(statusComponents[2 ..< statusComponents.count]).joined(separator: " ")
-				let headerComponents = headerComponentsStrings.map { (headerComponentString: String) -> (String, String) in
-					
-					var components = headerComponentString.components(separatedBy: ":")
-					if (components.count == 1){
-						return (components[0].trimmingCharacters(in: CharacterSet.whitespaces), String())
-					} else if (components.count == 2){
-						return (components[0].trimmingCharacters(in: CharacterSet.whitespaces), components[1].trimmingCharacters(in: CharacterSet.whitespaces))
-					} else if (components.count > 2){
-						//handling of case when : is a part of headerValue, thus we need to concatenate it back
-						let headerKey = components.removeFirst().trimmingCharacters(in: CharacterSet.whitespaces)
-						let headerValue = components.joined(separator: ":").trimmingCharacters(in: CharacterSet.whitespaces)
-						return (headerKey, headerValue)
-					} else {
-						return (String(), String())
-					}
-					
-				}.filter { !$0.0.isEmpty }
-
-				var headerFields = [String: String]()
-				headerComponents.forEach { headerFields[$0.0] = $0.1 }
-				
-				return HTTP.Response(url: self.url, statusCode: statusCode, statusMessage: statusMessage, headerFields: headerFields, data: Data(bytes: bodyData))
-				
-			#else
-				
-				var request = URLRequest(url: self.url)
-				request.httpMethod = self.methodString
-				for (headerKey, headerValue) in self.headers {
-					request.setValue(headerValue, forHTTPHeaderField: headerKey)
-				}
-				
-				if self.method != .get {
-					request.httpBody = self.dataº
-				}
-				
-				let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
-				
-				var targetDataº: Data?
-				var targetResponseº: URLResponse?
-				var targetErrorº: Swift.Error?
-				
-				let semaphore = DispatchSemaphore(value: 0)
-				let dataTask = session.dataTask(with: request){ (dataº: Data?, responseº: URLResponse?, errorº: Swift.Error?) in
-					
-					targetDataº = dataº
-					targetResponseº = responseº
-					targetErrorº = errorº
-					
-					semaphore.signal()
-				}
-				
-				dataTask.resume()
-				semaphore.wait()
-				
-				if let targetError = targetErrorº {
-					throw targetError
-				}
-				
-				// if response is nil and returned error is nil, error is not provided then
-				// this should never happen, but still handling this scenario
-				guard let response = targetResponseº as? HTTPURLResponse else {
-					throw Error.Unknown
-				}
-				
-				var targetHeaderFields = [String: String]()
-				for (header, headerValue) in response.allHeaderFields {
-					guard let headerString = header as? String,
-						  let headerValueString = headerValue as? String
+				semaphore.signal()
+			}
+			
+			dataTask.resume()
+			semaphore.wait()
+			
+			if let targetError = targetErrorº {
+				throw targetError
+			}
+			
+			// if response is nil and returned error is nil, error is not provided then
+			// this should never happen, but still handling this scenario
+			guard let response = targetResponseº as? HTTPURLResponse else {
+				throw Error.Unknown
+			}
+			
+			var targetHeaderFields = [String: String]()
+			for (header, headerValue) in response.allHeaderFields {
+				guard let headerString = header as? String,
+					let headerValueString = headerValue as? String
 					else {
 						print("Header field entry is not a string literal")
 						continue
-					}
-					
-					targetHeaderFields[headerString] = headerValueString
 				}
 				
-				let statusMessage = HTTPURLResponse.localizedString(forStatusCode: response.statusCode)
-				return HTTP.Response(url: self.url, statusCode: response.statusCode, statusMessage: statusMessage, headerFields: targetHeaderFields, data: targetDataº)
-				
-			#endif
+				targetHeaderFields[headerString] = headerValueString
+			}
+			
+			let statusMessage = HTTPURLResponse.localizedString(forStatusCode: response.statusCode)
+			return HTTP.Response(url: self.url, statusCode: response.statusCode, statusMessage: statusMessage, headerFields: targetHeaderFields, data: targetDataº)
 		}
 		
 		#endif
 		
 		public func perform(with progressCallbackº:((Bool, Double) -> Void)? = nil, and completionHander: @escaping (ThrowableError?, Response?) -> Void){
 			
-			#if os(iOS) || os(watchOS) || os(tvOS)
+			#if COOPER
+				
+				self.queue.dispatch {
+					
+					do {
+						let response = try self._performSyncCore(with: progressCallbackº)
+						completionHander(nil, response)
+					} catch {
+						completionHander(error as! ThrowableError, nil)
+					}
+				}
+				
+			#else
 				
 				var request = URLRequest(url: self.url)
 				request.httpMethod = self.methodString
@@ -568,32 +446,11 @@ public class HTTP {
 				if self.method != .get {
 					request.httpBody = self.dataº
 				}
-
+				
 				_downloadDelegateº = _DownloadDelegate(invocationURL: self.url, progressDelegateº: progressCallbackº, completionHandler: completionHander)
 				let session = URLSession(configuration: URLSessionConfiguration.default, delegate: _downloadDelegateº, delegateQueue: nil)
 				let downloadTask = session.downloadTask(with: request)
 				downloadTask.resume()
-				
-			#else
-				
-				self.queue.dispatch {
-					
-					do {
-						#if COOPER
-							let response = try self._performSyncCore(with: progressCallbackº)
-						#else
-							let response = try self.performSync()
-						#endif
-						completionHander(nil, response)
-						
-					} catch {
-						#if COOPER
-							completionHander(error as! ThrowableError, nil)
-						#else
-							completionHander(error, nil)
-						#endif
-					}
-				}
 				
 			#endif
 		}
@@ -612,21 +469,7 @@ public class HTTP {
 			public static let NotAcceptable = 406
 			public static let UnsupportedMediaType = 415
 		}
-		
-		public class Error {
-			
-			#if os(OSX) || os(Linux)
-			/// indicates the empty headerData received while CURL invocation returned without error
-			/// Can only be thrown on Linux or OSX
-			static let UnexpectedEmptyHeaderData = LakestoneError.with(stringRepresentation: "Header data is empty when expected")
-			
-			/// indicates the parsing failure of HTTP status line since it has invalid format
-			/// Can only be thrown on Linux or OSX
-			static let StatusLineFormatInvalid = LakestoneError.with(stringRepresentation: "HTTP Status line parsing failed: Invalid format")
-			
-			#endif
-		}
-		
+				
 		/// origin of this responses
 		public let url: URL
 		public let statusCode: Int
@@ -661,7 +504,7 @@ public class HTTP {
 		}
 	}
 	
-	#if os(iOS) || os(watchOS) || os(tvOS)
+	#if !COOPER
 	
 	private class _DownloadDelegate: NSObject, URLSessionDownloadDelegate {
 		
@@ -704,9 +547,9 @@ public class HTTP {
 		}
 		
 		fileprivate func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-            if totalBytesExpectedToWrite >= 0 {
-                self.progressDelegateº?(true, Double(totalBytesWritten)/Double(totalBytesExpectedToWrite))
-            }
+			if totalBytesExpectedToWrite >= 0 {
+				self.progressDelegateº?(true, Double(totalBytesWritten)/Double(totalBytesExpectedToWrite))
+			}
 		}
 		
 		fileprivate func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {

@@ -87,13 +87,3 @@ public class TestURL: Test {
 		Assert.AreEqual(sampleWithSpacedParameter.absoluteString, "http://getsomestuff.com:8080/from/here?spacedParam=spaced%20parameter")
 	}
 }
-
-#if !COOPER
-extension TestURL {
-	static var allTests : [(String, (TestURL) -> () throws -> Void)] {
-		return [
-			("testURLUtilities", testURLUtilities)
-		]
-	}
-}
-#endif

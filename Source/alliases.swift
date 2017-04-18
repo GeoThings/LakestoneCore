@@ -119,15 +119,14 @@
 #if !COOPER
 	
 	import Foundation
+    import CoreLocation
+    
 	#if os(iOS) || os(watchOS) || os(tvOS)
 		import UIKit
 	#elseif os(OSX)
 		import AppKit
 	#endif
 	
-	#if !os(Linux)
-		import CoreLocation
-	#endif
 	
 #endif
 
@@ -165,10 +164,8 @@
 	
 #else
 
-	#if !os(Linux)
-		public typealias Size = CGSize
-		public typealias Location = CLLocationCoordinate2D
-	#endif
+	public typealias Size = CGSize
+    public typealias Location = CLLocationCoordinate2D
 	
 	#if os(iOS) || os(watchOS) || os(tvOS)
 		public typealias Image = UIImage

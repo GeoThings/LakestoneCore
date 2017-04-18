@@ -1,4 +1,4 @@
-﻿//
+//
 //  TestUUID.swift
 //  LakestoneCore
 //
@@ -52,13 +52,3 @@ public class TestUUID: Test {
 		Assert.AreEqual(newUUID, identicalUUID)
 	}
 }
-
-#if !COOPER
-extension TestUUID {
-	static var allTests : [(String, (TestUUID) -> () throws -> Void)] {
-		return [
-			("testUUID", testUUID)
-		]
-	}
-}
-#endif

@@ -53,7 +53,7 @@ extension Location {
 		#if COOPER
 			let pi = Math.PI
 		#else
-			let pi = M_PI
+			let pi = Double.pi
 		#endif
 	
 		let newLatitude = self.latitude + (meters / earthRadius) * (180.0 / pi)

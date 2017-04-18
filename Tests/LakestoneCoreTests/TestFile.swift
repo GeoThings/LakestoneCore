@@ -196,13 +196,3 @@ public class TestFile: Test {
 	}
 	
 }
-
-#if !COOPER
-extension TestFile {
-	static var allTests : [(String, (TestFile) -> () throws -> Void)] {
-		return [
-			("testFileOperations", testFileOperations)
-		]
-	}
-}
-#endif

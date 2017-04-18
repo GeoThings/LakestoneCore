@@ -20,13 +20,8 @@
 // limitations under the License.
 //
 
-#if COOPER
-
-#else
+#if !COOPER
 	import Foundation
-	#if os(OSX) || os(Linux)
-		import PerfectThread
-	#endif
 #endif
 
 public class Directory: AnyFileOrDirectory {
@@ -126,15 +121,15 @@ public class Directory: AnyFileOrDirectory {
 		try subdirectory.create()
 		return subdirectory
 	}
-    
-    public func subdirectory(named: String) throws -> Directory {
-        let subdirectory = Directory(directoryURL: self.url.appendingPathComponent(named))
-        if subdirectory.exists {
-            return subdirectory
-        } else {
-            return try self.createSubdirectory(named: named)
-        }
-    }
+	
+	public func subdirectory(named: String) throws -> Directory {
+		let subdirectory = Directory(directoryURL: self.url.appendingPathComponent(named))
+		if subdirectory.exists {
+			return subdirectory
+		} else {
+			return try self.createSubdirectory(named: named)
+		}
+	}
 	
 	public var filesAndSubdirectories: [AnyFileOrDirectory] {
 		
@@ -376,10 +371,10 @@ extension Directory: CustomStringConvertible {
 extension Directory {
 	//prevent name collision with Foundation.Error that is used in remove(completionHandler:)
 	public class Error {
-		static let CreationFailed = LakestoneError.with(stringRepresentation: "Directory creation failed")
-		static let DeletionFailed = LakestoneError.with(stringRepresentation: "Directory deletion failed")
-		static let WrongDestination = LakestoneError.with(stringRepresentation: "Provided destination is not a folder or doesn't exist")
-		public static let OverwriteFailed = LakestoneError.with(stringRepresentation: "File(s) already exists. You need to explicitly allow overwriting, if desired.")
+		static let CreationFailed = LakestoneError("Directory creation failed")
+		static let DeletionFailed = LakestoneError("Directory deletion failed")
+		static let WrongDestination = LakestoneError("Provided destination is not a folder or doesn't exist")
+		public static let OverwriteFailed = LakestoneError("File(s) already exists. You need to explicitly allow overwriting, if desired.")
 	}
 }
 

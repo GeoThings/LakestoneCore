@@ -1,4 +1,4 @@
-﻿//
+//
 //  Threading.swift
 //  geoBingAnCore
 //
@@ -33,11 +33,7 @@
 	import java.util.concurrent
 #else
 	import Foundation
-	import PerfectThread
-	
-	#if !os(Linux)
-		import Dispatch
-	#endif
+	import Dispatch
 #endif
 
 //TODO: GeoThings/LakestoneCore: Issue #5: Reconsider Threading abstractions
@@ -47,24 +43,60 @@
 	public typealias ThreadQueue = ExecutorService
 	public typealias ConstraintConcurrentThreadQueue = ExecutorService
 	
+    public typealias Semaphore = java.util.concurrent.Semaphore
 	// ReentrantLock provides the corresponding functionaly with matching lock()/tryLock()/unlock() naming
 	public typealias Lock = java.util.concurrent.locks.ReentrantLock
-	public typealias Semaphore = java.util.concurrent.Semaphore
 	
 #else
 
-	public typealias Lock = PerfectThread.Threading.Lock
+    public typealias ThreadQueue = DispatchQueue
+    public typealias ConstraintConcurrentThreadQueue = OperationQueue
+    public typealias Semaphore = DispatchSemaphore
+    
+    public class Lock {
+        var mutex = pthread_mutex_t()
+        /// Initialize a new lock object.
+        public init() {
+            var attr = pthread_mutexattr_t()
+            pthread_mutexattr_init(&attr)
+            pthread_mutexattr_settype(&attr, Int32(PTHREAD_MUTEX_RECURSIVE))
+            pthread_mutex_init(&mutex, &attr)
+        }
+        
+        deinit {
+            pthread_mutex_destroy(&mutex)
+        }
+        
+        /// Attempt to grab the lock.
+        /// Returns true if the lock was successful.
+        @discardableResult
+        public func lock() -> Bool {
+            return 0 == pthread_mutex_lock(&self.mutex)
+        }
+        
+        /// Attempt to grab the lock.
+        /// Will only return true if the lock was not being held by any other thread.
+        /// Returns false if the lock is currently being held by another thread.
+        public func tryLock() -> Bool {
+            return 0 == pthread_mutex_trylock(&self.mutex)
+        }
+        
+        /// Unlock. Returns true if the lock was held by the current thread and was successfully unlocked. ior the lock count was decremented.
+        @discardableResult
+        public func unlock() -> Bool {
+            return 0 == pthread_mutex_unlock(&self.mutex)
+        }
+        
+        /// Acquire the lock, execute the closure, release the lock.
+        public func doWithLock(closure: () throws -> ()) rethrows {
+            let _ = self.lock()
+            defer {
+                let _ = self.unlock()
+            }
+            try closure()
+        }
+    }
 
-	#if os(iOS) || os(watchOS) || os(tvOS)
-		public typealias Semaphore = DispatchSemaphore
-		public typealias ThreadQueue = DispatchQueue
-		public typealias ConstraintConcurrentThreadQueue = OperationQueue
-	#elseif os(OSX)
-		public typealias Semaphore = DispatchSemaphore
-		public typealias ConstraintConcurrentThreadQueue = OperationQueue
-	#endif
-	// for OSX and Linux PerfectThread.ThreadQueue corresponding type is used
-	
 #endif
 	
 
@@ -75,56 +107,34 @@ public func synchronized(on lock: Lock, closure: () -> Void){
 	lock.unlock()
 }
 
-#if COOPER
 
+
+/// Utilities for threading
 public class Threading {
 	
-	public class func dispatchOnMainQueue(_ closure: @escaping () -> Void){
-		Handler(Looper.getMainLooper()).post {
-			closure()
-		}
-	}
+    public class func dispatchOnMainQueue(_ closure: @escaping () -> Void){
+            
+        #if COOPER
+            Handler(Looper.getMainLooper()).post { closure() }
+        #else
+            DispatchQueue.main.async(execute: closure)
+        #endif
+    }
 }
 
 extension ThreadQueue {
-		
-	public func dispatch(_ closure: @escaping () -> Void){
-		self.execute {
-			closure()
-		}
-	}
-}
-	
-#elseif os(iOS) || os(watchOS) || os(tvOS)
-
-public class Threading {}
-	
-extension ThreadQueue {
-		
-	public func dispatch(_ closure: @escaping () -> Void){
-		self.async(execute: closure)
-	}
-}
     
-#endif
-
-#if os(OSX)
-extension DispatchQueue {
-	public func dispatch(_ closure: @escaping () -> Void){
-		self.async(execute: closure)
-	}
+    public func dispatch(_ closure: @escaping () -> Void){
+        #if COOPER
+            self.execute { closure() }
+        #else
+            self.async(execute: closure)
+        #endif
+    }
 }
-#endif
 
-#if !COOPER && !os(Linux)
-	
-extension Threading {
-		
-	public static func dispatchOnMainQueue(_ closure: @escaping () -> Void){
-		DispatchQueue.main.async(execute: closure)
-	}
-}
-    
+#if !COOPER
+
 extension ConstraintConcurrentThreadQueue {
         
     public func dispatch(_ closure: @escaping () -> Void){
@@ -143,14 +153,11 @@ extension Threading {
 	public static func serialQueue(withLabel label: String) -> ThreadQueue {
 		#if COOPER
 			return Executors.newSingleThreadExecutor()
-		#elseif os(Linux) || os(OSX)
-			return Threading.getQueue(name: label, type: .serial)
 		#else
 			return DispatchQueue(label: label, qos: DispatchQoS.default)
 		#endif
 	}
 	
-	#if !os(Linux)
 	public static func concurrentQueue(withMaximumConcurrentThreads threadCount: Int) -> ConstraintConcurrentThreadQueue {
 		#if COOPER
 			//corePoolSize: Integer, maximumPoolSize: Integer, keepAliveTime: Int64, unit: TimeUnit!, workQueue: BlockingQueue<Runnable>!
@@ -161,7 +168,6 @@ extension Threading {
             return concurrentQueue
 		#endif
 	}
-	#endif
 }
 
 #if COOPER
@@ -177,7 +183,7 @@ extension Semaphore {
 	}
 }
 
-#elseif !os(Linux)
+#else
 
 extension Semaphore {
 	
@@ -190,22 +196,18 @@ extension Semaphore {
 
 
 #if COOPER
+    
 	public func dispatch(on looper: android.os.Looper, closure: @escaping () -> Void){
 		Handler(looper).post {
 			closure()
 		}
 	}
+    
 #else
 
 	public func dispatch(on queue: DispatchQueue, closure: @escaping () -> Void){
 		queue.dispatch(closure)
 	}
-	
-	#if os(OSX) || os(Linux)
-		public func dispatch(on queue: ThreadQueue, closure: @escaping () -> Void){
-			queue.dispatch(closure)
-		}
-	#endif
 	
 #endif
 

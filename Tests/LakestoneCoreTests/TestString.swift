@@ -1,4 +1,4 @@
-﻿//
+//
 //  TestString.swift
 //  LakestoneCore
 //
@@ -169,19 +169,6 @@ public class TestString: Test {
 		Assert.IsNotNil("0".boolRepresentation)
 		Assert.IsNil("".boolRepresentation)
 		Assert.IsNil(" true".boolRepresentation)
-	}
-}
-#endif
-
-#if !COOPER
-extension TestString {
-	static var allTests : [(String, (TestString) -> () throws -> Void)] {
-		return [
-			("testUpperLowerEmptiness", testUpperLowerEmptiness),
-			("testIndexing", testIndexing),
-			("testOperations", testOperations),
-			("testNumericConversions", testNumericConversions)
-		]
 	}
 }
 #endif

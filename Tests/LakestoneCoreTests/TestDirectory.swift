@@ -1,4 +1,4 @@
-﻿//
+//
 //  TestDirectory.swift
 //  LakestoneCore
 //
@@ -173,13 +173,3 @@ public class TestDirectory: Test {
 		
 	}
 }
-
-#if !COOPER
-extension TestDirectory {
-	static var allTests : [(String, (TestDirectory) -> () throws -> Void)] {
-		return [
-			("testDirectoryOperations", testDirectoryOperations)
-		]
-	}
-}
-#endif

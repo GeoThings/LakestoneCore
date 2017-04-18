@@ -1,4 +1,4 @@
-﻿//
+//
 //  extension_String.swift
 //  LakestoneCore
 //
@@ -514,16 +514,6 @@ extension String {
 			return (try? JSONSerialization.data(withJSONObject: dictionaryEntity))?.utf8EncodedStringRepresentationº ?? ""
 		} else if let setEntity = entity as? Set<AnyHashable> {
 			return (try? JSONSerialization.data(withJSONObject: [AnyHashable](setEntity)))?.utf8EncodedStringRepresentationº ?? ""
-		} else if let serializableTypeRepresentable = entity as? SerializableTypeRepresentable,
-			//prevent infinite looping if serializableRepresentation is also of SerializableTypeRepresentable type
-			!(serializableTypeRepresentable.serializableRepresentation is SerializableTypeRepresentable){
-			
-			return String.derived(from: serializableTypeRepresentable.serializableRepresentation)
-		   
-		} else if let stringTypeRepresentable = entity as? StringRepresentable {
-			
-			return stringTypeRepresentable.stringRepresentation
-			
 		} else if let dataEntity = entity as? Data {
 		
 			return dataEntity.utf8EncodedStringRepresentationº ?? ""
