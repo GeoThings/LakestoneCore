@@ -10,6 +10,7 @@
     <Name>lakestonecore.android</Name>
     <RootNamespace>lakestonecore.android</RootNamespace>
     <MinFrameworkVersionRequired>4.0</MinFrameworkVersionRequired>
+    <TestProject>lakestonecore.eunit</TestProject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>false</Optimize>
@@ -28,6 +29,7 @@
     <WarnOnCaseMismatch>True</WarnOnCaseMismatch>
     <EnableUnmanagedDebugging>False</EnableUnmanagedDebugging>
     <AndroidDexMode>Incremental</AndroidDexMode>
+    <TestProject>lakestonecore.eunit</TestProject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <Optimize>true</Optimize>
@@ -44,6 +46,7 @@
     <XmlDocWarningLevel>WarningOnPublicMembers</XmlDocWarningLevel>
     <WarnOnCaseMismatch>True</WarnOnCaseMismatch>
     <EnableUnmanagedDebugging>False</EnableUnmanagedDebugging>
+    <TestProject>lakestonecore.eunit</TestProject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="android" />

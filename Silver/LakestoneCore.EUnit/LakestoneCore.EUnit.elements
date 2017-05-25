@@ -10,6 +10,7 @@
     <RootNamespace>lakestonecore.eunit</RootNamespace>
     <AllowLegacyOutParams>False</AllowLegacyOutParams>
     <MinFrameworkVersionRequired>4.0</MinFrameworkVersionRequired>
+    <TestProject>lakestonecore.eunit</TestProject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>False</Optimize>
@@ -25,6 +26,7 @@
     <GenerateMDB>True</GenerateMDB>
     <XmlDocWarningLevel>WarningOnPublicMembers</XmlDocWarningLevel>
     <EnableUnmanagedDebugging>False</EnableUnmanagedDebugging>
+    <TestProject>lakestonecore.eunit</TestProject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <Optimize>true</Optimize>
@@ -41,6 +43,7 @@
     <XmlDocWarningLevel>WarningOnPublicMembers</XmlDocWarningLevel>
     <EnableUnmanagedDebugging>False</EnableUnmanagedDebugging>
     <WarnOnCaseMismatch>True</WarnOnCaseMismatch>
+    <TestProject>lakestonecore.eunit</TestProject>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
@@ -86,11 +89,11 @@
     <Reference Include="remobjects.elements.eunit">
       <Private>True</Private>
     </Reference>
-    <Reference Include="sugar">
-      <Private>True</Private>
-    </Reference>
     <Reference Include="swift">
       <HintPath>..\swift.jar</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="elements">
       <Private>True</Private>
     </Reference>
   </ItemGroup>

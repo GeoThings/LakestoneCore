@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Project xmlns='http://schemas.microsoft.com/developer/msbuild/2003'>
   <PropertyGroup>
-    <CrossBoxDeviceID>FA31LPN00609</CrossBoxDeviceID>
-    <CrossBoxDevice>HTC Butterfly</CrossBoxDevice>
+    <CrossBoxDeviceID>emulator-5554</CrossBoxDeviceID>
+    <CrossBoxDevice>Android Emulator 5554</CrossBoxDevice>
+    <TestProject>lakestonecore.eunit</TestProject>
   </PropertyGroup>
 </Project>
