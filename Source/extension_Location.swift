@@ -1,4 +1,4 @@
-﻿//
+//
 //  extension_Location.swift
 //  geoBingAnKit
 //
@@ -21,7 +21,7 @@
 
 #if COOPER
 	import android.location
-#elseif !os(Linux)
+#else
 	import CoreLocation
 #endif
 
