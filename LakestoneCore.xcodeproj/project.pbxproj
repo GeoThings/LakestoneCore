@@ -200,7 +200,6 @@
 				1A70663C1EDEBDD200B80468 /* Frameworks */,
 				1A70663D1EDEBDD200B80468 /* Headers */,
 				1A70663E1EDEBDD200B80468 /* Resources */,
-				1A738A1B1EE102BC00342481 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -288,22 +287,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		1A738A1B1EE102BC00342481 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cp -r ${BUILT_PRODUCTS_DIR}/LakestoneCore.framework ${PROJECT_DIR}/../GeoBingAnKit/Frameworks/";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1A70663B1EDEBDD200B80468 /* Sources */ = {
