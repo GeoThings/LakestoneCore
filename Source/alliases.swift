@@ -26,25 +26,25 @@
 //
 //  Since you extend the allias type, each platform-specific type will get extended
 //  The extension will the provide each platform specific implementation for a given common interface
-//  Before new NS-errased Foundation framework shipped with Swift 3.0, 
+//  Before new NS-errased Foundation framework shipped with Swift 3.0,
 //  example abstraction of ByteBuffer and NSData will look the following way:
 //
-//	  #if COOPER
-//		  public typealias Data = java.nio.ByteBuffer
-//	  #else
-//		  public typealias Data = NSData
-//	  #endif
+//      #if COOPER
+//          public typealias Data = java.nio.ByteBuffer
+//      #else
+//          public typealias Data = NSData
+//      #endif
 //
-//	  extension Data {
+//      extension Data {
 //
-//		  public static func from(utf8EncodedString: String) -> Data? {
-//			  #if COOPER
-//				  return Data.wrap(utf8EncodedString.getBytes(Charset.forName("UTF-8")))
-//			  #else
-//				  return utf8EncodedString.data(using: String.Encoding.utf8)
-//			  #endif
-//		  }
-//	  }
+//          public static func from(utf8EncodedString: String) -> Data? {
+//              #if COOPER
+//                  return Data.wrap(utf8EncodedString.getBytes(Charset.forName("UTF-8")))
+//              #else
+//                  return utf8EncodedString.data(using: String.Encoding.utf8)
+//              #endif
+//          }
+//      }
 //
 //  Data type and its method `from(utfEncodedString:)` is now platform-errased.
 //  Implementing unified interfaces on existing allised types is recommended way
@@ -58,46 +58,46 @@
 //
 //  Instead consider using two approaches in this situation:
 //
-//	  1. Provide the wrapper type that provides corresponding interfaces to other platforms corresponded type
-//	  2. Implement corresponding type on the missing platform.
+//      1. Provide the wrapper type that provides corresponding interfaces to other platforms corresponded type
+//      2. Implement corresponding type on the missing platform.
 //
 //  Method 1 is often prefered and differs from 2 in the way that existing API implementations is reused
 //  instead of being written from ground up. The next example illustates this:
 //
-//	  #if COOPER
-//		  public typealias File = java.io.File
+//      #if COOPER
+//          public typealias File = java.io.File
 //
-//	  #else
+//      #else
 //
-//		  public class File {
-//			  let path: String
+//          public class File {
+//              let path: String
 //
-//			  init(filepath: String){
-//				  self.path = filepath
-//			  }
-//		  }
+//              init(filepath: String){
+//                  self.path = filepath
+//              }
+//          }
 //
-//	  #endif
+//      #endif
 //
-//	  extension File {
-//		  #if COOPER
+//      extension File {
+//          #if COOPER
 //
-//		  init(filepath: String){
-//			  self(filepath)
-//		  }
+//          init(filepath: String){
+//              self(filepath)
+//          }
 //
-//		  #endif
+//          #endif
 //
-//		  public func remove() throws {
-//			 #if COOPER
-//				  if (!self.delete()){
-//					  throw Error.DeletionFailed
-//				  }
-//			 #else
-//				  return try FileManager.default.removeItem(atPath: self.path)
-//			 #endif
-//		}
-//	  }
+//          public func remove() throws {
+//             #if COOPER
+//                  if (!self.delete()){
+//                      throw Error.DeletionFailed
+//                  }
+//             #else
+//                  return try FileManager.default.removeItem(atPath: self.path)
+//             #endif
+//        }
+//      }
 //
 //  Preceeding File implementation is container type for the file path
 //  and it wraps up existing FileManager APIs to do the file related operations.
@@ -117,17 +117,17 @@
 //
 
 #if !COOPER
-	
+
 	import Foundation
-    import CoreLocation
-    
+	import CoreLocation
+
 	#if os(iOS) || os(watchOS) || os(tvOS)
 		import UIKit
 	#elseif os(OSX)
 		import AppKit
 	#endif
-	
-	
+
+
 #endif
 
 
@@ -140,40 +140,37 @@
 	public typealias UUID = java.util.UUID
 	public typealias File = java.io.File
 	public typealias Locale = java.util.Locale
-	
+
 	public typealias AnyHashable = java.lang.Object
 	public typealias ThrowableError = java.lang.Throwable
-	
-	
+
+
 	public typealias AnyType = java.lang.Class
-	
+
 #else
 
 	public typealias ThrowableError = Error
 	public typealias AnyType = Any.Type
-	
+
 #endif
 
 
 // additional
 
 #if COOPER
-	
+
 	public typealias Image = android.graphics.Bitmap
 	public typealias Location = android.location.Location
-	
+
 #else
 
 	public typealias Size = CGSize
-    public typealias Location = CLLocationCoordinate2D
-	
+	public typealias Location = CLLocationCoordinate2D
+
 	#if os(iOS) || os(watchOS) || os(tvOS)
 		public typealias Image = UIImage
 	#elseif os(OSX)
 		public typealias Image = NSImage
 	#endif
-	
+
 #endif
-
-
-

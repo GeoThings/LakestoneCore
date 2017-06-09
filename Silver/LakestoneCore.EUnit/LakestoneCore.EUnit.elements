@@ -96,6 +96,10 @@
     <Reference Include="elements">
       <Private>True</Private>
     </Reference>
+    <Reference Include="objenesis-2.5">
+      <HintPath>..\objenesis-2.5.jar</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.swift" />

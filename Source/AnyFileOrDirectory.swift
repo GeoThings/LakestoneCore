@@ -1,4 +1,4 @@
-//
+﻿//
 //  AnyFileOrDirectory.swift
 //  LakestoneCore
 //
@@ -24,37 +24,43 @@
 	import Foundation
 #endif
 
+public enum UltimateEnum {
+	case initRealm
+	case initSomethingWithValue(String)
+	case initSomethingWithSomethingElse(String, String)
+}
+
 public protocol AnyFileOrDirectory {
-	
+
 	var path: String { get }
-    var url: URL { get }
+	var url: URL { get }
 	var exists: Bool { get }
 	var isDirectory: Bool { get }
-	
+
 	var name: String { get }
 	var size: Int64 { get }
 	var lastModificationDateº: Date? { get }
-	
+
 	func remove() throws
-	
+
 	var parentDirectoryº: Directory? { get }
-	
+
 	// copy the file or directory with subdirectories to new destination; overwrite existing or throw exception
-    // returns new location
+	// returns new location
 	func copy(to destination: AnyFileOrDirectory, overwrites: Bool) throws -> AnyFileOrDirectory
-	
+
 	// move the file or directory with subdirectories to new destination; overwrite existing or throw exception
-    // returns new location
+	// returns new location
 	func move(to destination: AnyFileOrDirectory, overwrites: Bool) throws -> AnyFileOrDirectory
 }
 
 #if !COOPER
 extension AnyFileOrDirectory {
-	
+
 	public var exists: Bool {
 		return FileManager.default.fileExists(atPath: self.path)
 	}
-	
+
 	public var isDirectory: Bool {
 		var isDirectoryPath: ObjCBool = ObjCBool(false)
 		let doesFileExists = FileManager.default.fileExists(atPath: self.path, isDirectory: &isDirectoryPath)
@@ -69,7 +75,7 @@ extension AnyFileOrDirectory {
 		guard let fileAttributes = try? FileManager.default.attributesOfItem(atPath: self.path) else {
 			return nil
 		}
-		
+
 		return fileAttributes[FileAttributeKey.modificationDate] as? Date
 	}
 }
@@ -93,4 +99,3 @@ public func FileOrDirectory(with fileURL: URL) -> AnyFileOrDirectory {
 		return file
 	}
 }
-
