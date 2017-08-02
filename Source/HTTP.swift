@@ -71,6 +71,7 @@ public class HTTP {
 			case get
 			case post
 			case put
+            case delete
 		}
 		
 		public var methodString: String {
@@ -78,6 +79,7 @@ public class HTTP {
 			case .get: return "GET"
 			case .post: return "POST"
 			case .put: return "PUT"
+            case .delete: return "DELETE"
 			}
 		}
 		
