@@ -42,6 +42,7 @@
 		1A7066B21EDEBE9D00B80468 /* LakestoneError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A70669F1EDEBE9D00B80468 /* LakestoneError.swift */; };
 		1A7066B31EDEBE9D00B80468 /* PersistentPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7066A01EDEBE9D00B80468 /* PersistentPropertyList.swift */; };
 		1A7066B41EDEBE9D00B80468 /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7066A11EDEBE9D00B80468 /* Threading.swift */; };
+		80F218291F3ACF2E0034EBAC /* UPDATING_FRAMEWORK.md in Resources */ = {isa = PBXBuildFile; fileRef = 80F218281F3ACF2E0034EBAC /* UPDATING_FRAMEWORK.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		1A70669F1EDEBE9D00B80468 /* LakestoneError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LakestoneError.swift; sourceTree = "<group>"; };
 		1A7066A01EDEBE9D00B80468 /* PersistentPropertyList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentPropertyList.swift; sourceTree = "<group>"; };
 		1A7066A11EDEBE9D00B80468 /* Threading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Threading.swift; sourceTree = "<group>"; };
+		80F218281F3ACF2E0034EBAC /* UPDATING_FRAMEWORK.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = UPDATING_FRAMEWORK.md; path = Source/UPDATING_FRAMEWORK.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 			children = (
 				1A70665A1EDEBE1900B80468 /* Info.plist */,
 				1A70665B1EDEBE1900B80468 /* LakestoneCore.h */,
+				80F218281F3ACF2E0034EBAC /* UPDATING_FRAMEWORK.md */,
 				1A70668E1EDEBE9D00B80468 /* Source */,
 				1A70664D1EDEBDD200B80468 /* LakestoneCoreTests */,
 				1A7066411EDEBDD200B80468 /* Products */,
@@ -274,6 +277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A70665C1EDEBE1900B80468 /* Info.plist in Resources */,
+				80F218291F3ACF2E0034EBAC /* UPDATING_FRAMEWORK.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
