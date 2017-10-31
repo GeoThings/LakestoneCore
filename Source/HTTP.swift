@@ -130,21 +130,41 @@ public class HTTP {
 					let urlEncodedValue = URLEncoder.encode(String.derived(from: value), "UTF-8")
 					let urlEncodedKey = URLEncoder.encode(key, "UTF-8")
 					
+                    urlEncodedString += "\(urlEncodedKey)=\(urlEncodedValue)"
 				#else
 					
-					guard let urlEncodedValue = String.derived(from: value).addingPercentEncoding(withAllowedCharacters: allowedCharacterSet),
-						  let urlEncodedKey = key.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)
-					else {
-						throw Error.AddingPercentEncodingWithAllowedCharacterFailure
-					}
-					
+                    guard let urlEncodedKey = key.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)
+                        else {
+                            throw Error.AddingPercentEncodingWithAllowedCharacterFailure
+                    }
+                    if let values = value as? [Any] {
+                        // array of values
+                        for (valuesIndex, singleValue) in values.enumerated() {
+                            
+                            guard let urlEncodedValue = String.derived(from: singleValue).addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)
+                                else {
+                                    throw Error.AddingPercentEncodingWithAllowedCharacterFailure
+                            }
+                            urlEncodedString += "\(urlEncodedKey)=\(urlEncodedValue)"
+                            if (valuesIndex < values.count - 1){
+                                urlEncodedString += "&"
+                            }
+                        }
+                    } else {
+                        // single value
+                        guard let urlEncodedValue = String.derived(from: value).addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)
+                            else {
+                                throw Error.AddingPercentEncodingWithAllowedCharacterFailure
+                        }
+                        
+                        urlEncodedString += "\(urlEncodedKey)=\(urlEncodedValue)"
+                    }
 				#endif
-				
-				urlEncodedString += "\(urlEncodedKey)=\(urlEncodedValue)"
-				if (keyIndex < parameters.keys.count - 1){
-					urlEncodedString += "&"
-				}
-			}
+                
+                if (keyIndex < parameters.keys.count - 1){
+                    urlEncodedString += "&"
+                }
+            } // end of for loop
 			
 			guard let encodedData = Data.with(utf8EncodedString: urlEncodedString) else {
 				throw Data.Error.UTF8IncompatibleString
